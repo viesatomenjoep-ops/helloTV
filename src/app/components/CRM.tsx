@@ -1,16 +1,21 @@
 import React, { useState, useEffect } from 'react';
-import { Users, Plus, Edit, Mail, Phone, MapPin, Calendar, Database, Search, Filter } from 'lucide-react';
+import { Users, Plus, Edit, Mail, Phone, MapPin, Calendar, Database, Search, Filter, Shield, ToggleLeft, ToggleRight } from 'lucide-react';
 import { api } from '../../utils/api';
 import { mockCustomers } from '../../utils/mockCustomers';
+import { EMPLOYEES } from '../../utils/employees';
 
 export function CRM() {
   const [customers, setCustomers] = useState<any[]>(mockCustomers);
   const [showForm, setShowForm] = useState(false);
   const [searchTerm, setSearchTerm] = useState('');
+  const [activeTab, setActiveTab] = useState<'klanten' | 'rechten'>('klanten');
   
   // New Filters
   const [activiteitFilter, setActiviteitFilter] = useState('Alle Activiteiten');
   const [kanaalFilter, setKanaalFilter] = useState('Alle Kanalen');
+  
+  // Rechten State (Mock)
+  const [permissions, setPermissions] = useState<Record<string, any>>({});
 
   const [formData, setFormData] = useState({
     voornaam: '',
@@ -58,28 +63,65 @@ export function CRM() {
     return matchesSearch && matchesAct && matchesKanaal;
   });
 
+  const togglePermission = (empCode: string, module: string) => {
+    setPermissions(prev => ({
+      ...prev,
+      [empCode]: {
+        ...(prev[empCode] || {}),
+        [module]: !(prev[empCode]?.[module])
+      }
+    }));
+  };
+
+  const MODULES = ['SalesTrackers', 'Offertes', 'Orders', 'Voorraad', 'SalesTrainers', 'Reparatie', 'Shiftbase', 'CRM'];
+
   return (
     <div className="min-h-screen bg-gradient-to-br from-gray-50 to-gray-100 p-8 pb-24">
       <div className="max-w-7xl mx-auto">
         <div className="flex flex-col md:flex-row md:items-center justify-between mb-8 gap-4">
           <div>
-            <h1 className="text-4xl font-bold text-gray-800 mb-2">Klantendatabase (CRM)</h1>
-            <p className="text-gray-600">Beheer klantinformatie, orders, offertes en facturen vanuit één SQL database.</p>
+            <h1 className="text-4xl font-bold text-gray-800 mb-2">HelloTV Systeembeheer & CRM</h1>
+            <p className="text-gray-600">Beheer klantgegevens en wijs module-rechten (credentials) toe aan personeel.</p>
           </div>
           <div className="flex gap-4 flex-wrap">
             <div className="flex items-center gap-2 px-4 py-2 bg-green-100 text-green-800 rounded-lg font-bold text-sm border border-green-200">
               <Database size={16} />
               SQL Supabase Gekoppeld
             </div>
-            <button
-              onClick={() => setShowForm(!showForm)}
-              className="flex items-center gap-2 px-6 py-2 bg-gradient-to-r from-blue-600 to-purple-600 text-white rounded-xl shadow-lg hover:shadow-xl transition-shadow font-bold"
-            >
-              <Plus size={20} />
-              Nieuwe Klant
-            </button>
           </div>
         </div>
+
+        {/* Tabs */}
+        <div className="flex gap-2 mb-8 border-b border-gray-200 pb-2">
+          <button
+            onClick={() => setActiveTab('klanten')}
+            className={`px-6 py-3 font-bold rounded-t-xl transition-colors flex items-center gap-2 ${
+              activeTab === 'klanten' ? 'bg-white text-blue-600 border-t-2 border-l-2 border-r-2 border-gray-100 shadow-sm' : 'bg-transparent text-gray-500 hover:bg-gray-100'
+            }`}
+          >
+            <Users size={18} /> Klantendatabase (CRM)
+          </button>
+          <button
+            onClick={() => setActiveTab('rechten')}
+            className={`px-6 py-3 font-bold rounded-t-xl transition-colors flex items-center gap-2 ${
+              activeTab === 'rechten' ? 'bg-white text-blue-600 border-t-2 border-l-2 border-r-2 border-gray-100 shadow-sm' : 'bg-transparent text-gray-500 hover:bg-gray-100'
+            }`}
+          >
+            <Shield size={18} /> Rechten & Credentials
+          </button>
+        </div>
+
+        {activeTab === 'klanten' && (
+          <>
+            <div className="flex justify-end mb-4">
+              <button
+                onClick={() => setShowForm(!showForm)}
+                className="flex items-center gap-2 px-6 py-2 bg-gradient-to-r from-blue-600 to-purple-600 text-white rounded-xl shadow-lg hover:shadow-xl transition-shadow font-bold"
+              >
+                <Plus size={20} />
+                Nieuwe Klant
+              </button>
+            </div>
 
         {/* Filters Section */}
         <div className="bg-white rounded-xl shadow-sm border border-gray-100 p-4 mb-6 flex flex-col md:flex-row gap-4">
@@ -263,6 +305,62 @@ export function CRM() {
             </div>
           ))}
         </div>
+          </>
+        )}
+
+        {activeTab === 'rechten' && (
+          <div className="bg-white rounded-2xl shadow-sm border border-gray-100 p-8">
+            <div className="mb-8">
+              <h2 className="text-2xl font-bold text-gray-900 mb-2 flex items-center gap-2">
+                <Shield className="text-blue-600" /> Toegangsbeheer (Credentials)
+              </h2>
+              <p className="text-gray-600">Bebepaal welke medewerker toegang heeft tot welke applicatie/module. Wijzigingen worden direct doorgevoerd in het systeem. Let op: Maak nog geen logincodes aan, dit is puur de rechten-kopie.</p>
+            </div>
+
+            <div className="overflow-x-auto rounded-xl border border-gray-200">
+              <table className="w-full text-left bg-white text-sm">
+                <thead>
+                  <tr className="bg-gray-50 border-b border-gray-200">
+                    <th className="p-4 font-bold text-gray-700">Medewerker</th>
+                    <th className="p-4 font-bold text-gray-700">Rol</th>
+                    {MODULES.map(mod => (
+                      <th key={mod} className="p-4 font-bold text-gray-700 text-center">{mod}</th>
+                    ))}
+                  </tr>
+                </thead>
+                <tbody>
+                  {EMPLOYEES.map((emp) => (
+                    <tr key={emp.code} className="border-b border-gray-100 hover:bg-gray-50">
+                      <td className="p-4">
+                        <p className="font-bold text-gray-900">{emp.name}</p>
+                        <p className="text-xs text-gray-500 font-mono">Code: {emp.code}</p>
+                      </td>
+                      <td className="p-4">
+                        <span className={`px-2 py-1 rounded text-xs font-bold ${emp.isSeller ? 'bg-blue-100 text-blue-700' : 'bg-gray-200 text-gray-700'}`}>
+                          {emp.isSeller ? 'Verkoper' : 'Staf/Anders'}
+                        </span>
+                      </td>
+                      {MODULES.map(mod => {
+                        // Default wat logische rechten
+                        const hasAccess = permissions[emp.code]?.[mod] ?? (emp.isSeller && ['Offertes', 'Orders', 'SalesTrackers'].includes(mod) || mod === 'Shiftbase');
+                        return (
+                          <td key={mod} className="p-4 text-center align-middle">
+                            <button 
+                              onClick={() => togglePermission(emp.code, mod)}
+                              className={`transition-colors flex justify-center w-full ${hasAccess ? 'text-green-500' : 'text-gray-300 hover:text-gray-400'}`}
+                            >
+                              {hasAccess ? <ToggleRight size={28} /> : <ToggleLeft size={28} />}
+                            </button>
+                          </td>
+                        );
+                      })}
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+          </div>
+        )}
       </div>
     </div>
   );
