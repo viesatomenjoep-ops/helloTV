@@ -7,6 +7,19 @@ export function Orders() {
   const [selectedOrderId, setSelectedOrderId] = useState<string | null>(null);
   const [searchTerm, setSearchTerm] = useState('');
   const [statusFilter, setStatusFilter] = useState('Alle');
+  const [storeFilter, setStoreFilter] = useState('Alle Filialen');
+  const [channelFilter, setChannelFilter] = useState('Alle Kanalen');
+
+  const STORES = [
+    'Alle Filialen',
+    'Alkmaar', 'Amsterdam', 'Apeldoorn', 'Bergen op Zoom', 
+    'Breda', 'Cruquius', 'Den Bosch', 'Doetinchem', 
+    'Duiven', 'Eindhoven', 'Groningen', 'Leeuwarden', 
+    'Nijmegen', 'Naarden', 'Rotterdam', 'Tilburg', 
+    'Utrecht', 'Zoeterwoude'
+  ];
+
+  const CHANNELS = ['Alle Kanalen', 'Online', 'Chat', 'Winkel', 'Mail/Tickets'];
 
   const handleExport = () => {
     let csvContent = "data:text/csv;charset=utf-8,";
@@ -45,7 +58,10 @@ export function Orders() {
     const matchesSearch = order.id.toLowerCase().includes(searchTerm.toLowerCase()) || 
                           order.klant_id.toLowerCase().includes(searchTerm.toLowerCase());
     const matchesStatus = statusFilter === 'Alle' || order.status.toLowerCase().includes(statusFilter.toLowerCase());
-    return matchesSearch && matchesStatus;
+    const matchesStore = storeFilter === 'Alle Filialen' || (order as any).filiaal === storeFilter || storeFilter === 'Alle Filialen'; // mocking store
+    const matchesChannel = channelFilter === 'Alle Kanalen' || (order as any).communicatiekanaal === channelFilter || channelFilter === 'Alle Kanalen'; // mocking channel
+
+    return matchesSearch && matchesStatus && matchesStore && matchesChannel;
   });
 
   return (
@@ -70,39 +86,46 @@ export function Orders() {
         </div>
       </div>
 
-      <div className="flex gap-2 mb-6 overflow-x-auto pb-2">
-        {['Alle', 'In behandeling', 'Verzonden', 'Afgeleverd', 'Geannuleerd'].map(status => (
-          <button
-            key={status}
-            onClick={() => setStatusFilter(status)}
-            className={`px-4 py-2 rounded-full text-sm font-semibold whitespace-nowrap transition-colors ${
-              statusFilter === status 
-                ? 'bg-blue-600 text-white' 
-                : 'bg-white text-gray-600 border border-gray-200 hover:bg-gray-50'
-            }`}
-          >
-            {status}
-          </button>
-        ))}
-      </div>
-
-      <div className="bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden">
-        <div className="p-4 border-b border-gray-100 flex gap-4">
-          <div className="relative flex-1 max-w-md">
+      <div className="bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden mb-6">
+        <div className="p-4 border-b border-gray-100 grid grid-cols-1 md:grid-cols-4 gap-4">
+          <div className="relative">
             <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" size={18} />
             <input
               type="text"
-              placeholder="Zoeken op ordernummer of klant..."
-              className="w-full pl-10 pr-4 py-2 bg-gray-50 border-none rounded-lg focus:ring-2 focus:ring-blue-500 outline-none"
+              placeholder="Zoeken op nr of klant..."
+              className="w-full pl-10 pr-4 py-2 bg-gray-50 border border-gray-200 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none"
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
             />
           </div>
-          <button className="flex items-center gap-2 px-4 py-2 text-gray-600 bg-gray-50 rounded-lg hover:bg-gray-100 transition-colors">
-            <Filter size={18} />
-            <span>Filters</span>
-          </button>
+          
+          <select 
+            value={storeFilter}
+            onChange={(e) => setStoreFilter(e.target.value)}
+            className="w-full px-4 py-2 bg-gray-50 border border-gray-200 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none text-gray-700"
+          >
+            {STORES.map(s => <option key={s} value={s}>{s}</option>)}
+          </select>
+
+          <select 
+            value={channelFilter}
+            onChange={(e) => setChannelFilter(e.target.value)}
+            className="w-full px-4 py-2 bg-gray-50 border border-gray-200 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none text-gray-700"
+          >
+            {CHANNELS.map(c => <option key={c} value={c}>{c}</option>)}
+          </select>
+
+          <select 
+            value={statusFilter}
+            onChange={(e) => setStatusFilter(e.target.value)}
+            className="w-full px-4 py-2 bg-gray-50 border border-gray-200 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none text-gray-700"
+          >
+            {['Alle', 'In behandeling', 'Verzonden', 'Afgeleverd', 'Geannuleerd'].map(s => <option key={s} value={s}>{s}</option>)}
+          </select>
         </div>
+      </div>
+
+      <div className="bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden">
 
         <div className="overflow-x-auto">
           <table className="w-full text-left text-sm text-gray-600">

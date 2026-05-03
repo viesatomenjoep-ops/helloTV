@@ -10,6 +10,20 @@ export function Quotes() {
   const [selectedQuoteId, setSelectedQuoteId] = useState<string | null>(null);
   const [searchTerm, setSearchTerm] = useState('');
   const [showSuccessMsg, setShowSuccessMsg] = useState('');
+  const [statusFilter, setStatusFilter] = useState('Alle');
+  const [storeFilter, setStoreFilter] = useState('Alle Filialen');
+  const [channelFilter, setChannelFilter] = useState('Alle Kanalen');
+
+  const STORES = [
+    'Alle Filialen',
+    'Alkmaar', 'Amsterdam', 'Apeldoorn', 'Bergen op Zoom', 
+    'Breda', 'Cruquius', 'Den Bosch', 'Doetinchem', 
+    'Duiven', 'Eindhoven', 'Groningen', 'Leeuwarden', 
+    'Nijmegen', 'Naarden', 'Rotterdam', 'Tilburg', 
+    'Utrecht', 'Zoeterwoude'
+  ];
+
+  const CHANNELS = ['Alle Kanalen', 'Online', 'Chat', 'Winkel', 'Mail/Tickets'];
 
   const handleConvertToOrder = (quoteId: string) => {
     // Vind de offerte
@@ -80,11 +94,16 @@ export function Quotes() {
     }
   }
 
-  const filteredQuotes = quotes.filter(quote => 
-    quote.id.toLowerCase().includes(searchTerm.toLowerCase()) || 
-    quote.klant_naam.toLowerCase().includes(searchTerm.toLowerCase()) ||
-    quote.klant_id.toLowerCase().includes(searchTerm.toLowerCase())
-  );
+  const filteredQuotes = quotes.filter(quote => {
+    const matchesSearch = quote.id.toLowerCase().includes(searchTerm.toLowerCase()) || 
+                          quote.klant_naam.toLowerCase().includes(searchTerm.toLowerCase()) ||
+                          quote.klant_id.toLowerCase().includes(searchTerm.toLowerCase());
+    const matchesStatus = statusFilter === 'Alle' || quote.status === statusFilter;
+    const matchesStore = storeFilter === 'Alle Filialen' || (quote as any).filiaal === storeFilter || storeFilter === 'Alle Filialen'; // mocking store filter
+    const matchesChannel = channelFilter === 'Alle Kanalen' || (quote as any).kanaal === channelFilter || channelFilter === 'Alle Kanalen'; // mocking channel filter
+
+    return matchesSearch && matchesStatus && matchesStore && matchesChannel;
+  });
 
   return (
     <div className="p-8">
@@ -102,23 +121,46 @@ export function Quotes() {
         </div>
       )}
 
-      <div className="bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden">
-        <div className="p-4 border-b border-gray-100 flex gap-4">
-          <div className="relative flex-1 max-w-md">
+      <div className="bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden mb-6">
+        <div className="p-4 border-b border-gray-100 grid grid-cols-1 md:grid-cols-4 gap-4">
+          <div className="relative">
             <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" size={18} />
             <input
               type="text"
-              placeholder="Zoeken op offertenummer of klant..."
-              className="w-full pl-10 pr-4 py-2 bg-gray-50 border-none rounded-lg focus:ring-2 focus:ring-blue-500 outline-none"
+              placeholder="Zoeken op nr of klant..."
+              className="w-full pl-10 pr-4 py-2 bg-gray-50 border border-gray-200 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none"
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
             />
           </div>
-          <button className="flex items-center gap-2 px-4 py-2 text-gray-600 bg-gray-50 rounded-lg hover:bg-gray-100 transition-colors">
-            <Filter size={18} />
-            <span>Filters</span>
-          </button>
+          
+          <select 
+            value={storeFilter}
+            onChange={(e) => setStoreFilter(e.target.value)}
+            className="w-full px-4 py-2 bg-gray-50 border border-gray-200 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none text-gray-700"
+          >
+            {STORES.map(s => <option key={s} value={s}>{s}</option>)}
+          </select>
+
+          <select 
+            value={channelFilter}
+            onChange={(e) => setChannelFilter(e.target.value)}
+            className="w-full px-4 py-2 bg-gray-50 border border-gray-200 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none text-gray-700"
+          >
+            {CHANNELS.map(c => <option key={c} value={c}>{c}</option>)}
+          </select>
+
+          <select 
+            value={statusFilter}
+            onChange={(e) => setStatusFilter(e.target.value)}
+            className="w-full px-4 py-2 bg-gray-50 border border-gray-200 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none text-gray-700"
+          >
+            {['Alle', 'Concept', 'Verzonden', 'Geaccepteerd', 'Verlopen', 'Omgezet naar Order'].map(s => <option key={s} value={s}>{s}</option>)}
+          </select>
         </div>
+      </div>
+
+      <div className="bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden">
 
         <div className="overflow-x-auto">
           <table className="w-full text-left text-sm text-gray-600">
