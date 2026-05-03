@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Target, Monitor, BarChart2, TrendingUp, Users, Download, Edit2, Save, RefreshCw, CheckCircle } from 'lucide-react';
+import { Target, Monitor, BarChart2, TrendingUp, Users, Download, Edit2, Save, RefreshCw, CheckCircle, Activity } from 'lucide-react';
 import {
   BarChart,
   Bar,
@@ -31,6 +31,86 @@ const INITIAL_OLED_DATA = [
   { name: 'Target', value: 50.00, isTarget: true }
 ];
 
+const CLEANERS_DATA = [
+  { name: 'Amsterdam', value: 40.18 },
+  { name: 'Breda', value: 39.84 },
+  { name: 'Cruquius', value: 41.82 },
+  { name: 'Den Bosch', value: 37.76 },
+  { name: 'Doetinchem', value: 69.09 },
+  { name: 'Duiven', value: 45.26 },
+  { name: 'Eindhoven', value: 57.66 },
+  { name: 'Groningen', value: 45.78 },
+  { name: 'Naarden', value: 49.04 },
+  { name: 'Nijmegen', value: 46.77 },
+  { name: 'Rotterdam', value: 41.13 },
+  { name: 'Tilburg', value: 59.42 },
+  { name: 'Utrecht', value: 46.72 },
+  { name: 'Zoeterwoude', value: 38.10 },
+  { name: 'Chat', value: 10.86 },
+  { name: 'Mail', value: 15.93 },
+  { name: 'Target', value: 35.00, isTarget: true }
+];
+
+const KABELS_DATA = [
+  { name: 'Amsterdam', value: 58.04 },
+  { name: 'Breda', value: 39.02 },
+  { name: 'Cruquius', value: 67.27 },
+  { name: 'Den Bosch', value: 54.08 },
+  { name: 'Doetinchem', value: 61.88 },
+  { name: 'Duiven', value: 33.68 },
+  { name: 'Eindhoven', value: 51.04 },
+  { name: 'Groningen', value: 60.24 },
+  { name: 'Naarden', value: 62.50 },
+  { name: 'Nijmegen', value: 48.39 },
+  { name: 'Rotterdam', value: 45.16 },
+  { name: 'Tilburg', value: 65.22 },
+  { name: 'Utrecht', value: 32.79 },
+  { name: 'Zoeterwoude', value: 57.59 },
+  { name: 'Chat', value: 10.11 },
+  { name: 'Mail', value: 10.91 },
+  { name: 'Target', value: 50.00, isTarget: true }
+];
+
+const BEUGELS_DATA = [
+  { name: 'Amsterdam', value: 47.32 },
+  { name: 'Breda', value: 36.84 },
+  { name: 'Cruquius', value: 25.45 },
+  { name: 'Den Bosch', value: 36.73 },
+  { name: 'Doetinchem', value: 47.27 },
+  { name: 'Duiven', value: 50.53 },
+  { name: 'Eindhoven', value: 33.33 },
+  { name: 'Groningen', value: 31.33 },
+  { name: 'Naarden', value: 32.69 },
+  { name: 'Nijmegen', value: 32.26 },
+  { name: 'Rotterdam', value: 45.97 },
+  { name: 'Tilburg', value: 39.13 },
+  { name: 'Utrecht', value: 44.26 },
+  { name: 'Zoeterwoude', value: 35.24 },
+  { name: 'Chat', value: 22.85 },
+  { name: 'Mail', value: 14.75 },
+  { name: 'Target', value: 36.00, isTarget: true }
+];
+
+const SPTV_DATA = [
+  { name: 'Utrecht', value: 95.78 },
+  { name: 'Amsterdam', value: 90.73 },
+  { name: 'Zoeterwoude', value: 88.28 },
+  { name: 'Groningen', value: 88.03 },
+  { name: 'Den Bosch', value: 87.94 },
+  { name: 'Eindhoven', value: 86.75 },
+  { name: 'Rotterdam', value: 83.54 },
+  { name: 'Breda', value: 83.23 },
+  { name: 'Tilburg', value: 80.81 },
+  { name: 'Doetinchem', value: 76.92 },
+  { name: 'Cruquius', value: 76.62 },
+  { name: 'Naarden', value: 75.34 },
+  { name: 'Nijmegen', value: 56.10 },
+  { name: 'Duiven', value: 51.09 },
+  { name: 'Mail', value: 41.67 },
+  { name: 'Chat', value: 37.38 },
+  { name: 'Target', value: 80.00, isTarget: true }
+];
+
 const TOP_SELLERS_DATA = [
   { naam: 'Lizzy Wams (TIL)', omzetIncl: '4.012,96', omzetExcl: '3.316,50', margeExcl: '931,85', margePct: '28,10', stuks: 8, transacties: 3 },
   { naam: 'Farshid A (TILBURG)', omzetIncl: '3.856,93', omzetExcl: '3.187,55', margeExcl: '1.013,30', margePct: '31,79', stuks: 12, transacties: 3 },
@@ -39,22 +119,44 @@ const TOP_SELLERS_DATA = [
   { naam: 'Kim A (TIL)', omzetIncl: '190,99', omzetExcl: '157,84', margeExcl: '45,82', margePct: '29,03', stuks: 2, transacties: 2 }
 ];
 
-const getColor = (value: number, isTarget?: boolean, globalTarget: number = 50) => {
+const getColor = (value: number, isTarget?: boolean, targetValue: number = 50) => {
   if (isTarget) return '#FFFF00'; 
-  if (value >= globalTarget) return '#4ade80'; 
-  if (value >= globalTarget - 10) return '#fbbf24'; 
+  if (value >= targetValue) return '#4ade80'; 
+  if (value >= targetValue - 10) return '#fbbf24'; 
   return '#ef4444'; 
 };
 
 export function TrainersPortal() {
   const [oledData, setOledData] = useState(INITIAL_OLED_DATA);
   const [globalTarget, setGlobalTarget] = useState(50);
+  const [activeTab, setActiveTab] = useState('OLED');
   const [isEditing, setIsEditing] = useState(false);
   const [isImporting, setIsImporting] = useState(false);
   const [importSuccess, setImportSuccess] = useState(false);
   const [isExportingPdf, setIsExportingPdf] = useState(false);
 
+  const getChartData = () => {
+    switch (activeTab) {
+      case 'Cleaners': return CLEANERS_DATA;
+      case 'Kabels': return KABELS_DATA;
+      case 'TV Beugels': return BEUGELS_DATA;
+      case 'SP TV': return SPTV_DATA;
+      default: return oledData;
+    }
+  };
+
+  const getChartTarget = () => {
+    switch (activeTab) {
+      case 'Cleaners': return 35;
+      case 'Kabels': return 50;
+      case 'TV Beugels': return 36;
+      case 'SP TV': return 80;
+      default: return globalTarget;
+    }
+  };
+
   const handleEditChange = (index: number, newValue: string) => {
+    if (activeTab !== 'OLED') return; // Alleen OLED aanpasbaar in demo
     const num = parseFloat(newValue.replace(',', '.'));
     if (isNaN(num)) return;
     const newData = [...oledData];
@@ -78,6 +180,10 @@ export function TrainersPortal() {
       alert('Mooie PDF Succesvol Geëxporteerd en opgeslagen!');
     }, 2500);
   };
+
+  const TABS = ['OLED', 'Cleaners', 'Kabels', 'TV Beugels', 'SP TV'];
+  const currentData = getChartData();
+  const currentTarget = getChartTarget();
 
   return (
     <div className="min-h-screen bg-[#2D2D2D] p-8 text-white overflow-y-auto">
@@ -153,11 +259,26 @@ export function TrainersPortal() {
           </div>
         </div>
 
-        {/* The Scraped OLED Chart */}
+        {/* Tab Navigation */}
+        <div className="flex gap-2 overflow-x-auto pb-4 mb-4">
+          {TABS.map(tab => (
+            <button
+              key={tab}
+              onClick={() => setActiveTab(tab)}
+              className={`px-6 py-3 rounded-lg font-bold text-sm whitespace-nowrap transition-colors flex items-center gap-2 ${
+                activeTab === tab ? 'bg-[#FDCB2C] text-[#2D2D2D]' : 'bg-[#3D3D3D] text-gray-400 hover:text-white hover:bg-gray-700'
+              }`}
+            >
+              <Activity size={16} /> {tab} Overzicht
+            </button>
+          ))}
+        </div>
+
+        {/* The Scraped Charts */}
         <div className="bg-[#333333] rounded-xl shadow-2xl p-6 border border-gray-700 mb-8">
           <div className="flex flex-col md:flex-row justify-between items-start md:items-center mb-8 gap-4">
             <h2 className="text-2xl font-bold text-white">
-              Week 14/15 Target is {globalTarget}% OLED Aandeel
+              {activeTab === 'OLED' ? `Week 14/15 Target is ${globalTarget}% OLED Aandeel` : `Resultaten voor ${activeTab}`}
             </h2>
             <div className="flex gap-3">
               <button 
@@ -168,19 +289,21 @@ export function TrainersPortal() {
                 {isExportingPdf ? <RefreshCw size={16} className="animate-spin" /> : <Download size={16} />} 
                 {isExportingPdf ? 'PDF Genereren...' : 'Exporteer Mooie PDF'}
               </button>
-              <button 
-                onClick={() => setIsEditing(!isEditing)}
-                className="px-4 py-2 bg-gray-700 hover:bg-gray-600 rounded-lg text-sm font-bold flex items-center gap-2 transition-colors"
-              >
-                {isEditing ? <><Save size={16} className="text-green-400" /> Opslaan</> : <><Edit2 size={16} /> Bewerk Data & Target</>}
-              </button>
+              {activeTab === 'OLED' && (
+                <button 
+                  onClick={() => setIsEditing(!isEditing)}
+                  className="px-4 py-2 bg-gray-700 hover:bg-gray-600 rounded-lg text-sm font-bold flex items-center gap-2 transition-colors"
+                >
+                  {isEditing ? <><Save size={16} className="text-green-400" /> Opslaan</> : <><Edit2 size={16} /> Bewerk Data & Target</>}
+                </button>
+              )}
             </div>
           </div>
           
           <div className="h-[400px] w-full mb-6">
             <ResponsiveContainer width="100%" height="100%">
               <BarChart
-                data={oledData}
+                data={currentData}
                 margin={{ top: 20, right: 30, left: 20, bottom: 60 }}
               >
                 <CartesianGrid strokeDasharray="3 3" stroke="#555" vertical={false} />
@@ -194,7 +317,7 @@ export function TrainersPortal() {
                 />
                 <YAxis 
                   tickFormatter={(value) => `${value}%`} 
-                  domain={[0, 70]} 
+                  domain={[0, 100]} 
                   tick={{ fill: '#ddd' }} 
                   axisLine={{ stroke: '#666' }}
                 />
@@ -202,18 +325,18 @@ export function TrainersPortal() {
                   cursor={{ fill: '#444' }}
                   contentStyle={{ backgroundColor: '#222', borderColor: '#444', color: '#fff' }}
                   itemStyle={{ color: '#fff' }}
-                  formatter={(value: number) => [`${value}%`, 'OLED Aandeel']}
+                  formatter={(value: number) => [`${value}%`, activeTab]}
                 />
-                <Bar dataKey="value" name="OLED Aandeel">
-                  {oledData.map((entry, index) => (
-                    <Cell key={`cell-${index}`} fill={getColor(entry.value, entry.isTarget, globalTarget)} />
+                <Bar dataKey="value" name={activeTab}>
+                  {currentData.map((entry, index) => (
+                    <Cell key={`cell-${index}`} fill={getColor(entry.value, entry.isTarget, currentTarget)} />
                   ))}
                 </Bar>
               </BarChart>
             </ResponsiveContainer>
           </div>
 
-          {isEditing && (
+          {isEditing && activeTab === 'OLED' && (
             <div className="bg-[#2D2D2D] p-6 rounded-xl border border-gray-600 mt-4 animate-in fade-in slide-in-from-top-4">
               <div className="mb-6 pb-6 border-b border-gray-700">
                 <h3 className="text-sm font-bold text-gray-400 mb-2 uppercase tracking-wider">Algemeen Target Instellen</h3>
@@ -225,7 +348,6 @@ export function TrainersPortal() {
                     onChange={(e) => {
                       const tg = Number(e.target.value);
                       setGlobalTarget(tg);
-                      // Update the specific 'Target' bar in the chart as well
                       const targetIndex = oledData.findIndex(d => d.isTarget);
                       if(targetIndex !== -1) {
                         const newData = [...oledData];

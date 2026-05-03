@@ -31,14 +31,13 @@ import { Transport } from './components/Transport';
 import { MediaPortal } from './components/MediaPortal';
 import { Vendit } from './components/Vendit';
 import { GoogleReviews } from './components/GoogleReviews';
-import { ProductDashboard } from './components/ProductDashboard';
 import { HelloTVWebsite } from './components/HelloTVWebsite';
 import { Reparatie } from './components/Reparatie';
 import { MagicLinks } from './components/MagicLinks';
 import { HelloTVLogo } from './components/ui/HelloTVLogo';
 import { initDemoData } from '../utils/initDemoData';
 
-type View = 'dashboard' | 'crm' | 'sales' | 'inventory' | 'quotes' | 'orders' | 'showcase' | 'hr' | 'shiftbase' | 'trainers' | 'transport' | 'media' | 'vendit' | 'reviews' | 'products' | 'website' | 'reparatie' | 'magiclinks';
+type View = 'dashboard' | 'crm' | 'sales' | 'inventory' | 'quotes' | 'orders' | 'showcase' | 'hr' | 'shiftbase' | 'trainers' | 'transport' | 'media' | 'vendit' | 'reviews' | 'website' | 'reparatie' | 'magiclinks';
 
 export default function App() {
   const [currentView, setCurrentView] = useState<View>('dashboard');
@@ -54,8 +53,7 @@ export default function App() {
     { id: 'dashboard', label: 'Dashboard', icon: LayoutDashboard },
     { id: 'website', label: 'HelloTV.nl (Live)', icon: Search },
     { id: 'reviews', label: 'Google Maps Reviews', icon: Star },
-    { id: 'products', label: 'Producten & Marges', icon: Package },
-    { id: 'orders', label: 'Orders', icon: ShoppingCart },
+    { id: 'orders', label: 'Orders & Upsell', icon: ShoppingCart },
     { id: 'quotes', label: 'Offertes', icon: FileText },
     { id: 'showcase', label: 'Visie & Strategie', icon: Layers },
     { id: 'crm', label: 'CRM', icon: Users },
@@ -77,74 +75,58 @@ export default function App() {
   };
 
   return (
-    <div className="flex h-screen overflow-hidden bg-gray-50 flex-col md:flex-row">
-      
-      {/* Mobile Top Bar */}
-      <div className="md:hidden bg-gray-900 text-white p-4 flex items-center justify-between shadow-md z-40">
-        <HelloTVLogo className="h-8" theme="dark" />
-        <button onClick={() => setMobileMenuOpen(!mobileMenuOpen)} className="p-2 bg-gray-800 rounded-lg">
-          {mobileMenuOpen ? <X size={24} /> : <Menu size={24} />}
-        </button>
-      </div>
-
-      {/* Mobile Overlay */}
-      {mobileMenuOpen && (
-        <div 
-          className="fixed inset-0 bg-black/50 z-40 md:hidden" 
-          onClick={() => setMobileMenuOpen(false)}
-        />
-      )}
-
-      {/* Sidebar (Desktop & Mobile Slide-in) */}
-      <div
-        className={`fixed md:relative inset-y-0 left-0 z-50 bg-gradient-to-b from-gray-900 to-gray-800 text-white transition-all duration-300 transform ${
-          mobileMenuOpen ? 'translate-x-0' : '-translate-x-full md:translate-x-0'
-        } ${sidebarOpen ? 'w-64' : 'w-20 md:w-20 w-64'}`}
+    <div className="flex h-screen bg-[#F5F5F5] font-sans">
+      {/* Mobile menu button */}
+      <button 
+        className="md:hidden fixed top-4 right-4 z-50 p-2 bg-gray-900 text-white rounded-lg"
+        onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
       >
-        <div className="flex items-center justify-between p-6">
-          {(sidebarOpen || mobileMenuOpen) && (
-            <div className="flex-1">
-              <HelloTVLogo className="h-10 mb-2" theme="dark" />
-              <div className="text-xs text-gray-400 font-bold uppercase tracking-widest mt-2">OS 2026</div>
-            </div>
-          )}
-          
-          {/* Hide collapse button on mobile, it's always full width there */}
-          <button
-            onClick={() => setSidebarOpen(!sidebarOpen)}
-            className="hidden md:block p-2 hover:bg-gray-700 rounded-lg transition-colors"
-          >
-            {sidebarOpen ? <X size={20} /> : <Menu size={20} />}
-          </button>
-        </div>
+        {mobileMenuOpen ? <X size={24} /> : <Menu size={24} />}
+      </button>
 
-        <nav className="mt-4 pb-20 overflow-y-auto max-h-[calc(100vh-140px)]">
+      {/* Sidebar */}
+      <div className={`
+        fixed inset-y-0 left-0 z-40 w-64 bg-gray-900 text-gray-300 transform transition-transform duration-300 ease-in-out flex flex-col shadow-2xl
+        ${mobileMenuOpen ? 'translate-x-0' : '-translate-x-full'}
+        md:relative md:translate-x-0
+      `}>
+        <div className="flex items-center justify-center h-24 border-b border-gray-800 bg-gray-950 px-6 shrink-0">
+          <HelloTVLogo className="h-10 w-auto" theme="dark" />
+        </div>
+        
+        <nav className="flex-1 px-4 py-6 space-y-1 overflow-y-auto custom-scrollbar">
           {menuItems.map((item) => (
             <button
               key={item.id}
               onClick={() => handleNavClick(item.id)}
-              className={`w-full flex items-center gap-4 px-6 py-4 transition-all ${
-                currentView === item.id
-                  ? 'bg-[#FDCB2C] text-gray-900 border-r-4 border-white font-bold'
-                  : 'text-gray-400 hover:bg-gray-800 hover:text-white'
+              className={`w-full flex items-center gap-3 px-4 py-3 rounded-xl transition-all duration-200 group font-medium ${
+                currentView === item.id 
+                  ? 'bg-gradient-to-r from-[#1D6F42]/20 to-transparent text-white shadow-lg border-l-4 border-[#1D6F42]' 
+                  : 'hover:bg-gray-800 hover:text-white'
               }`}
             >
-              <item.icon size={20} className={currentView === item.id ? 'text-gray-900' : ''} />
-              {(sidebarOpen || mobileMenuOpen) && <span>{item.label}</span>}
+              <item.icon 
+                size={20} 
+                className={`transition-colors duration-200 ${
+                  currentView === item.id ? 'text-[#1D6F42]' : 'text-gray-500 group-hover:text-white'
+                }`}
+              />
+              <span className="truncate">{item.label}</span>
             </button>
           ))}
-          
-          {(sidebarOpen || mobileMenuOpen) && (
-            <div className="mt-8 mx-6 pt-6 border-t border-gray-700">
-              <div className="flex items-center gap-3 bg-gray-800 p-3 rounded-xl border border-gray-700">
-                <UserCircle size={24} className="text-[#FDCB2C]" />
-                <div className="text-xs leading-tight">
-                  <span className="font-bold text-white">Beheerder</span><br/>
-                  <span className="text-gray-400">admin@heleutievier.nl</span>
-                </div>
+        </nav>
+
+        {/* User Profile Footer */}
+        <nav className="border-t border-gray-800 p-4 bg-gray-950 shrink-0">
+          <div className="flex items-center justify-between p-3 rounded-xl bg-gray-800/50 backdrop-blur-sm border border-gray-700 hover:bg-gray-800 transition-colors cursor-pointer">
+            <div className="flex items-center gap-3">
+              <UserCircle size={24} className="text-[#FDCB2C]" />
+              <div className="text-xs leading-tight">
+                <span className="font-bold text-white">Beheerder</span><br/>
+                <span className="text-gray-400">admin@heleutievier.nl</span>
               </div>
             </div>
-          )}
+          </div>
         </nav>
       </div>
 
@@ -153,7 +135,6 @@ export default function App() {
         {currentView === 'dashboard' && <Dashboard onNavigate={setCurrentView} />}
         {currentView === 'website' && <HelloTVWebsite />}
         {currentView === 'reviews' && <GoogleReviews />}
-        {currentView === 'products' && <ProductDashboard />}
         {currentView === 'orders' && <Orders />}
         {currentView === 'showcase' && <Showcase />}
         {currentView === 'crm' && <CRM />}
