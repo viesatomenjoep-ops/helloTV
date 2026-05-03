@@ -44,7 +44,7 @@ export default function App() {
           </div>
           
           <div className="text-center mb-8">
-            <h1 className="text-2xl font-black text-gray-900 mb-2">Welkom bij Viesa</h1>
+            <h1 className="text-2xl font-black text-gray-900 mb-2">Welkom bij HelloTV</h1>
             <p className="text-gray-500 font-medium">Log in op het HelloTV Backend Systeem</p>
           </div>
 

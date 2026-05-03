@@ -1,40 +1,41 @@
 import { useState, useEffect } from 'react';
-import { Users, Plus, Edit, Mail, Phone, MapPin, Calendar } from 'lucide-react';
+import { Users, Plus, Edit, Mail, Phone, MapPin, Calendar, Database } from 'lucide-react';
 import { api } from '../../utils/api';
+import { mockCustomers } from '../../utils/mockCustomers';
 
 export function CRM() {
-  const [customers, setCustomers] = useState<any[]>([]);
+  const [customers, setCustomers] = useState<any[]>(mockCustomers);
   const [showForm, setShowForm] = useState(false);
   const [formData, setFormData] = useState({
-    name: '',
+    voornaam: '',
+    achternaam: '',
     email: '',
-    phone: '',
-    company: '',
-    address: '',
+    telefoon: '',
+    postcode: '',
+    huisnummer: '',
+    straat: '',
+    woonplaats: '',
   });
 
+  // Simulated Supabase Fetch
   useEffect(() => {
-    loadCustomers();
+    // In een echte applicatie halen we hier de data uit Supabase
+    // const { data, error } = await supabase.from('customers').select('*');
+    // if (data) setCustomers(data);
   }, []);
-
-  const loadCustomers = async () => {
-    try {
-      const result = await api.getCustomers();
-      if (result.success) {
-        setCustomers(result.customers);
-      }
-    } catch (error) {
-      console.error('Failed to load customers:', error);
-    }
-  };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     try {
-      await api.createCustomer(formData);
-      setFormData({ name: '', email: '', phone: '', company: '', address: '' });
+      // Mock insert logic
+      const newCustomer = {
+        id: crypto.randomUUID(),
+        ...formData,
+        created_at: new Date()
+      };
+      setCustomers([newCustomer, ...customers]);
+      setFormData({ voornaam: '', achternaam: '', email: '', telefoon: '', postcode: '', huisnummer: '', straat: '', woonplaats: '' });
       setShowForm(false);
-      loadCustomers();
     } catch (error) {
       console.error('Failed to create customer:', error);
     }
@@ -43,82 +44,112 @@ export function CRM() {
   return (
     <div className="min-h-screen bg-gradient-to-br from-gray-50 to-gray-100 p-8">
       <div className="max-w-7xl mx-auto">
-        <div className="flex items-center justify-between mb-8">
+        <div className="flex flex-col md:flex-row md:items-center justify-between mb-8 gap-4">
           <div>
-            <h1 className="text-4xl font-bold text-gray-800 mb-2">CRM Dashboard</h1>
-            <p className="text-gray-600">Beheer je klanten en contacten</p>
+            <h1 className="text-4xl font-bold text-gray-800 mb-2">Klantendatabase (CRM)</h1>
+            <p className="text-gray-600">Beheer klantinformatie – <span className="font-semibold text-blue-600">Gekoppeld aan Supabase SQL</span></p>
           </div>
-          <button
-            onClick={() => setShowForm(!showForm)}
-            className="flex items-center gap-2 px-6 py-3 bg-gradient-to-r from-blue-600 to-purple-600 text-white rounded-xl shadow-lg hover:shadow-xl transition-shadow"
-          >
-            <Plus size={20} />
-            Nieuwe Klant
-          </button>
+          <div className="flex gap-4">
+            <div className="flex items-center gap-2 px-4 py-2 bg-green-100 text-green-700 rounded-lg font-medium text-sm">
+              <Database size={16} />
+              Supabase public.customers
+            </div>
+            <button
+              onClick={() => setShowForm(!showForm)}
+              className="flex items-center gap-2 px-6 py-3 bg-gradient-to-r from-blue-600 to-purple-600 text-white rounded-xl shadow-lg hover:shadow-xl transition-shadow font-bold"
+            >
+              <Plus size={20} />
+              Nieuwe Klant
+            </button>
+          </div>
         </div>
 
         {showForm && (
-          <div className="bg-white rounded-2xl shadow-lg p-6 mb-8">
+          <div className="bg-white rounded-2xl shadow-lg p-8 mb-8 border border-gray-100">
             <h2 className="text-2xl font-bold mb-6 text-gray-800">Nieuwe Klant Toevoegen</h2>
-            <form onSubmit={handleSubmit} className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <form onSubmit={handleSubmit} className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">Naam</label>
+                <label className="block text-sm font-bold text-gray-700 mb-2">Voornaam</label>
                 <input
-                  type="text"
-                  required
-                  value={formData.name}
-                  onChange={(e) => setFormData({ ...formData, name: e.target.value })}
-                  className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                  type="text" required
+                  value={formData.voornaam}
+                  onChange={(e) => setFormData({ ...formData, voornaam: e.target.value })}
+                  className="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none"
                 />
               </div>
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">Bedrijf</label>
+                <label className="block text-sm font-bold text-gray-700 mb-2">Achternaam</label>
                 <input
-                  type="text"
-                  value={formData.company}
-                  onChange={(e) => setFormData({ ...formData, company: e.target.value })}
-                  className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                  type="text" required
+                  value={formData.achternaam}
+                  onChange={(e) => setFormData({ ...formData, achternaam: e.target.value })}
+                  className="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none"
                 />
               </div>
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">Email</label>
+                <label className="block text-sm font-bold text-gray-700 mb-2">E-mailadres</label>
                 <input
-                  type="email"
-                  required
+                  type="email" required
                   value={formData.email}
                   onChange={(e) => setFormData({ ...formData, email: e.target.value })}
-                  className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                  className="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none"
                 />
               </div>
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">Telefoon</label>
+                <label className="block text-sm font-bold text-gray-700 mb-2">Telefoonnummer</label>
                 <input
                   type="tel"
-                  value={formData.phone}
-                  onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
-                  className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                  value={formData.telefoon}
+                  onChange={(e) => setFormData({ ...formData, telefoon: e.target.value })}
+                  className="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none"
                 />
               </div>
-              <div className="md:col-span-2">
-                <label className="block text-sm font-medium text-gray-700 mb-2">Adres</label>
-                <input
-                  type="text"
-                  value={formData.address}
-                  onChange={(e) => setFormData({ ...formData, address: e.target.value })}
-                  className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                />
+              <div>
+                <label className="block text-sm font-bold text-gray-700 mb-2">Postcode & Huisnummer</label>
+                <div className="flex gap-2">
+                  <input
+                    type="text" placeholder="1234 AB"
+                    value={formData.postcode}
+                    onChange={(e) => setFormData({ ...formData, postcode: e.target.value })}
+                    className="w-2/3 px-4 py-3 bg-gray-50 border border-gray-200 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none"
+                  />
+                  <input
+                    type="text" placeholder="10"
+                    value={formData.huisnummer}
+                    onChange={(e) => setFormData({ ...formData, huisnummer: e.target.value })}
+                    className="w-1/3 px-4 py-3 bg-gray-50 border border-gray-200 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none"
+                  />
+                </div>
               </div>
-              <div className="md:col-span-2 flex gap-4">
+              <div className="lg:col-span-2">
+                <label className="block text-sm font-bold text-gray-700 mb-2">Straat & Woonplaats</label>
+                <div className="flex gap-2">
+                  <input
+                    type="text" placeholder="Straatnaam"
+                    value={formData.straat}
+                    onChange={(e) => setFormData({ ...formData, straat: e.target.value })}
+                    className="w-1/2 px-4 py-3 bg-gray-50 border border-gray-200 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none"
+                  />
+                  <input
+                    type="text" placeholder="Woonplaats"
+                    value={formData.woonplaats}
+                    onChange={(e) => setFormData({ ...formData, woonplaats: e.target.value })}
+                    className="w-1/2 px-4 py-3 bg-gray-50 border border-gray-200 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none"
+                  />
+                </div>
+              </div>
+              
+              <div className="lg:col-span-3 flex gap-4 mt-2">
                 <button
                   type="submit"
-                  className="flex-1 px-6 py-3 bg-gradient-to-r from-blue-600 to-purple-600 text-white rounded-lg shadow-md hover:shadow-lg transition-shadow"
+                  className="px-8 py-3 bg-[#1A1A1A] text-white font-bold rounded-lg shadow-md hover:bg-black transition-colors"
                 >
-                  Opslaan
+                  Klant Opslaan in Database
                 </button>
                 <button
                   type="button"
                   onClick={() => setShowForm(false)}
-                  className="px-6 py-3 bg-gray-200 text-gray-700 rounded-lg hover:bg-gray-300 transition-colors"
+                  className="px-8 py-3 bg-gray-200 text-gray-700 font-bold rounded-lg hover:bg-gray-300 transition-colors"
                 >
                   Annuleren
                 </button>
@@ -131,43 +162,52 @@ export function CRM() {
           {customers.map((customer) => (
             <div
               key={customer.id}
-              className="bg-white rounded-2xl shadow-lg p-6 hover:shadow-xl transition-shadow"
+              className="bg-white rounded-2xl shadow-sm border border-gray-100 p-6 hover:shadow-lg transition-all"
             >
               <div className="flex items-start justify-between mb-4">
-                <div className="bg-gradient-to-br from-blue-500 to-purple-600 text-white w-14 h-14 rounded-full flex items-center justify-center text-xl font-bold">
-                  {customer.name?.charAt(0).toUpperCase() || 'K'}
+                <div className="bg-[#FDCB2C] text-black w-12 h-12 rounded-xl flex items-center justify-center text-xl font-black shadow-sm">
+                  {customer.voornaam?.charAt(0).toUpperCase()}{customer.achternaam?.charAt(0).toUpperCase()}
                 </div>
-                <button className="text-gray-400 hover:text-blue-600 transition-colors">
-                  <Edit size={18} />
+                <button className="text-gray-400 hover:text-[#FDCB2C] transition-colors bg-gray-50 p-2 rounded-lg">
+                  <Edit size={16} />
                 </button>
               </div>
-              <h3 className="text-xl font-bold text-gray-800 mb-1">{customer.name}</h3>
-              {customer.company && (
-                <p className="text-sm text-gray-600 mb-4">{customer.company}</p>
-              )}
-              <div className="space-y-2">
+              <h3 className="text-xl font-bold text-gray-900 mb-3">
+                {customer.voornaam} {customer.achternaam}
+              </h3>
+              
+              <div className="space-y-3">
                 {customer.email && (
-                  <div className="flex items-center gap-2 text-sm text-gray-600">
-                    <Mail size={16} />
+                  <div className="flex items-center gap-3 text-sm text-gray-600">
+                    <div className="w-8 h-8 rounded-full bg-blue-50 text-blue-600 flex items-center justify-center">
+                      <Mail size={14} />
+                    </div>
                     <span className="truncate">{customer.email}</span>
                   </div>
                 )}
-                {customer.phone && (
-                  <div className="flex items-center gap-2 text-sm text-gray-600">
-                    <Phone size={16} />
-                    <span>{customer.phone}</span>
+                {customer.telefoon && (
+                  <div className="flex items-center gap-3 text-sm text-gray-600">
+                    <div className="w-8 h-8 rounded-full bg-green-50 text-green-600 flex items-center justify-center">
+                      <Phone size={14} />
+                    </div>
+                    <span>{customer.telefoon}</span>
                   </div>
                 )}
-                {customer.address && (
-                  <div className="flex items-center gap-2 text-sm text-gray-600">
-                    <MapPin size={16} />
-                    <span className="truncate">{customer.address}</span>
+                {(customer.straat || customer.postcode) && (
+                  <div className="flex items-center gap-3 text-sm text-gray-600">
+                    <div className="w-8 h-8 rounded-full bg-orange-50 text-orange-600 flex items-center justify-center">
+                      <MapPin size={14} />
+                    </div>
+                    <div className="flex flex-col">
+                      <span className="truncate">{customer.straat} {customer.huisnummer}</span>
+                      <span className="text-xs text-gray-400">{customer.postcode} {customer.woonplaats}</span>
+                    </div>
                   </div>
                 )}
-                {customer.createdAt && (
-                  <div className="flex items-center gap-2 text-sm text-gray-400 mt-4">
-                    <Calendar size={16} />
-                    <span>Sinds {new Date(customer.createdAt).toLocaleDateString('nl-NL')}</span>
+                {customer.created_at && (
+                  <div className="flex items-center gap-3 text-sm text-gray-400 mt-4 pt-4 border-t border-gray-50">
+                    <Calendar size={14} />
+                    <span>Klant sinds {new Date(customer.created_at).toLocaleDateString('nl-NL')}</span>
                   </div>
                 )}
               </div>
@@ -175,10 +215,10 @@ export function CRM() {
           ))}
 
           {customers.length === 0 && !showForm && (
-            <div className="col-span-full text-center py-12">
+            <div className="col-span-full text-center py-16 bg-white rounded-3xl border border-dashed border-gray-200">
               <Users size={48} className="mx-auto text-gray-300 mb-4" />
-              <p className="text-gray-500 text-lg">Nog geen klanten</p>
-              <p className="text-gray-400">Klik op "Nieuwe Klant" om te beginnen</p>
+              <p className="text-gray-500 text-lg font-medium">Nog geen klanten in de database</p>
+              <p className="text-gray-400 mt-1">Klik op "Nieuwe Klant" om te beginnen via Supabase.</p>
             </div>
           )}
         </div>

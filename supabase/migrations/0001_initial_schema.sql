@@ -19,9 +19,14 @@ CREATE TABLE public.products (
 -- Customers table (klant_id is referenced)
 CREATE TABLE public.customers (
   id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
-  name TEXT NOT NULL,
+  voornaam TEXT NOT NULL,
+  achternaam TEXT NOT NULL,
   email TEXT NOT NULL,
-  phone TEXT,
+  telefoon TEXT,
+  postcode TEXT,
+  huisnummer TEXT,
+  straat TEXT,
+  woonplaats TEXT,
   created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW()
 );
 
