@@ -67,7 +67,7 @@ export default function App() {
     { id: 'crm', label: 'CRM', icon: Users },
     { id: 'sales', label: 'Sales Tracker', icon: TrendingUp },
     { id: 'inventory', label: 'Voorraad & Inkoop', icon: Box },
-    { id: 'transport', label: 'Transport (Bessy)', icon: Truck },
+    { id: 'transport', label: 'Transport (Hessie)', icon: Truck },
     { id: 'reparatie', label: 'Reparatie & Service', icon: Wrench },
     { id: 'magiclinks', label: 'AI & Magic Links', icon: LinkIcon },
     { id: 'media', label: 'Media Portaal', icon: Film },

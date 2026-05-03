@@ -1,10 +1,10 @@
 import React, { useState } from 'react';
-import { Settings, MessageSquare, AlertTriangle, PenTool as Tool, Search, Clock, Mail, CheckCircle, Smartphone, MapPin, Printer, Bot, Sparkles, Send } from 'lucide-react';
+import { Settings, MessageSquare, AlertTriangle, PenTool as Tool, Search, Clock, Mail, CheckCircle, Smartphone, MapPin, Printer, Bot, Sparkles, Send, X, ArrowLeft, Send as SendIcon } from 'lucide-react';
 import { mockOrders } from '../../utils/mockOrders';
 import { HelloTVLogo } from './ui/HelloTVLogo';
 
 export function Reparatie() {
-  const [activeTab, setActiveTab] = useState<'overzicht' | 'ai_inbox' | 'nieuw_formulier'>('overzicht');
+  const [activeTab, setActiveTab] = useState<'overzicht' | 'ai_inbox' | 'nieuw_formulier' | 'mail_adviesportaal'>('overzicht');
   
   // States voor Nieuw Formulier
   const [selectedOrder, setSelectedOrder] = useState('');
@@ -15,6 +15,11 @@ export function Reparatie() {
   const [verpakking, setVerpakking] = useState('Originele doos aanwezig');
   const [locatie, setLocatie] = useState('Filiaal Breda');
   const [formSuccess, setFormSuccess] = useState(false);
+
+  // States voor Bekijk Details & Adviesportaal
+  const [activeTicketId, setActiveTicketId] = useState<string | null>(null);
+  const [showMailPortal, setShowMailPortal] = useState(false);
+  const [mailBericht, setMailBericht] = useState('');
 
   // AI Gemini Integration State
   const [isAnalyzing, setIsAnalyzing] = useState(false);
@@ -29,9 +34,12 @@ export function Reparatie() {
       klant: 'Janssen',
       type: 'Reparatie',
       status: 'Aangemeld bij CE Repair',
-      dagen_in_verwerking: 6,
+      dagen_in_verwerking: 16,
+      deadline_kleur: 'rood',
       locatie: 'Filiaal Breda',
-      bron: 'Winkel'
+      bron: 'Winkel',
+      afgerond: false,
+      details: 'Klant klaagt over strepen in het beeld. CE Repair geeft aan te wachten op onderdelen uit Korea.'
     },
     {
       id: 'DOA-2026-089',
@@ -39,17 +47,46 @@ export function Reparatie() {
       klant: 'De Vries',
       type: 'DOA',
       status: 'In behandeling',
-      dagen_in_verwerking: 1,
+      dagen_in_verwerking: 8,
+      deadline_kleur: 'oranje',
       locatie: 'Logistiek Duiven',
-      bron: 'WhatsApp AI Bot'
+      bron: 'WhatsApp AI Bot',
+      afgerond: false,
+      details: 'TV start niet meer op. DOA geclaimd.'
+    },
+    {
+      id: 'REP-2026-045',
+      order_id: 'ORD-2026-140',
+      klant: 'Bakker',
+      type: 'Reparatie',
+      status: 'Wacht op pick-up',
+      dagen_in_verwerking: 2,
+      deadline_kleur: 'geel',
+      locatie: 'Filiaal Amsterdam',
+      bron: 'Winkel',
+      afgerond: false,
+      details: 'Aansluiting HDMI defect.'
     }
   ]);
 
   const STORES = ['Filiaal Breda', 'Filiaal Eindhoven', 'Logistiek Duiven', 'Filiaal Rotterdam', 'Filiaal Amsterdam'];
 
-  const handleSendReminder = (id: string) => {
-    alert(`Geautomatiseerde reminder e-mail verstuurd naar CE Repair Dordrecht voor ticket ${id}.`);
-    setTickets(tickets.map(t => t.id === id ? { ...t, status: 'Reminder verstuurd (CE Repair)' } : t));
+  const handleOpenMailPortal = (id: string, e: React.MouseEvent) => {
+    e.stopPropagation();
+    setActiveTicketId(id);
+    setShowMailPortal(true);
+    const ticket = tickets.find(t => t.id === id);
+    setMailBericht(`Beste ${ticket?.klant},\n\nWe willen u graag een update geven over uw reparatie (${ticket?.id}).\n\nMomenteel duurt de reparatie iets langer dan verwacht omdat...\n\nMet vriendelijke groet,\nHelloTV Service Team`);
+  };
+
+  const handleSendMail = () => {
+    alert('Mail verzonden via het Adviesportaal naar de klant!');
+    setShowMailPortal(false);
+  };
+
+  const toggleAfgerond = (id: string, e: React.MouseEvent) => {
+    e.stopPropagation();
+    setTickets(tickets.map(t => t.id === id ? { ...t, afgerond: !t.afgerond, status: !t.afgerond ? 'Afgerond' : 'In behandeling' } : t));
   };
 
   const handleSubmitForm = (e: React.FormEvent) => {
@@ -61,8 +98,11 @@ export function Reparatie() {
       type: type,
       status: 'Aangemeld bij CE Repair',
       dagen_in_verwerking: 0,
+      deadline_kleur: 'geel',
       locatie: locatie,
-      bron: 'Reparatieformulier'
+      bron: 'Reparatieformulier',
+      afgerond: false,
+      details: klacht
     };
     
     setTickets([newTicket, ...tickets]);
@@ -90,13 +130,80 @@ export function Reparatie() {
     setTimeout(() => setSentToWhatsapp(false), 3000);
   };
 
+  const getDeadlineColorClass = (color: string) => {
+    if (color === 'rood') return 'bg-red-100 text-red-800 border-red-200';
+    if (color === 'oranje') return 'bg-orange-100 text-orange-800 border-orange-200';
+    return 'bg-yellow-100 text-yellow-800 border-yellow-200';
+  };
+
+  if (activeTicketId && !showMailPortal) {
+    const ticket = tickets.find(t => t.id === activeTicketId);
+    if (ticket) {
+      return (
+        <div className="p-8 min-h-screen bg-gray-50">
+          <div className="max-w-4xl mx-auto">
+            <button onClick={() => setActiveTicketId(null)} className="flex items-center gap-2 text-gray-500 hover:text-gray-800 mb-6 font-bold">
+              <ArrowLeft size={18} /> Terug naar overzicht
+            </button>
+            <div className="bg-white p-8 rounded-2xl shadow-sm border border-gray-200">
+              <div className="flex justify-between items-start mb-6">
+                <div>
+                  <h1 className="text-3xl font-black text-gray-900">{ticket.id}</h1>
+                  <p className="text-gray-500 font-bold">Gekoppelde Order: {ticket.order_id}</p>
+                </div>
+                <div className={`px-4 py-2 rounded-xl border font-bold ${getDeadlineColorClass(ticket.deadline_kleur)}`}>
+                  Dagen lopend: {ticket.dagen_in_verwerking}
+                </div>
+              </div>
+              
+              <div className="grid grid-cols-2 gap-6 mb-8">
+                <div className="bg-gray-50 p-4 rounded-xl border border-gray-100">
+                  <p className="text-xs text-gray-400 uppercase font-bold mb-1">Klant</p>
+                  <p className="font-bold text-lg">{ticket.klant}</p>
+                </div>
+                <div className="bg-gray-50 p-4 rounded-xl border border-gray-100">
+                  <p className="text-xs text-gray-400 uppercase font-bold mb-1">Status</p>
+                  <p className="font-bold text-lg">{ticket.status}</p>
+                </div>
+              </div>
+
+              <div className="mb-8">
+                <p className="text-xs text-gray-400 uppercase font-bold mb-2">Klacht Omschrijving & Details</p>
+                <div className="bg-gray-50 p-4 rounded-xl border border-gray-100 text-gray-700">
+                  {ticket.details}
+                </div>
+              </div>
+
+              <div className="flex gap-4">
+                <button 
+                  onClick={(e) => handleOpenMailPortal(ticket.id, e)}
+                  className="px-6 py-3 bg-blue-600 text-white font-bold rounded-xl flex items-center gap-2 hover:bg-blue-700"
+                >
+                  <Mail size={18} /> Open Mail Adviesportaal
+                </button>
+                <button 
+                  onClick={(e) => toggleAfgerond(ticket.id, e)}
+                  className={`px-6 py-3 font-bold rounded-xl flex items-center gap-2 ${
+                    ticket.afgerond ? 'bg-gray-200 text-gray-700' : 'bg-green-600 text-white hover:bg-green-700'
+                  }`}
+                >
+                  <CheckCircle size={18} /> {ticket.afgerond ? 'Markeer als onvoltooid' : 'Markeer als Afgerond'}
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      );
+    }
+  }
+
   return (
     <div className="p-8 pb-24 min-h-screen bg-gray-50">
       <div className="max-w-7xl mx-auto">
         <div className="flex justify-between items-start mb-8">
           <div>
             <h1 className="text-3xl font-bold text-gray-900 mb-2">Service & Reparatie Portaal</h1>
-            <p className="text-gray-600">Beheer voor DOA's, reparaties en CE Repair Dordrecht integratie (Chaima & Heleen).</p>
+            <p className="text-gray-600">Beheer voor DOA's, reparaties, deadlines en communicatie met de klant.</p>
           </div>
           <button 
             onClick={() => setActiveTab('nieuw_formulier')}
@@ -114,7 +221,7 @@ export function Reparatie() {
               activeTab === 'overzicht' ? 'bg-white text-blue-600 border-t-2 border-l-2 border-r-2 border-gray-100 shadow-sm' : 'bg-transparent text-gray-500 hover:bg-gray-100'
             }`}
           >
-            <Clock size={18} /> Lopend Overzicht
+            <Clock size={18} /> Lopend Overzicht & Deadlines
           </button>
           <button
             onClick={() => setActiveTab('ai_inbox')}
@@ -127,54 +234,89 @@ export function Reparatie() {
         </div>
 
         {activeTab === 'overzicht' && (
-          <div className="bg-white rounded-2xl shadow-sm border border-gray-100 p-6">
+          <div className="bg-white rounded-2xl shadow-sm border border-gray-100 p-6 relative">
+            
+            {/* Mail Adviesportaal Modal */}
+            {showMailPortal && (
+              <div className="absolute inset-0 bg-white/90 backdrop-blur-sm z-10 flex items-center justify-center p-8 rounded-2xl">
+                <div className="bg-white border border-gray-200 shadow-2xl rounded-2xl p-6 w-full max-w-2xl flex flex-col">
+                  <div className="flex justify-between items-center mb-6">
+                    <h3 className="text-xl font-black flex items-center gap-2">
+                      <Mail className="text-blue-600" /> Mail Adviesportaal
+                    </h3>
+                    <button onClick={() => setShowMailPortal(false)} className="text-gray-400 hover:text-gray-800"><X size={24} /></button>
+                  </div>
+                  <p className="text-sm text-gray-500 font-bold mb-4">Verstuur een update naar de klant (Ticket {activeTicketId})</p>
+                  <textarea 
+                    value={mailBericht}
+                    onChange={(e) => setMailBericht(e.target.value)}
+                    className="w-full h-48 p-4 border border-gray-200 rounded-xl bg-gray-50 focus:ring-2 focus:ring-blue-500 outline-none mb-4"
+                  />
+                  <div className="flex justify-end gap-2">
+                    <button onClick={() => setShowMailPortal(false)} className="px-4 py-2 font-bold text-gray-600 hover:bg-gray-100 rounded-lg">Annuleren</button>
+                    <button onClick={handleSendMail} className="px-6 py-2 bg-blue-600 text-white font-bold rounded-lg hover:bg-blue-700 flex items-center gap-2">
+                      <SendIcon size={16} /> Verzenden
+                    </button>
+                  </div>
+                </div>
+              </div>
+            )}
+
             <h2 className="text-lg font-bold text-gray-800 mb-4">Actieve Reparaties & DOA's</h2>
             <div className="overflow-x-auto">
               <table className="w-full text-left border-collapse">
                 <thead>
                   <tr className="border-b border-gray-200 text-sm text-gray-500 uppercase tracking-wider">
                     <th className="p-4 font-bold">Ticket ID</th>
-                    <th className="p-4 font-bold">Order</th>
                     <th className="p-4 font-bold">Type</th>
                     <th className="p-4 font-bold">Status</th>
-                    <th className="p-4 font-bold">Locatie</th>
-                    <th className="p-4 font-bold">Dagen Lopend</th>
+                    <th className="p-4 font-bold">Doorlooptijd</th>
+                    <th className="p-4 font-bold">Klant Update</th>
+                    <th className="p-4 font-bold text-center">Afgerond</th>
                     <th className="p-4 font-bold">Actie</th>
                   </tr>
                 </thead>
                 <tbody className="text-sm">
                   {tickets.map((ticket) => (
-                    <tr key={ticket.id} className="border-b border-gray-100 hover:bg-gray-50">
+                    <tr 
+                      key={ticket.id} 
+                      onClick={() => setActiveTicketId(ticket.id)}
+                      className={`border-b border-gray-100 hover:bg-gray-50 cursor-pointer transition-colors ${ticket.afgerond ? 'opacity-50' : ''}`}
+                    >
                       <td className="p-4 font-bold text-gray-900">{ticket.id}</td>
-                      <td className="p-4 text-blue-600 font-medium cursor-pointer hover:underline">{ticket.order_id}</td>
                       <td className="p-4">
                         <span className={`px-3 py-1 rounded-full text-xs font-bold ${
-                          ticket.type === 'DOA' ? 'bg-red-100 text-red-700' : 'bg-yellow-100 text-yellow-800'
+                          ticket.type === 'DOA' ? 'bg-red-100 text-red-700' : 'bg-gray-100 text-gray-800'
                         }`}>
                           {ticket.type}
                         </span>
                       </td>
                       <td className="p-4 text-gray-600 font-medium">{ticket.status}</td>
-                      <td className="p-4 text-gray-600">{ticket.locatie}</td>
                       <td className="p-4">
-                        <span className={`font-bold ${ticket.dagen_in_verwerking > 5 ? 'text-red-600' : 'text-green-600'}`}>
+                        <span className={`px-3 py-1 rounded-full text-xs font-bold border ${getDeadlineColorClass(ticket.deadline_kleur)}`}>
                           {ticket.dagen_in_verwerking} dagen
                         </span>
-                        {ticket.dagen_in_verwerking > 5 && (
-                          <AlertTriangle className="inline ml-2 text-red-500" size={16} />
-                        )}
                       </td>
                       <td className="p-4">
-                        {ticket.dagen_in_verwerking > 5 ? (
-                          <button 
-                            onClick={() => handleSendReminder(ticket.id)}
-                            className="flex items-center gap-1 text-xs font-bold text-white bg-red-500 hover:bg-red-600 px-3 py-1.5 rounded-lg"
-                          >
-                            <Mail size={14} /> Mail CE Repair
-                          </button>
-                        ) : (
-                          <button className="text-blue-500 hover:underline text-xs font-bold">Bekijk Details</button>
-                        )}
+                        <button 
+                          onClick={(e) => handleOpenMailPortal(ticket.id, e)}
+                          className="flex items-center gap-1 text-xs font-bold text-blue-600 bg-blue-50 hover:bg-blue-100 px-3 py-1.5 rounded-lg transition-colors"
+                        >
+                          <Mail size={14} /> Mail Adviesportaal
+                        </button>
+                      </td>
+                      <td className="p-4 text-center">
+                        <button 
+                          onClick={(e) => toggleAfgerond(ticket.id, e)}
+                          className={`w-6 h-6 rounded border flex items-center justify-center mx-auto transition-colors ${
+                            ticket.afgerond ? 'bg-green-500 border-green-500 text-white' : 'border-gray-300 hover:border-gray-400 text-transparent'
+                          }`}
+                        >
+                          <CheckCircle size={14} className={ticket.afgerond ? 'text-white' : 'text-gray-300'} />
+                        </button>
+                      </td>
+                      <td className="p-4">
+                        <span className="text-gray-400 hover:text-gray-900 font-bold text-xs">Bekijk Details &rarr;</span>
                       </td>
                     </tr>
                   ))}
@@ -184,6 +326,7 @@ export function Reparatie() {
           </div>
         )}
 
+        {/* Andere tabs blijven hetzelfde, behalve "Mail CE Repair" -> is nu "Mail Adviesportaal" via de main tab */}
         {activeTab === 'ai_inbox' && (
           <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
             <div className="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden flex flex-col h-[600px]">
