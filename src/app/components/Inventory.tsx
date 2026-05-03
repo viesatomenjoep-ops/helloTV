@@ -1,3 +1,5 @@
+import React from "react";
+
 import { useState, useEffect } from 'react';
 import { Package, Plus, AlertTriangle, TrendingDown, Edit2, MessageSquare, Mail } from 'lucide-react';
 import { api } from '../../utils/api';
@@ -42,6 +44,7 @@ export function Inventory() {
     }
   };
 
+  const lowStockItems = items.filter(item => (item.stock || item.quantity) <= (item.lowStockThreshold || 10));
   const totalValue = items.reduce((sum, item) => sum + ((item.stock || item.quantity || 0) * (item.prijs || item.price || 0)), 0);
 
   return (

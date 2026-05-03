@@ -1,3 +1,5 @@
+import React from "react";
+
 import { useState, useEffect } from 'react';
 import { LayoutDashboard, Users, TrendingUp, Package, FileText, ShoppingCart, Menu, X, Layers } from 'lucide-react';
 import { Dashboard } from './components/Dashboard';
@@ -29,6 +31,10 @@ export default function App() {
       setLoginError('Onjuiste inloggegevens. Probeer opnieuw.');
     }
   };
+
+  useEffect(() => {
+    initDemoData();
+  }, []);
 
   if (!isAuthenticated) {
     return (
@@ -94,9 +100,7 @@ export default function App() {
     );
   }
 
-  useEffect(() => {
-    initDemoData();
-  }, []);
+
 
   const menuItems = [
     { id: 'dashboard', label: 'Dashboard', icon: LayoutDashboard },
