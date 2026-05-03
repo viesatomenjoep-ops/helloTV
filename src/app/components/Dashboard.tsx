@@ -5,7 +5,7 @@ import { api } from '../../utils/api';
 import { HelloTVLogo } from './ui/HelloTVLogo';
 import { BrandElements } from './BrandElements';
 
-export function Dashboard() {
+export function Dashboard({ onNavigate }: { onNavigate?: (view: string) => void }) {
   const [stats, setStats] = useState<any>(null);
   const [loading, setLoading] = useState(true);
 
@@ -114,6 +114,13 @@ export function Dashboard() {
               </div>
             </div>
             <div className="flex items-center gap-4">
+              <button
+                onClick={() => onNavigate && onNavigate('showcase')}
+                className="flex items-center gap-2 px-5 py-2.5 bg-gradient-to-r from-blue-600 to-purple-600 text-white font-medium rounded-lg shadow-md hover:shadow-lg transition-all"
+              >
+                <span>Bekijk Backend Showcase</span>
+                <span>→</span>
+              </button>
               <button
                 onClick={() => api.testNotification()}
                 className="flex items-center gap-2 px-4 py-2 bg-white rounded-lg shadow-md hover:shadow-lg transition-shadow"

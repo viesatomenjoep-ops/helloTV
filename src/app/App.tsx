@@ -6,10 +6,11 @@ import { SalesTracker } from './components/SalesTracker';
 import { Inventory } from './components/Inventory';
 import { Quotes } from './components/Quotes';
 import { Orders } from './components/Orders';
+import { Showcase } from './components/Showcase';
 import { HelloTVLogo } from './components/ui/HelloTVLogo';
 import { initDemoData } from '../utils/initDemoData';
 
-type View = 'dashboard' | 'crm' | 'sales' | 'inventory' | 'quotes' | 'orders';
+type View = 'dashboard' | 'crm' | 'sales' | 'inventory' | 'quotes' | 'orders' | 'showcase';
 
 export default function App() {
   const [currentView, setCurrentView] = useState<View>('dashboard');
@@ -22,6 +23,7 @@ export default function App() {
   const menuItems = [
     { id: 'dashboard', label: 'Dashboard', icon: LayoutDashboard },
     { id: 'orders', label: 'Orders', icon: ShoppingCart },
+    { id: 'showcase', label: 'Case Study', icon: Layers },
     { id: 'crm', label: 'CRM', icon: Users },
     { id: 'quotes', label: 'Offertes', icon: FileText },
     { id: 'sales', label: 'Sales Tracker', icon: TrendingUp },
@@ -79,8 +81,9 @@ export default function App() {
       </div>
 
       <div className="flex-1 overflow-y-auto">
-        {currentView === 'dashboard' && <Dashboard />}
+        {currentView === 'dashboard' && <Dashboard onNavigate={(view) => setCurrentView(view as View)} />}
         {currentView === 'orders' && <Orders />}
+        {currentView === 'showcase' && <Showcase />}
         {currentView === 'crm' && <CRM />}
         {currentView === 'quotes' && <Quotes />}
         {currentView === 'sales' && <SalesTracker />}
