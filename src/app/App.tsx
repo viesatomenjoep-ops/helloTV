@@ -27,10 +27,12 @@ import { Transport } from './components/Transport';
 import { MediaPortal } from './components/MediaPortal';
 import { Vendit } from './components/Vendit';
 import { GoogleReviews } from './components/GoogleReviews';
+import { ProductDashboard } from './components/ProductDashboard';
+import { HelloTVWebsite } from './components/HelloTVWebsite';
 import { HelloTVLogo } from './components/ui/HelloTVLogo';
 import { initDemoData } from '../utils/initDemoData';
 
-type View = 'dashboard' | 'crm' | 'sales' | 'inventory' | 'quotes' | 'orders' | 'showcase' | 'hr' | 'shiftbase' | 'trainers' | 'transport' | 'media' | 'vendit' | 'reviews';
+type View = 'dashboard' | 'crm' | 'sales' | 'inventory' | 'quotes' | 'orders' | 'showcase' | 'hr' | 'shiftbase' | 'trainers' | 'transport' | 'media' | 'vendit' | 'reviews' | 'products' | 'website';
 
 export default function App() {
   const [currentView, setCurrentView] = useState<View>('dashboard');
@@ -44,7 +46,9 @@ export default function App() {
 
   const menuItems = [
     { id: 'dashboard', label: 'Dashboard', icon: LayoutDashboard },
+    { id: 'website', label: 'HelloTV.nl (Live)', icon: Search },
     { id: 'reviews', label: 'Google Maps Reviews', icon: Star },
+    { id: 'products', label: 'Producten & Marges', icon: Package },
     { id: 'orders', label: 'Orders', icon: ShoppingCart },
     { id: 'quotes', label: 'Offertes', icon: FileText },
     { id: 'showcase', label: 'Visie & Strategie', icon: Layers },
@@ -54,7 +58,7 @@ export default function App() {
     { id: 'transport', label: 'Transport (Bessy)', icon: Clock },
     { id: 'media', label: 'Media & Cloudinary', icon: Layers },
     { id: 'trainers', label: 'Sales Trainers', icon: Users },
-    { id: 'shiftbase', label: 'Shiftbase (Uren)', icon: Clock },
+    { id: 'shiftbase', label: 'Hello Base (Uren)', icon: Clock },
     { id: 'hr', label: 'HR & Reiskosten', icon: Users },
     { id: 'vendit', label: 'Vendit API Koppeling', icon: Settings },
   ];
@@ -139,7 +143,9 @@ export default function App() {
       {/* Main Content Area */}
       <div className="flex-1 overflow-auto bg-white rounded-tl-2xl shadow-xl border-t border-l border-gray-200">
         {currentView === 'dashboard' && <Dashboard onNavigate={setCurrentView} />}
+        {currentView === 'website' && <HelloTVWebsite />}
         {currentView === 'reviews' && <GoogleReviews />}
+        {currentView === 'products' && <ProductDashboard />}
         {currentView === 'orders' && <Orders />}
         {currentView === 'showcase' && <Showcase />}
         {currentView === 'crm' && <CRM />}

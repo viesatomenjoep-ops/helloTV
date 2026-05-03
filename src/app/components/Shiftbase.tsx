@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Clock, Play, Square, Coffee, Calendar, Search, CheckCircle } from 'lucide-react';
+import { HelloTVLogo } from './ui/HelloTVLogo';
 
 const EMPLOYEES = [
   "Tom van Bienen",
@@ -19,6 +20,10 @@ type ShiftState = 'UITGEKLOKT' | 'INGEKLOKT' | 'PAUZE';
 export function Shiftbase() {
   const [medewerkerCode, setMedewerkerCode] = useState('');
   const [botWarning, setBotWarning] = useState(false);
+  const [selectedEmployee, setSelectedEmployee] = useState<string>('Niet geselecteerd');
+  const [shiftState, setShiftState] = useState<ShiftState>('UITGEKLOKT');
+  const [clockInTime, setClockInTime] = useState<Date | null>(null);
+  const [currentTime, setCurrentTime] = useState(new Date());
 
   const getMedewerkerByCode = (code: string) => {
     if (code === '921') return 'Tom van Bienen';
@@ -74,7 +79,7 @@ export function Shiftbase() {
     <div className="p-8 pb-24 min-h-screen bg-gray-50">
       <div className="max-w-5xl mx-auto">
         <div className="mb-8">
-          <h1 className="text-3xl font-bold text-gray-900 mb-2">Shiftbase (Tijdregistratie)</h1>
+          <h1 className="text-3xl font-bold text-gray-900 mb-2">Hello Base (Tijdregistratie)</h1>
           <p className="text-gray-600">Inklokken, urenregistratie en pauzebeheer voor HelloTV medewerkers.</p>
         </div>
 
@@ -121,14 +126,27 @@ export function Shiftbase() {
               </form>
               
               <div className="mt-6 pt-6 border-t border-gray-100">
-                <p className="text-sm text-gray-500 mb-1">Actieve Medewerker</p>
+                <div className="flex justify-between items-center mb-2">
+                  <p className="text-sm text-gray-500">Actieve Medewerker</p>
+                  <button 
+                    onClick={() => {
+                      setSelectedEmployee('Niet geselecteerd');
+                      setMedewerkerCode('');
+                      setShiftState('UITGEKLOKT');
+                      setClockInTime(null);
+                    }}
+                    className="text-xs font-bold text-red-500 hover:text-red-700 underline"
+                  >
+                    Verwijder / Log uit
+                  </button>
+                </div>
                 <div className="flex items-center gap-3">
                   <div className="w-10 h-10 rounded-full bg-blue-100 text-blue-600 flex items-center justify-center font-bold text-lg">
                     {selectedEmployee.charAt(0)}
                   </div>
                   <div>
                     <p className="font-bold text-gray-900">{selectedEmployee}</p>
-                    <p className="text-xs text-gray-500">ID: HTV-{Math.abs(selectedEmployee.hashCode() || 10293)}</p>
+                    <p className="text-xs text-gray-500">ID: HTV-{(selectedEmployee.length * 921) || 10293}</p>
                   </div>
                 </div>
               </div>
@@ -227,7 +245,10 @@ export function Shiftbase() {
             </div>
             
             {/* Developer Trigger */}
-            <div className="mt-4 flex justify-end">
+            <div className="mt-4 flex justify-between items-center">
+              <div className="opacity-50 hover:opacity-100 transition-opacity">
+                <HelloTVLogo className="h-6" theme="light" />
+              </div>
               <button 
                 onClick={simulateAutoClockOut}
                 disabled={shiftState === 'UITGEKLOKT'}
