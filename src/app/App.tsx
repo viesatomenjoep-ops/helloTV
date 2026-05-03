@@ -23,10 +23,14 @@ import { Showcase } from './components/Showcase';
 import { HR } from './components/HR';
 import { Shiftbase } from './components/Shiftbase';
 import { TrainersPortal } from './components/TrainersPortal';
+import { Transport } from './components/Transport';
+import { MediaPortal } from './components/MediaPortal';
+import { Vendit } from './components/Vendit';
+import { GoogleReviews } from './components/GoogleReviews';
 import { HelloTVLogo } from './components/ui/HelloTVLogo';
 import { initDemoData } from '../utils/initDemoData';
 
-type View = 'dashboard' | 'crm' | 'sales' | 'inventory' | 'quotes' | 'orders' | 'showcase' | 'hr' | 'shiftbase' | 'trainers';
+type View = 'dashboard' | 'crm' | 'sales' | 'inventory' | 'quotes' | 'orders' | 'showcase' | 'hr' | 'shiftbase' | 'trainers' | 'transport' | 'media' | 'vendit' | 'reviews';
 
 export default function App() {
   const [currentView, setCurrentView] = useState<View>('dashboard');
@@ -40,15 +44,19 @@ export default function App() {
 
   const menuItems = [
     { id: 'dashboard', label: 'Dashboard', icon: LayoutDashboard },
+    { id: 'reviews', label: 'Google Maps Reviews', icon: Star },
     { id: 'orders', label: 'Orders', icon: ShoppingCart },
     { id: 'quotes', label: 'Offertes', icon: FileText },
-    { id: 'showcase', label: 'Case Study', icon: Layers },
+    { id: 'showcase', label: 'Visie & Strategie', icon: Layers },
     { id: 'crm', label: 'CRM', icon: Users },
     { id: 'sales', label: 'Sales Tracker', icon: TrendingUp },
     { id: 'inventory', label: 'Voorraad & Inkoop', icon: Package },
+    { id: 'transport', label: 'Transport (Bessy)', icon: Clock },
+    { id: 'media', label: 'Media & Cloudinary', icon: Layers },
     { id: 'trainers', label: 'Sales Trainers', icon: Users },
     { id: 'shiftbase', label: 'Shiftbase (Uren)', icon: Clock },
     { id: 'hr', label: 'HR & Reiskosten', icon: Users },
+    { id: 'vendit', label: 'Vendit API Koppeling', icon: Settings },
   ];
 
   const handleNavClick = (id: string) => {
@@ -85,14 +93,7 @@ export default function App() {
           {(sidebarOpen || mobileMenuOpen) && (
             <div className="flex-1">
               <HelloTVLogo className="h-10 mb-2" theme="dark" />
-              <div className="flex items-center gap-2 mb-2">
-                <UserCircle size={14} className="text-[#FDCB2C]" />
-                <div className="text-[10px] text-gray-300 leading-tight">
-                  <span className="font-bold text-white">Beheerder</span><br/>
-                  admin@hellotv.nl
-                </div>
-              </div>
-              <div className="text-xs text-gray-400 border-t border-gray-700 pt-2">Management System</div>
+              <div className="text-xs text-gray-400 font-bold uppercase tracking-widest mt-2">OS 2026</div>
             </div>
           )}
           
@@ -120,21 +121,37 @@ export default function App() {
               {(sidebarOpen || mobileMenuOpen) && <span>{item.label}</span>}
             </button>
           ))}
+          
+          {(sidebarOpen || mobileMenuOpen) && (
+            <div className="mt-8 mx-6 pt-6 border-t border-gray-700">
+              <div className="flex items-center gap-3 bg-gray-800 p-3 rounded-xl border border-gray-700">
+                <UserCircle size={24} className="text-[#FDCB2C]" />
+                <div className="text-xs leading-tight">
+                  <span className="font-bold text-white">Beheerder</span><br/>
+                  <span className="text-gray-400">admin@heleutievier.nl</span>
+                </div>
+              </div>
+            </div>
+          )}
         </nav>
       </div>
 
       {/* Main Content Area */}
-      <div className="flex-1 overflow-auto bg-gray-50 relative w-full">
-        {currentView === 'dashboard' && <Dashboard />}
+      <div className="flex-1 overflow-auto bg-white rounded-tl-2xl shadow-xl border-t border-l border-gray-200">
+        {currentView === 'dashboard' && <Dashboard onNavigate={setCurrentView} />}
+        {currentView === 'reviews' && <GoogleReviews />}
         {currentView === 'orders' && <Orders />}
         {currentView === 'showcase' && <Showcase />}
         {currentView === 'crm' && <CRM />}
         {currentView === 'quotes' && <Quotes />}
         {currentView === 'sales' && <SalesTracker />}
         {currentView === 'trainers' && <TrainersPortal />}
-        {currentView === 'inventory' && <Inventory />}
-        {currentView === 'shiftbase' && <Shiftbase />}
-        {currentView === 'hr' && <HR />}
+        { currentView === 'inventory' && <Inventory /> }
+        { currentView === 'shiftbase' && <Shiftbase /> }
+        { currentView === 'hr' && <HR /> }
+        { currentView === 'transport' && <Transport /> }
+        { currentView === 'media' && <MediaPortal /> }
+        { currentView === 'vendit' && <Vendit /> }
       </div>
     </div>
   );

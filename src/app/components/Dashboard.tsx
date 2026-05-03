@@ -117,13 +117,6 @@ export function Dashboard({ onNavigate }: { onNavigate?: (view: string) => void 
             </div>
             <div className="flex items-center gap-4">
               <button
-                onClick={() => onNavigate && onNavigate('showcase')}
-                className="flex items-center gap-2 px-5 py-2.5 bg-gradient-to-r from-blue-600 to-purple-600 text-white font-medium rounded-lg shadow-md hover:shadow-lg transition-all"
-              >
-                <span>Bekijk Backend Showcase</span>
-                <span>→</span>
-              </button>
-              <button
                 onClick={() => {
                   const text = encodeURIComponent('Hallo, dit is het HelloTVLogo dashboard.');
                   window.open(`https://wa.me/31651641886?text=${text}`, '_blank');
@@ -177,7 +170,7 @@ export function Dashboard({ onNavigate }: { onNavigate?: (view: string) => void 
             <Trophy className="text-[#FDCB2C]" size={24} />
             Nummer 1 Verkopers (Vandaag)
           </h2>
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
             <div className="flex items-center gap-4 p-4 bg-blue-50 rounded-xl border border-blue-100">
               <div className="bg-blue-500 text-white p-3 rounded-full shadow-md">
                 <MessageCircle size={24} />
@@ -208,6 +201,17 @@ export function Dashboard({ onNavigate }: { onNavigate?: (view: string) => void 
                 <div className="text-xs font-bold text-purple-600 uppercase tracking-wider mb-1">Via Mail (Tickets)</div>
                 <div className="text-lg font-black text-gray-900">Tom Peters</div>
                 <div className="text-sm font-semibold text-gray-500">12 orders gesloten</div>
+              </div>
+            </div>
+
+            <div className="flex items-center gap-4 p-4 bg-orange-50 rounded-xl border border-orange-100">
+              <div className="bg-orange-500 text-white p-3 rounded-full shadow-md">
+                <Store size={24} />
+              </div>
+              <div>
+                <div className="text-xs font-bold text-orange-600 uppercase tracking-wider mb-1">Barbecue (BBQ)</div>
+                <div className="text-lg font-black text-gray-900">Ruben de Boer</div>
+                <div className="text-sm font-semibold text-gray-500">8 BBQ's gesloten</div>
               </div>
             </div>
           </div>

@@ -16,6 +16,7 @@ export function Inventory() {
     lowStockThreshold: 10,
     price: 0,
     category: '',
+    depot: 'Logistiek Duiven',
   });
 
   // Inkoop State
@@ -48,7 +49,7 @@ export function Inventory() {
     e.preventDefault();
     try {
       await api.createInventoryItem(formData);
-      setFormData({ name: '', sku: '', quantity: 0, lowStockThreshold: 10, price: 0, category: '' });
+      setFormData({ name: '', sku: '', quantity: 0, lowStockThreshold: 10, price: 0, category: '', depot: 'Logistiek Duiven' });
       setShowForm(false);
       loadInventory();
     } catch (error) {
@@ -208,6 +209,18 @@ export function Inventory() {
                       onChange={(e) => setFormData({ ...formData, category: e.target.value })}
                       className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                     />
+                  </div>
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700 mb-2">Logistiek Depot</label>
+                    <select
+                      value={formData.depot}
+                      onChange={(e) => setFormData({ ...formData, depot: e.target.value })}
+                      className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                    >
+                      <option value="Logistiek Duiven">Logistiek Duiven</option>
+                      <option value="Logistiek DTC">Logistiek DTC</option>
+                      <option value="Logistiek Barbeque">Logistiek Barbeque</option>
+                    </select>
                   </div>
                   <div className="md:col-span-2 flex gap-4">
                     <button

@@ -9,6 +9,23 @@ export function Orders() {
   const [statusFilter, setStatusFilter] = useState('Alle');
   const [storeFilter, setStoreFilter] = useState('Alle Filialen');
   const [channelFilter, setChannelFilter] = useState('Alle Kanalen');
+  const [medewerkerCode, setMedewerkerCode] = useState('');
+  const [actieveMedewerker, setActieveMedewerker] = useState<string | null>(null);
+
+  const getMedewerkerByCode = (code: string) => {
+    if (code === '921') return 'Tom van Bienen';
+    if (code === '811') return 'Joep Morsink';
+    if (code === '711') return 'Maick';
+    if (code.length >= 3) return 'Onbekende Medewerker';
+    return null;
+  };
+
+  const handleCodeChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const val = e.target.value;
+    setMedewerkerCode(val);
+    const naam = getMedewerkerByCode(val);
+    setActieveMedewerker(naam);
+  };
 
   const STORES = [
     'Alle Filialen',
@@ -66,11 +83,33 @@ export function Orders() {
 
   return (
     <div className="p-8">
-      <div className="flex justify-between items-center mb-6">
+      <div className="flex flex-col md:flex-row justify-between items-start md:items-center mb-6 gap-4">
         <div>
           <h1 className="text-2xl font-bold text-gray-800">Orderbeheer</h1>
           <p className="text-gray-500 text-sm mt-1">Beheer en volg alle HelloTV orders</p>
         </div>
+        
+        <div className="flex items-center gap-4 w-full md:w-auto flex-wrap">
+          <div className="bg-white px-4 py-2 rounded-xl shadow-sm border border-gray-200 flex items-center gap-3 w-full md:w-auto">
+            <div className="w-8 h-8 bg-gray-100 rounded-full flex items-center justify-center">
+              <svg className="w-4 h-4 text-gray-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
+              </svg>
+            </div>
+            <div>
+              <input 
+                type="text" 
+                placeholder="Jouw code (bijv. 921)"
+                value={medewerkerCode}
+                onChange={handleCodeChange}
+                className="text-sm font-bold text-gray-800 outline-none w-32 bg-transparent"
+                maxLength={4}
+              />
+              {actieveMedewerker && (
+                <p className="text-xs text-green-600 font-bold">{actieveMedewerker} ingelogd</p>
+              )}
+            </div>
+          </div>
         <div className="flex gap-3">
           <button 
             onClick={handleExport}

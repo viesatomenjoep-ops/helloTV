@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { MapPin, Send, CheckCircle, Car, AlertCircle, FileText, Lock, Download, Mail, RefreshCw } from 'lucide-react';
+import { MapPin, Send, CheckCircle, Car, FileText, Lock, Download, Mail, RefreshCw, Users } from 'lucide-react';
 
 const EMPLOYEES = [
   "Tom van Bienen",
@@ -17,11 +17,18 @@ const EMPLOYEES = [
 export function HR() {
   const [activeTab, setActiveTab] = useState<'reiskosten' | 'loonstroken_personeel' | 'beheer'>('reiskosten');
 
+  // Shared Helper
+  const getMedewerkerByCode = (code: string) => {
+    if (code === '921') return 'Tom van Bienen';
+    if (code === '811') return 'Joep Morsink';
+    if (code === '711') return 'Maick';
+    if (code.length >= 3) return 'Medewerker ' + code;
+    return null;
+  };
+
   // Reiskosten State
-  const [searchTerm, setSearchTerm] = useState('');
-  const [showDropdown, setShowDropdown] = useState(false);
+  const [medewerkerCode, setMedewerkerCode] = useState('');
   const [formData, setFormData] = useState({
-    medewerker_naam: '',
     postcode: '',
     huisnummer: '',
     plaats: '',
@@ -31,65 +38,54 @@ export function HR() {
   const [success, setSuccess] = useState(false);
   const [mockDistance, setMockDistance] = useState<number | null>(null);
 
-  // Loonstroken Personeel State
-  const [loginId, setLoginId] = useState('');
-  const [loginPassword, setLoginPassword] = useState('');
+  // Loonstroken Personeel Portal State
   const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [loginData, setLoginData] = useState({ medewerkerId: '', password: '' });
 
-  // Beheer State
+  // Admin Paneel State
   const [isExporting, setIsExporting] = useState(false);
   const [exportSuccess, setExportSuccess] = useState(false);
 
-  const filteredEmployees = EMPLOYEES.filter(emp => 
-    emp.toLowerCase().includes(searchTerm.toLowerCase())
-  );
-
   const calculateDistance = () => {
-    if (formData.postcode && formData.plaats) {
-      const dist = Math.floor(Math.random() * 40) + 5; 
-      setMockDistance(dist);
+    if (formData.postcode && formData.huisnummer) {
+      setMockDistance(Math.floor(Math.random() * 40) + 5);
     }
   };
 
   const handleReiskostenSubmit = (e: React.FormEvent) => {
     e.preventDefault();
+    const naam = getMedewerkerByCode(medewerkerCode);
+    if (!naam) {
+      alert("Ongeldige medewerkerscode");
+      return;
+    }
     setIsSubmitting(true);
     setTimeout(() => {
       setIsSubmitting(false);
       setSuccess(true);
       setTimeout(() => {
         setSuccess(false);
-        setFormData({ ...formData, postcode: '', huisnummer: '', plaats: '', iban: '' });
+        setFormData({ postcode: '', huisnummer: '', plaats: '', iban: '' });
+        setMedewerkerCode('');
         setMockDistance(null);
-      }, 3000);
+      }, 5000);
     }, 1500);
   };
 
   const handleLogin = (e: React.FormEvent) => {
     e.preventDefault();
-    if (loginId && loginPassword) {
-      setIsLoggedIn(true);
+    const naam = getMedewerkerByCode(loginData.medewerkerId);
+    if (!naam) {
+      alert("Ongeldige code");
+      return;
     }
+    // Simulate login success
+    setIsLoggedIn(true);
   };
 
-  const handleExportCredentials = () => {
+  const handleGenerateCredentials = () => {
     setIsExporting(true);
     setTimeout(() => {
-      // Create mock CSV
-      let csvContent = "data:text/csv;charset=utf-8,";
-      csvContent += "Medewerker,Uniek ID,Tijdelijk Wachtwoord\n";
-      EMPLOYEES.forEach((emp, idx) => {
-        csvContent += `"${emp}","HTV-${1000 + idx}","Welkom2026!"\n`;
-      });
-      
-      const encodedUri = encodeURI(csvContent);
-      const link = document.createElement("a");
-      link.setAttribute("href", encodedUri);
-      link.setAttribute("download", `HelloTV_Inloggegevens_Personeel.csv`);
-      document.body.appendChild(link);
-      link.click();
-      document.body.removeChild(link);
-
       setIsExporting(false);
       setExportSuccess(true);
       setTimeout(() => setExportSuccess(false), 5000);
@@ -98,25 +94,24 @@ export function HR() {
 
   return (
     <div className="p-8 pb-24 min-h-screen bg-gray-50">
-      <div className="max-w-5xl mx-auto">
+      <div className="max-w-4xl mx-auto">
         <div className="mb-8">
-          <h1 className="text-3xl font-bold text-gray-900 mb-2">HR & Administratie</h1>
-          <p className="text-gray-600">Beheer reiskosten, loonstroken en inlogportalen voor medewerkers.</p>
+          <h1 className="text-3xl font-bold text-gray-900 mb-2">HR & Administratie Portaal</h1>
+          <p className="text-gray-600">Reiskosten, loonstroken en beheer inloggegevens personeel.</p>
         </div>
 
-        {/* Tabs */}
-        <div className="flex gap-2 mb-8 border-b border-gray-200 pb-2">
+        <div className="flex gap-2 mb-8 border-b border-gray-200 pb-2 overflow-x-auto">
           <button
             onClick={() => setActiveTab('reiskosten')}
-            className={`px-6 py-3 font-bold rounded-t-xl transition-colors ${
-              activeTab === 'reiskosten' ? 'bg-[#FDCB2C] text-black' : 'bg-white text-gray-500 hover:bg-gray-100'
+            className={`px-6 py-3 font-bold rounded-t-xl transition-colors whitespace-nowrap ${
+              activeTab === 'reiskosten' ? 'bg-[#1D6F42] text-white' : 'bg-white text-gray-500 hover:bg-gray-100'
             }`}
           >
             Reiskosten
           </button>
           <button
             onClick={() => setActiveTab('loonstroken_personeel')}
-            className={`px-6 py-3 font-bold rounded-t-xl transition-colors ${
+            className={`px-6 py-3 font-bold rounded-t-xl transition-colors whitespace-nowrap ${
               activeTab === 'loonstroken_personeel' ? 'bg-[#FDCB2C] text-black' : 'bg-white text-gray-500 hover:bg-gray-100'
             }`}
           >
@@ -124,7 +119,7 @@ export function HR() {
           </button>
           <button
             onClick={() => setActiveTab('beheer')}
-            className={`px-6 py-3 font-bold rounded-t-xl transition-colors flex items-center gap-2 ${
+            className={`px-6 py-3 font-bold rounded-t-xl transition-colors flex items-center gap-2 whitespace-nowrap ${
               activeTab === 'beheer' ? 'bg-gray-900 text-white' : 'bg-white text-gray-500 hover:bg-gray-100'
             }`}
           >
@@ -150,66 +145,45 @@ export function HR() {
               ) : (
                 <form onSubmit={handleReiskostenSubmit} className="space-y-5">
                   <div className="relative">
-                    <label className="block text-sm font-semibold text-gray-700 mb-1">Medewerker Zoeken</label>
+                    <label className="block text-sm font-semibold text-gray-700 mb-1">Medewerkerscode (bijv. 921)</label>
                     <input
                       type="text"
-                      placeholder="Typ een naam..."
-                      value={formData.medewerker_naam || searchTerm}
-                      onChange={(e) => {
-                        setSearchTerm(e.target.value);
-                        setFormData({ ...formData, medewerker_naam: '' });
-                        setShowDropdown(true);
-                      }}
-                      onFocus={() => setShowDropdown(true)}
-                      className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#FDCB2C] outline-none transition-all"
+                      placeholder="Voer je 3-cijferige code in..."
+                      value={medewerkerCode}
+                      onChange={(e) => setMedewerkerCode(e.target.value)}
+                      maxLength={4}
+                      className="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-xl focus:ring-2 focus:ring-[#FDCB2C] outline-none font-bold"
                     />
-                    {showDropdown && !formData.medewerker_naam && (
-                      <div className="absolute top-full mt-1 left-0 right-0 bg-white border border-gray-200 shadow-xl rounded-xl z-50 max-h-48 overflow-y-auto">
-                        {filteredEmployees.length > 0 ? (
-                          filteredEmployees.map(emp => (
-                            <button
-                              key={emp}
-                              type="button"
-                              onClick={() => {
-                                setFormData({ ...formData, medewerker_naam: emp });
-                                setSearchTerm(emp);
-                                setShowDropdown(false);
-                              }}
-                              className="w-full text-left px-4 py-2 hover:bg-blue-50 focus:bg-blue-50 outline-none text-gray-700 transition-colors"
-                            >
-                              {emp}
-                            </button>
-                          ))
-                        ) : (
-                          <div className="px-4 py-2 text-sm text-gray-500 text-center">Niet gevonden in database.</div>
-                        )}
-                      </div>
+                    {getMedewerkerByCode(medewerkerCode) && (
+                      <p className="text-sm font-bold text-green-600 mt-2">
+                        Gevonden: {getMedewerkerByCode(medewerkerCode)}
+                      </p>
                     )}
                   </div>
 
-                  <div className="grid grid-cols-2 gap-4">
-                    <div>
+                  <div className="grid grid-cols-3 gap-4">
+                    <div className="col-span-2">
                       <label className="block text-sm font-semibold text-gray-700 mb-1">Postcode</label>
                       <input
                         type="text"
                         required
-                        placeholder="1234 AB"
+                        placeholder="1234AB"
                         value={formData.postcode}
                         onChange={(e) => setFormData({ ...formData, postcode: e.target.value })}
                         onBlur={calculateDistance}
-                        className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#FDCB2C] outline-none transition-all"
+                        className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#FDCB2C] outline-none"
                       />
                     </div>
-                    <div>
-                      <label className="block text-sm font-semibold text-gray-700 mb-1">Huisnummer</label>
+                    <div className="col-span-1">
+                      <label className="block text-sm font-semibold text-gray-700 mb-1">Huisnr</label>
                       <input
                         type="text"
                         required
-                        placeholder="10"
+                        placeholder="12A"
                         value={formData.huisnummer}
                         onChange={(e) => setFormData({ ...formData, huisnummer: e.target.value })}
                         onBlur={calculateDistance}
-                        className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#FDCB2C] outline-none transition-all"
+                        className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#FDCB2C] outline-none"
                       />
                     </div>
                   </div>
@@ -219,29 +193,28 @@ export function HR() {
                     <input
                       type="text"
                       required
-                      placeholder="Amsterdam"
+                      placeholder="Bijv. Amsterdam"
                       value={formData.plaats}
                       onChange={(e) => setFormData({ ...formData, plaats: e.target.value })}
-                      onBlur={calculateDistance}
-                      className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#FDCB2C] outline-none transition-all"
+                      className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#FDCB2C] outline-none"
                     />
                   </div>
 
                   <div>
-                    <label className="block text-sm font-semibold text-gray-700 mb-1">IBAN Rekeningnummer</label>
+                    <label className="block text-sm font-semibold text-gray-700 mb-1">IBAN Rekeningnummer (Uitbetaling)</label>
                     <input
                       type="text"
                       required
-                      placeholder="NL00 BANK 0123 4567 89"
+                      placeholder="NL99 BANK 0123 4567 89"
                       value={formData.iban}
                       onChange={(e) => setFormData({ ...formData, iban: e.target.value })}
-                      className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#FDCB2C] outline-none transition-all font-mono text-sm"
+                      className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#FDCB2C] outline-none uppercase"
                     />
                   </div>
 
                   <button
                     type="submit"
-                    disabled={isSubmitting || !mockDistance || !formData.medewerker_naam}
+                    disabled={isSubmitting || !mockDistance || !medewerkerCode}
                     className="w-full py-3 mt-4 bg-gray-900 text-white font-bold rounded-lg flex justify-center items-center gap-2 hover:bg-[#FDCB2C] hover:text-black transition-all disabled:opacity-50 disabled:cursor-not-allowed"
                   >
                     {isSubmitting ? (
@@ -269,13 +242,16 @@ export function HR() {
                       <p className="text-3xl font-black">{mockDistance} km</p>
                     </div>
                     <div className="bg-white/90 rounded-xl p-4">
-                      <p className="text-sm font-semibold text-gray-600 mb-1">Vergoeding per dag (€0,19/km)</p>
-                      <p className="text-3xl font-black text-green-600">€{((mockDistance * 2) * 0.19).toFixed(2)}</p>
+                      <p className="text-sm font-semibold text-gray-600 mb-1">Vergoeding per dag (retour x €0,19)</p>
+                      <p className="text-3xl font-black text-[#1D6F42]">
+                        € {((mockDistance * 2) * 0.19).toLocaleString('nl-NL', { minimumFractionDigits: 2 })}
+                      </p>
                     </div>
                   </div>
                 ) : (
-                  <div className="bg-black/5 rounded-xl p-6 text-center border border-black/10 relative z-10">
-                    <p className="font-medium">Vul je adres in om de exacte reisafstand via Google Maps te berekenen.</p>
+                  <div className="bg-white/50 rounded-xl p-6 text-center border border-white/40 relative z-10">
+                    <MapPin size={32} className="mx-auto text-yellow-800 mb-2 opacity-50" />
+                    <p className="text-yellow-900 font-medium">Vul postcode en huisnummer in om de afstand tot de vestiging automatisch te berekenen.</p>
                   </div>
                 )}
               </div>
@@ -283,40 +259,46 @@ export function HR() {
           </div>
         )}
 
-        {/* Tab 2: Loonstroken Portaal */}
+        {/* Tab 2: Loonstroken Personeel Portaal */}
         {activeTab === 'loonstroken_personeel' && (
-          <div className="max-w-xl mx-auto">
+          <div className="max-w-md mx-auto">
             {!isLoggedIn ? (
-              <div className="bg-white rounded-2xl shadow-sm border border-gray-100 p-8">
+              <div className="bg-white rounded-3xl shadow-xl border border-gray-100 p-8">
                 <div className="text-center mb-8">
-                  <div className="w-16 h-16 bg-blue-100 text-blue-600 rounded-full flex items-center justify-center mx-auto mb-4">
-                    <Lock size={32} />
+                  <div className="w-16 h-16 bg-[#FDCB2C]/20 rounded-full flex items-center justify-center mx-auto mb-4">
+                    <Lock className="text-[#FDCB2C]" size={32} />
                   </div>
-                  <h2 className="text-2xl font-bold text-gray-800">Personeelsportaal</h2>
-                  <p className="text-gray-500 mt-2">Log in met je unieke HelloTV ID om je loonstroken te bekijken.</p>
+                  <h2 className="text-2xl font-bold text-gray-900">Medewerker Login</h2>
+                  <p className="text-gray-500 mt-2">Log in om je loonstroken en jaaropgaves in te zien.</p>
                 </div>
 
-                <form onSubmit={handleLogin} className="space-y-5">
+                <form onSubmit={handleLogin} className="space-y-6">
                   <div>
-                    <label className="block text-sm font-semibold text-gray-700 mb-1">Uniek Medewerker ID</label>
-                    <input
-                      type="text"
-                      required
-                      placeholder="Bijv. HTV-1024"
-                      value={loginId}
-                      onChange={(e) => setLoginId(e.target.value)}
-                      className="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-xl focus:ring-2 focus:ring-blue-500 outline-none font-mono uppercase"
-                    />
+                    <label className="block text-sm font-semibold text-gray-700 mb-1">Medewerkerscode</label>
+                    <div className="relative">
+                      <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
+                        <Users className="text-gray-400" size={18} />
+                      </div>
+                      <input 
+                        type="text" 
+                        required
+                        maxLength={4}
+                        placeholder="bijv. 921"
+                        value={loginData.medewerkerId}
+                        onChange={(e) => setLoginData({...loginData, medewerkerId: e.target.value})}
+                        className="w-full pl-11 pr-4 py-3 bg-gray-50 border border-gray-200 rounded-xl focus:ring-2 focus:ring-[#FDCB2C] outline-none font-bold text-gray-800 tracking-wider"
+                      />
+                    </div>
                   </div>
                   <div>
                     <label className="block text-sm font-semibold text-gray-700 mb-1">Wachtwoord</label>
-                    <input
-                      type="password"
+                    <input 
+                      type="password" 
                       required
                       placeholder="••••••••"
-                      value={loginPassword}
-                      onChange={(e) => setLoginPassword(e.target.value)}
-                      className="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-xl focus:ring-2 focus:ring-blue-500 outline-none"
+                      value={loginData.password}
+                      onChange={(e) => setLoginData({...loginData, password: e.target.value})}
+                      className="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-xl focus:ring-2 focus:ring-[#FDCB2C] outline-none"
                     />
                   </div>
                   <button
@@ -328,9 +310,11 @@ export function HR() {
                 </form>
               </div>
             ) : (
-              <div className="bg-white rounded-2xl shadow-sm border border-gray-100 p-8">
+              <div className="bg-white rounded-2xl shadow-sm border border-gray-100 p-8 w-full md:w-[600px] -ml-0 md:-ml-[80px]">
                 <div className="flex justify-between items-center mb-6">
-                  <h2 className="text-2xl font-bold text-gray-800">Mijn Loonstroken</h2>
+                  <h2 className="text-2xl font-bold text-gray-800 flex items-center gap-2">
+                    Mijn Loonstroken <span className="text-sm font-normal text-gray-500 bg-gray-100 px-2 py-1 rounded">({getMedewerkerByCode(loginData.medewerkerId)})</span>
+                  </h2>
                   <button onClick={() => setIsLoggedIn(false)} className="text-sm text-gray-500 hover:text-black">Uitloggen</button>
                 </div>
                 
@@ -351,9 +335,9 @@ export function HR() {
                         </div>
                       </div>
                       <div className="flex items-center gap-4">
-                        <p className="font-bold text-green-600">{strook.amount}</p>
-                        <button className="p-2 bg-white border border-gray-200 rounded-lg text-gray-600 hover:bg-[#FDCB2C] hover:text-black hover:border-[#FDCB2C] transition-all">
-                          <Download size={16} />
+                        <span className="font-mono text-green-600 font-bold">{strook.amount}</span>
+                        <button className="p-2 text-blue-600 hover:bg-blue-50 rounded-lg transition-colors" title="Download PDF">
+                          <Download size={20} />
                         </button>
                       </div>
                     </div>
@@ -364,41 +348,53 @@ export function HR() {
           </div>
         )}
 
-        {/* Tab 3: Beheer (Admin) */}
+        {/* Tab 3: Admin Beheer */}
         {activeTab === 'beheer' && (
-          <div className="max-w-2xl mx-auto">
-            <div className="bg-white rounded-2xl shadow-sm border border-gray-100 p-8">
-              <h2 className="text-2xl font-bold text-gray-800 mb-2">Administratie & Onboarding</h2>
-              <p className="text-gray-500 mb-8">Genereer unieke inloggegevens voor alle medewerkers zodat zij toegang krijgen tot het loonstroken portaal.</p>
-              
-              <div className="bg-blue-50 border border-blue-100 rounded-xl p-6 mb-8 flex gap-4">
-                <AlertCircle className="text-blue-500 shrink-0 mt-1" />
-                <div>
-                  <h3 className="font-bold text-blue-900 mb-1">Hoe dit werkt:</h3>
-                  <p className="text-sm text-blue-800 leading-relaxed">
-                    Door op de knop hieronder te klikken, genereert het systeem automatisch 250 unieke ID's en tijdelijke wachtwoorden. 
-                    Daarna wordt er direct een welkomstmail gestuurd naar elke medewerker, en downloadt er een Excel-bestand met het master-overzicht voor de administratie.
+          <div className="bg-white rounded-2xl shadow-sm border border-gray-100 p-8">
+            <h2 className="text-2xl font-bold text-gray-800 mb-2">Administratie Beheer paneel</h2>
+            <p className="text-gray-500 mb-8">Genereer unieke medewerkerscodes (ID's) en wachtwoorden voor de 250+ medewerkers en distribueer deze via geautomatiseerde mails.</p>
+            
+            <div className="bg-gray-50 rounded-xl p-6 border border-gray-200">
+              <div className="flex flex-col md:flex-row items-center gap-6">
+                <div className="flex-1">
+                  <h3 className="text-lg font-bold text-gray-900 mb-2 flex items-center gap-2">
+                    <Users size={20} className="text-blue-600"/> 
+                    Medewerker Onboarding Sync
+                  </h3>
+                  <p className="text-sm text-gray-600 mb-4">
+                    Deze actie genereert voor 250 medewerkers een unieke code en een tijdelijk wachtwoord. Het genereert een CSV-export voor de administratie (Maick) en triggert een automatische welkomstmail naar het personeel.
                   </p>
+                  
+                  {exportSuccess ? (
+                    <div className="flex items-center gap-2 text-green-600 font-bold bg-green-50 p-3 rounded-lg border border-green-200">
+                      <CheckCircle size={20} />
+                      <span>250 Inloggegevens gegenereerd, Excel geëxporteerd & mails verzonden!</span>
+                    </div>
+                  ) : (
+                    <button
+                      onClick={handleGenerateCredentials}
+                      disabled={isExporting}
+                      className="px-6 py-3 bg-gray-900 text-white rounded-xl font-bold flex items-center gap-2 hover:bg-black transition-colors disabled:opacity-70"
+                    >
+                      {isExporting ? (
+                        <><RefreshCw size={18} className="animate-spin" /> Gegevens genereren...</>
+                      ) : (
+                        <><Mail size={18} /> Exporteer Inloggegevens (250 Medewerkers)</>
+                      )}
+                    </button>
+                  )}
+                </div>
+                <div className="w-full md:w-64 bg-white p-4 rounded-lg border border-gray-200 shadow-sm">
+                  <p className="text-xs text-gray-500 font-bold uppercase mb-2">Voorbeeld Export (.csv)</p>
+                  <div className="text-xs font-mono text-gray-600 space-y-1">
+                    <p>Naam, ID, Code, Wachtwoord</p>
+                    <p>T. van Bienen, HTV-1, 921, X9k2Lp</p>
+                    <p>J. Morsink, HTV-2, 811, P2m9Xq</p>
+                    <p>M. Jansen, HTV-3, 711, A7b4Yz</p>
+                    <p>...</p>
+                  </div>
                 </div>
               </div>
-
-              <button
-                onClick={handleExportCredentials}
-                disabled={isExporting}
-                className={`w-full py-4 font-black rounded-xl shadow-lg transition-all flex items-center justify-center gap-2 text-lg ${
-                  exportSuccess 
-                    ? 'bg-green-500 text-white' 
-                    : 'bg-gray-900 text-white hover:bg-[#FDCB2C] hover:text-black'
-                }`}
-              >
-                {exportSuccess ? (
-                  <><CheckCircle size={24} /> Excel Gedownload & Mails Verzonden!</>
-                ) : isExporting ? (
-                  <><RefreshCw size={24} className="animate-spin" /> Gegevens genereren...</>
-                ) : (
-                  <><Mail size={24} /> Exporteer Inloggegevens (250 Medewerkers)</>
-                )}
-              </button>
             </div>
           </div>
         )}

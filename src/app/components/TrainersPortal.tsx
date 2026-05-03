@@ -39,18 +39,20 @@ const TOP_SELLERS_DATA = [
   { naam: 'Kim A (TIL)', omzetIncl: '190,99', omzetExcl: '157,84', margeExcl: '45,82', margePct: '29,03', stuks: 2, transacties: 2 }
 ];
 
-const getColor = (value: number, isTarget?: boolean) => {
+const getColor = (value: number, isTarget?: boolean, globalTarget: number = 50) => {
   if (isTarget) return '#FFFF00'; 
-  if (value >= 50) return '#4ade80'; 
-  if (value >= 40) return '#fbbf24'; 
+  if (value >= globalTarget) return '#4ade80'; 
+  if (value >= globalTarget - 10) return '#fbbf24'; 
   return '#ef4444'; 
 };
 
 export function TrainersPortal() {
   const [oledData, setOledData] = useState(INITIAL_OLED_DATA);
+  const [globalTarget, setGlobalTarget] = useState(50);
   const [isEditing, setIsEditing] = useState(false);
   const [isImporting, setIsImporting] = useState(false);
   const [importSuccess, setImportSuccess] = useState(false);
+  const [isExportingPdf, setIsExportingPdf] = useState(false);
 
   const handleEditChange = (index: number, newValue: string) => {
     const num = parseFloat(newValue.replace(',', '.'));
@@ -67,6 +69,14 @@ export function TrainersPortal() {
       setImportSuccess(true);
       setTimeout(() => setImportSuccess(false), 4000);
     }, 2000);
+  };
+
+  const handlePdfExport = () => {
+    setIsExportingPdf(true);
+    setTimeout(() => {
+      setIsExportingPdf(false);
+      alert('Mooie PDF Succesvol Geëxporteerd en opgeslagen!');
+    }, 2500);
   };
 
   return (
@@ -107,12 +117,12 @@ export function TrainersPortal() {
             <div className="flex justify-between items-start">
               <div>
                 <p className="text-gray-400 text-sm font-bold mb-1 uppercase tracking-wider">Huidige Target (Wk 14/15)</p>
-                <h3 className="text-2xl font-black text-white">1 op de 2 TV's = OLED</h3>
+                <h3 className="text-2xl font-black text-white">{globalTarget}% OLED</h3>
               </div>
               <Target className="text-[#FDCB2C]" size={24} />
             </div>
             <div className="mt-4 pt-4 border-t border-gray-600">
-              <span className="text-green-400 font-bold">Doel: 50.00%</span>
+              <span className="text-green-400 font-bold">Doel: {globalTarget.toFixed(2)}%</span>
             </div>
           </div>
           
@@ -145,16 +155,26 @@ export function TrainersPortal() {
 
         {/* The Scraped OLED Chart */}
         <div className="bg-[#333333] rounded-xl shadow-2xl p-6 border border-gray-700 mb-8">
-          <div className="flex justify-between items-center mb-8">
+          <div className="flex flex-col md:flex-row justify-between items-start md:items-center mb-8 gap-4">
             <h2 className="text-2xl font-bold text-white">
-              Week 14/15 target, 1 op de 2 TV's moet OLED zijn
+              Week 14/15 Target is {globalTarget}% OLED Aandeel
             </h2>
-            <button 
-              onClick={() => setIsEditing(!isEditing)}
-              className="px-4 py-2 bg-gray-700 hover:bg-gray-600 rounded-lg text-sm font-bold flex items-center gap-2 transition-colors"
-            >
-              {isEditing ? <><Save size={16} className="text-green-400" /> Opslaan</> : <><Edit2 size={16} /> Bewerk Data</>}
-            </button>
+            <div className="flex gap-3">
+              <button 
+                onClick={handlePdfExport}
+                disabled={isExportingPdf}
+                className="px-4 py-2 bg-red-600 hover:bg-red-700 rounded-lg text-sm font-bold flex items-center gap-2 transition-colors disabled:opacity-50"
+              >
+                {isExportingPdf ? <RefreshCw size={16} className="animate-spin" /> : <Download size={16} />} 
+                {isExportingPdf ? 'PDF Genereren...' : 'Exporteer Mooie PDF'}
+              </button>
+              <button 
+                onClick={() => setIsEditing(!isEditing)}
+                className="px-4 py-2 bg-gray-700 hover:bg-gray-600 rounded-lg text-sm font-bold flex items-center gap-2 transition-colors"
+              >
+                {isEditing ? <><Save size={16} className="text-green-400" /> Opslaan</> : <><Edit2 size={16} /> Bewerk Data & Target</>}
+              </button>
+            </div>
           </div>
           
           <div className="h-[400px] w-full mb-6">
@@ -186,7 +206,7 @@ export function TrainersPortal() {
                 />
                 <Bar dataKey="value" name="OLED Aandeel">
                   {oledData.map((entry, index) => (
-                    <Cell key={`cell-${index}`} fill={getColor(entry.value, entry.isTarget)} />
+                    <Cell key={`cell-${index}`} fill={getColor(entry.value, entry.isTarget, globalTarget)} />
                   ))}
                 </Bar>
               </BarChart>
@@ -194,10 +214,34 @@ export function TrainersPortal() {
           </div>
 
           {isEditing && (
-            <div className="bg-[#2D2D2D] p-4 rounded-xl border border-gray-600 mt-4 animate-in fade-in slide-in-from-top-4">
-              <h3 className="text-sm font-bold text-gray-400 mb-4 uppercase tracking-wider">Pas Prestaties Aan (Live)</h3>
+            <div className="bg-[#2D2D2D] p-6 rounded-xl border border-gray-600 mt-4 animate-in fade-in slide-in-from-top-4">
+              <div className="mb-6 pb-6 border-b border-gray-700">
+                <h3 className="text-sm font-bold text-gray-400 mb-2 uppercase tracking-wider">Algemeen Target Instellen</h3>
+                <div className="flex items-center gap-4">
+                  <input 
+                    type="number" 
+                    step="1"
+                    value={globalTarget}
+                    onChange={(e) => {
+                      const tg = Number(e.target.value);
+                      setGlobalTarget(tg);
+                      // Update the specific 'Target' bar in the chart as well
+                      const targetIndex = oledData.findIndex(d => d.isTarget);
+                      if(targetIndex !== -1) {
+                        const newData = [...oledData];
+                        newData[targetIndex].value = tg;
+                        setOledData(newData);
+                      }
+                    }}
+                    className="bg-[#1A1A1A] border border-gray-600 rounded px-4 py-2 text-xl font-bold text-[#FDCB2C] focus:border-[#FDCB2C] outline-none w-32"
+                  />
+                  <span className="text-gray-400">% (Alle grafiekkleuren en doelen passen zich hierop aan)</span>
+                </div>
+              </div>
+
+              <h3 className="text-sm font-bold text-gray-400 mb-4 uppercase tracking-wider">Pas Filiaal Prestaties Aan (Live)</h3>
               <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-4">
-                {oledData.map((item, idx) => (
+                {oledData.map((item, idx) => !item.isTarget && (
                   <div key={item.name} className="flex flex-col gap-1">
                     <label className="text-xs text-gray-400">{item.name}</label>
                     <input 
