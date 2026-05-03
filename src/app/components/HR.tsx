@@ -60,7 +60,7 @@ export function HR() {
               <div className="bg-green-50 border border-green-200 text-green-800 p-6 rounded-xl flex flex-col items-center justify-center text-center">
                 <CheckCircle size={48} className="text-green-500 mb-4" />
                 <h3 className="text-lg font-bold mb-2">Registratie Voltooid!</h3>
-                <p className="text-sm">Je reiskosten zijn succesvol geregistreerd. Er is een bevestiging verstuurd naar administratie@hellotv.nl.</p>
+                <p className="text-sm">Je reiskosten zijn succesvol geregistreerd. Er is een bevestiging verstuurd naar maick@hellotv.nl.</p>
               </div>
             ) : (
               <form onSubmit={handleSubmit} className="space-y-5">
@@ -136,7 +136,7 @@ export function HR() {
                   ) : (
                     <>
                       <Send size={18} />
-                      Registreer bij Administratie
+                      Registreer bij Maick (Administratie)
                     </>
                   )}
                 </button>
