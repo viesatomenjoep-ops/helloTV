@@ -98,12 +98,12 @@ export default function App() {
 
       {/* Sidebar */}
       <div className={`
-        fixed inset-y-0 left-0 z-40 w-64 bg-gray-900 text-gray-300 transform transition-transform duration-300 ease-in-out flex flex-col shadow-2xl
+        fixed inset-y-0 left-0 z-40 w-64 bg-white text-gray-900 transform transition-transform duration-300 ease-in-out flex flex-col shadow-2xl border-r border-gray-200
         ${mobileMenuOpen ? 'translate-x-0' : '-translate-x-full'}
         md:relative md:translate-x-0
       `}>
-        <div className="flex items-center justify-center h-24 border-b border-gray-800 bg-gray-950 px-6 shrink-0">
-          <HelloTVLogo className="h-10 w-auto" theme="dark" />
+        <div className="flex items-center justify-center h-24 border-b border-gray-200 bg-white px-6 shrink-0">
+          <HelloTVLogo className="h-10 w-auto" />
         </div>
         
         <nav className="flex-1 px-4 py-6 space-y-1 overflow-y-auto custom-scrollbar">
@@ -113,14 +113,14 @@ export default function App() {
               onClick={() => handleNavClick(item.id)}
               className={`w-full flex items-center gap-3 px-4 py-3 rounded-xl transition-all duration-200 group font-medium ${
                 currentView === item.id 
-                  ? 'bg-gradient-to-r from-[#FDCB2C]/20 to-transparent text-[#FDCB2C] shadow-lg border-l-4 border-[#FDCB2C]' 
-                  : 'hover:bg-gray-800 hover:text-white'
+                  ? 'bg-gradient-to-r from-[#FDCB2C]/20 to-transparent text-[#FDCB2C] shadow-sm border-l-4 border-[#FDCB2C]' 
+                  : 'text-gray-700 hover:bg-gray-50 hover:text-[#FDCB2C]'
               }`}
             >
               <item.icon 
                 size={20} 
                 className={`transition-colors duration-200 ${
-                  currentView === item.id ? 'text-[#FDCB2C]' : 'text-gray-500 group-hover:text-white'
+                  currentView === item.id ? 'text-[#FDCB2C]' : 'text-gray-400 group-hover:text-[#FDCB2C]'
                 }`}
               />
               <span className="truncate">{item.label}</span>
@@ -129,14 +129,14 @@ export default function App() {
         </nav>
 
         {/* User Profile Footer */}
-        <nav className="border-t border-gray-800 p-4 bg-gray-950 shrink-0">
+        <nav className="border-t border-gray-200 p-4 bg-white shrink-0">
           <div className="flex flex-col gap-2">
-            <div className="flex items-center justify-between p-3 rounded-xl bg-gray-800/50 backdrop-blur-sm border border-gray-700 hover:bg-gray-800 transition-colors cursor-pointer">
+            <div className="flex items-center justify-between p-3 rounded-xl bg-gray-50 border border-gray-200 hover:bg-gray-100 transition-colors cursor-pointer group">
               <div className="flex items-center gap-3">
-                <UserCircle size={24} className="text-[#FDCB2C]" />
+                <UserCircle size={24} className="text-gray-400 group-hover:text-[#FDCB2C]" />
                 <div className="text-xs leading-tight">
-                  <span className="font-bold text-white">Beheerder</span><br/>
-                  <span className="text-gray-400">admin@heleutievier.nl</span>
+                  <span className="font-bold text-gray-900 group-hover:text-[#FDCB2C]">Beheerder</span><br/>
+                  <span className="text-gray-500">admin@heleutievier.nl</span>
                 </div>
               </div>
             </div>
@@ -145,7 +145,7 @@ export default function App() {
                 alert('Je bent succesvol uitgelogd.');
                 window.location.reload();
               }}
-              className="w-full flex items-center justify-center gap-2 p-2 rounded-xl bg-red-900/30 text-red-400 hover:bg-red-900/50 hover:text-red-300 transition-colors border border-red-900/50 text-sm font-bold"
+              className="w-full flex items-center justify-center gap-2 p-2 rounded-xl bg-red-50 text-red-600 hover:bg-red-100 hover:text-red-700 transition-colors border border-red-200 text-sm font-bold"
             >
               <LogOut size={16} /> Uitloggen
             </button>
