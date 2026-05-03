@@ -12,7 +12,27 @@ export function MagicLinks() {
     setTimeout(() => setCopiedLink(''), 3000);
   };
 
-  const STORES = ['Filiaal Breda (Test)', 'Filiaal Amsterdam', 'Filiaal Eindhoven', 'Filiaal Rotterdam'];
+  const STORES = [
+    'Filiaal Breda (Test)', 
+    'Filiaal Amsterdam', 
+    'Filiaal Eindhoven', 
+    'Filiaal Rotterdam', 
+    'AI Klantenservice (Landelijk)', 
+    'AI Zakelijk & B2B'
+  ];
+
+  const MAGIC_LINKS = [
+    { label: 'De Beste TV van Nederland 2025', url: 'http://testhelotv.nl/ai-chat/beste-tv-nederland' },
+    { label: 'OLED vs Neo QLED Advies', url: 'http://testhelotv.nl/ai-chat/oled-vs-qled' },
+    { label: 'Persoonlijke Offerte Bespreker', url: 'http://testhelotv.nl/ai-chat/offerte-bot' },
+    { label: 'Kijkafstand & Formaat Calculator', url: 'http://testhelotv.nl/ai-chat/kijkafstand' },
+    { label: 'Inruilwaarde Huidige TV', url: 'http://testhelotv.nl/ai-chat/inruil-check' },
+    { label: 'Soundbar Matcher', url: 'http://testhelotv.nl/ai-chat/audio-matcher' },
+    { label: 'PS5/Xbox Gaming TV Adviseur', url: 'http://testhelotv.nl/ai-chat/gaming-tv' },
+    { label: 'Installatie Service Planner', url: 'http://testhelotv.nl/ai-chat/installatie' },
+    { label: 'Voorraad & Levertijd Checker', url: 'http://testhelotv.nl/ai-chat/voorraad-check' },
+    { label: 'Direct Bestellen met Korting', url: 'http://testhelotv.nl/ai-chat/direct-bestellen' },
+  ];
 
   return (
     <div className="p-8 pb-24 min-h-screen bg-gray-50">
@@ -49,23 +69,30 @@ export function MagicLinks() {
             <div className="space-y-6">
               <div className="bg-white rounded-2xl shadow-sm border border-gray-100 p-6">
                 <h2 className="text-xl font-bold text-gray-900 mb-4 flex items-center gap-2">
-                  <Bot className="text-blue-500" /> Genereer Magic Link
+                  <Bot className="text-[#FDCB2C]" /> Genereer Magic Links
                 </h2>
                 <p className="text-sm text-gray-600 mb-6">
-                  Een Magic Link start direct een gepersonaliseerde AI-chat omgeving voor de klant. Ideaal om mee te sturen in een offerte, e-mail of WhatsApp-bericht. De bot heeft kennis van tv's, prijzen en adviesscenario's.
+                  Een Magic Link start direct een gepersonaliseerde AI-chat omgeving voor de klant. Ideaal om mee te sturen in een offerte, e-mail of WhatsApp-bericht. Hier zijn 10 links gebaseerd op tv-verkoop.
                 </p>
 
-                <div className="bg-gray-50 p-4 rounded-xl border border-gray-200 flex justify-between items-center group">
-                  <div className="flex items-center gap-3 overflow-hidden">
-                    <Link className="text-gray-400 shrink-0" size={18} />
-                    <span className="text-sm font-mono text-blue-600 truncate">https://hellotv.nl/ai-chat/8f92a-oled-advies</span>
-                  </div>
-                  <button 
-                    onClick={() => handleCopy('https://hellotv.nl/ai-chat/8f92a-oled-advies')}
-                    className="shrink-0 p-2 text-gray-500 hover:bg-gray-200 rounded-lg transition-colors flex items-center gap-1"
-                  >
-                    {copiedLink === 'https://hellotv.nl/ai-chat/8f92a-oled-advies' ? <CheckCircle size={16} className="text-green-500" /> : <Copy size={16} />}
-                  </button>
+                <div className="space-y-3 max-h-[300px] overflow-y-auto pr-2 custom-scrollbar">
+                  {MAGIC_LINKS.map((link, idx) => (
+                    <div key={idx} className="bg-gray-50 p-3 rounded-xl border border-gray-200 flex flex-col gap-2 group">
+                      <span className="text-xs font-bold text-gray-700">{link.label}</span>
+                      <div className="flex justify-between items-center">
+                        <div className="flex items-center gap-2 overflow-hidden">
+                          <Link className="text-gray-400 shrink-0" size={14} />
+                          <span className="text-xs font-mono text-blue-600 truncate">{link.url}</span>
+                        </div>
+                        <button 
+                          onClick={() => handleCopy(link.url)}
+                          className="shrink-0 p-1.5 text-gray-500 hover:bg-gray-200 rounded-lg transition-colors flex items-center gap-1"
+                        >
+                          {copiedLink === link.url ? <CheckCircle size={14} className="text-green-500" /> : <Copy size={14} />}
+                        </button>
+                      </div>
+                    </div>
+                  ))}
                 </div>
               </div>
 
@@ -148,14 +175,14 @@ export function MagicLinks() {
         {activeTab === 'calling_agents' && (
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
             <div className="lg:col-span-1 space-y-4">
-              <h2 className="text-xl font-bold text-gray-900 mb-4">Filiaal Voice Agents</h2>
+              <h2 className="text-xl font-bold text-gray-900 mb-4">Filiaal & Specialist Voice Agents</h2>
               {STORES.map((store, index) => (
                 <div key={index} className={`p-4 rounded-xl border cursor-pointer transition-all ${index === 0 ? 'bg-blue-50 border-blue-200 shadow-sm' : 'bg-white border-gray-200 hover:bg-gray-50'}`}>
                   <div className="flex justify-between items-center mb-2">
-                    <h3 className={`font-bold ${index === 0 ? 'text-blue-800' : 'text-gray-800'}`}>{store}</h3>
+                    <h3 className={`font-bold text-sm ${index === 0 ? 'text-blue-800' : 'text-gray-800'}`}>{store}</h3>
                     {index === 0 && <span className="bg-green-100 text-green-700 text-[10px] font-bold px-2 py-1 rounded-full uppercase tracking-wider animate-pulse">Online</span>}
                   </div>
-                  <p className="text-xs text-gray-500">Agent: {index === 0 ? 'Lisa (Vrouw)' : 'Sander (Man)'}</p>
+                  <p className="text-xs text-gray-500">Agent: {index === 0 ? 'Lisa (Vrouw)' : index > 3 ? 'Klantenservice Bot (M/V)' : 'Sander (Man)'}</p>
                 </div>
               ))}
             </div>
@@ -195,11 +222,11 @@ export function MagicLinks() {
                   </div>
 
                   <div className="flex gap-4">
-                    <button className="flex-1 py-3 bg-blue-600 text-white rounded-xl font-bold hover:bg-blue-700 flex justify-center items-center gap-2">
+                    <button className="flex-1 py-3 bg-[#1D6F42] text-white rounded-xl font-bold hover:bg-green-800 flex justify-center items-center gap-2">
                       <PhoneCall size={18} /> Test Bellen
                     </button>
                     <button className="flex-1 py-3 bg-white text-gray-700 border border-gray-300 rounded-xl font-bold hover:bg-gray-50 flex justify-center items-center gap-2">
-                      <Settings size={18} /> Instellingen
+                      Instellingen
                     </button>
                   </div>
                 </div>
