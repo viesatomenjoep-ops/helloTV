@@ -257,19 +257,30 @@ export function SalesTracker() {
               </select>
             </div>
 
-            {/* Export Menu */}
-            <div className="relative">
+            {/* PDF Export Button */}
+            <button 
+              onClick={() => {
+                setTimeout(() => window.print(), 100);
+              }}
+              className="px-6 py-3 bg-red-600 text-white font-bold rounded-xl shadow-sm hover:bg-red-700 transition-all flex items-center gap-2 print:hidden"
+            >
+              <Download size={18} />
+              Export naar PDF
+            </button>
+
+            {/* Excel Export Menu */}
+            <div className="relative print:hidden">
               <button 
                 onClick={() => setShowExportMenu(!showExportMenu)}
                 className="px-6 py-3 bg-[#1D6F42] text-white font-bold rounded-xl shadow-sm hover:shadow-md transition-all flex items-center gap-2"
               >
                 <Download size={18} />
-                Exporteer (Excel & PDF)
+                Export naar Excel
               </button>
               {showExportMenu && (
-                <div className="absolute right-0 mt-2 w-64 bg-white border border-gray-200 rounded-xl shadow-xl overflow-hidden z-50">
+                <div className="absolute right-0 mt-2 w-48 bg-white border border-gray-200 rounded-xl shadow-xl overflow-hidden z-50">
                   <div className="px-4 py-2 text-xs font-bold text-gray-400 uppercase tracking-wider bg-gray-50 border-b border-gray-100">
-                    Exporteer Data (Excel)
+                    Selecteer Periode
                   </div>
                   {['Dag', 'Week', 'Maand', 'Jaar'].map((period) => (
                     <button
@@ -277,31 +288,9 @@ export function SalesTracker() {
                       onClick={() => handleExportToExcel(period)}
                       className="w-full text-left px-4 py-3 text-sm font-semibold text-gray-700 hover:bg-[#1D6F42] hover:text-white transition-colors flex items-center gap-2"
                     >
-                      <FileText size={14} /> Per {period}
+                      <Calendar size={14} /> Per {period}
                     </button>
                   ))}
-                  
-                  <div className="px-4 py-2 text-xs font-bold text-gray-400 uppercase tracking-wider bg-gray-50 border-y border-gray-100">
-                    Live Dagoverzicht (PDF)
-                  </div>
-                  <button
-                    onClick={() => {
-                      setShowExportMenu(false);
-                      setTimeout(() => window.print(), 100);
-                    }}
-                    className="w-full text-left px-4 py-3 text-sm font-semibold text-gray-700 hover:bg-red-600 hover:text-white transition-colors flex items-center gap-2"
-                  >
-                    <Download size={14} /> Download PDF
-                  </button>
-                  <button
-                    onClick={() => {
-                      setShowExportMenu(false);
-                      handleEmailReport();
-                    }}
-                    className="w-full text-left px-4 py-3 text-sm font-semibold text-gray-700 hover:bg-blue-600 hover:text-white transition-colors flex items-center gap-2 border-t border-gray-100"
-                  >
-                    <Mail size={14} /> Stuur PDF via Mail
-                  </button>
                 </div>
               )}
             </div>
@@ -310,18 +299,18 @@ export function SalesTracker() {
             <button
               onClick={handleEmailReport}
               disabled={isEmailing}
-              className={`px-6 py-3 font-bold rounded-xl shadow-sm transition-all flex items-center gap-2 ${
+              className={`px-6 py-3 font-bold rounded-xl shadow-sm transition-all flex items-center gap-2 print:hidden ${
                 emailSuccess 
                   ? 'bg-green-100 text-green-700 border border-green-300' 
                   : 'bg-blue-600 text-white hover:bg-blue-700 hover:shadow-md'
               }`}
             >
               {emailSuccess ? (
-                <><CheckCircle size={18} /> Verzonden naar tomvanbiene@gmail.com</>
+                <><CheckCircle size={18} /> PDF Dagoverzicht Verzonden</>
               ) : isEmailing ? (
-                <><RefreshCw size={18} className="animate-spin" /> Bezig met verzenden...</>
+                <><RefreshCw size={18} className="animate-spin" /> PDF & Excel Genereren...</>
               ) : (
-                <><Mail size={18} /> Mail Dagoverzicht & Excel</>
+                <><Mail size={18} /> E-mail Dagoverzicht (PDF/Excel)</>
               )}
             </button>
             

@@ -21,12 +21,10 @@ export function HR() {
   // Loonstroken Personeel Portal State
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [loginData, setLoginData] = useState({ medewerkerId: '', password: '' });
-  const [printingLoonstrook, setPrintingLoonstrook] = useState<any>(null);
 
   // Admin Paneel State
   const [isExporting, setIsExporting] = useState(false);
   const [exportSuccess, setExportSuccess] = useState(false);
-  const [selectedEmployee, setSelectedEmployee] = useState<any>(null);
 
   const calculateDistance = () => {
     if (formData.postcode && formData.huisnummer) {
@@ -370,17 +368,7 @@ export function HR() {
                       </div>
                       <div className="flex items-center gap-4">
                         <span className="font-mono text-green-600 font-bold">{strook.amount}</span>
-                        <button 
-                          onClick={() => {
-                            setPrintingLoonstrook(strook);
-                            setTimeout(() => {
-                              window.print();
-                              setTimeout(() => setPrintingLoonstrook(null), 100);
-                            }, 100);
-                          }}
-                          className="p-2 text-blue-600 hover:bg-blue-50 rounded-lg transition-colors print:hidden" 
-                          title="Download PDF"
-                        >
+                        <button className="p-2 text-blue-600 hover:bg-blue-50 rounded-lg transition-colors" title="Download PDF">
                           <Download size={20} />
                         </button>
                       </div>
@@ -503,90 +491,17 @@ export function HR() {
                       <p className="font-bold text-gray-900">{medewerker.name}</p>
                       <p className="text-xs text-gray-500">Code: {medewerker.code} • {medewerker.isSeller ? 'Verkoper' : 'Anders'}</p>
                     </div>
-                    <button 
-                      onClick={() => setSelectedEmployee(medewerker)}
-                      className="text-xs font-bold text-blue-600 hover:text-blue-800"
-                    >
+                    <button className="text-xs font-bold text-blue-600 hover:text-blue-800">
                       Beheer
                     </button>
                   </div>
                 ))}
               </div>
             </div>
-
-            {/* Edit Employee Modal */}
-            {selectedEmployee && (
-              <div className="fixed inset-0 bg-black/50 backdrop-blur-sm z-50 flex items-center justify-center p-4">
-                <div className="bg-white rounded-2xl shadow-xl max-w-lg w-full p-8 relative">
-                  <button 
-                    onClick={() => setSelectedEmployee(null)}
-                    className="absolute top-4 right-4 text-gray-400 hover:text-black"
-                  >
-                    Sluiten
-                  </button>
-                  <h3 className="text-2xl font-bold text-gray-900 mb-6 flex items-center gap-2">
-                    <Users className="text-blue-600" />
-                    Medewerker Bewerken
-                  </h3>
-                  
-                  <form onSubmit={(e) => {
-                    e.preventDefault();
-                    alert(`Gegevens van ${selectedEmployee.name} succesvol opgeslagen in de database.`);
-                    setSelectedEmployee(null);
-                  }} className="space-y-4">
-                    <div className="grid grid-cols-2 gap-4">
-                      <div>
-                        <label className="block text-xs font-bold text-gray-700 mb-1">Voornaam</label>
-                        <input type="text" defaultValue={selectedEmployee.name.split(' ')[0]} required className="w-full px-3 py-2 border rounded-lg focus:ring-2 focus:ring-[#FDCB2C] outline-none" />
-                      </div>
-                      <div>
-                        <label className="block text-xs font-bold text-gray-700 mb-1">Achternaam</label>
-                        <input type="text" defaultValue={selectedEmployee.name.split(' ').slice(1).join(' ')} required className="w-full px-3 py-2 border rounded-lg focus:ring-2 focus:ring-[#FDCB2C] outline-none" />
-                      </div>
-                    </div>
-                    
-                    <div>
-                      <label className="block text-xs font-bold text-gray-700 mb-1">Volledig Adres (Straat, Huisnr, Postcode, Plaats)</label>
-                      <input type="text" placeholder="Bijv. Kalverstraat 1, 1012NX Amsterdam" required className="w-full px-3 py-2 border rounded-lg focus:ring-2 focus:ring-[#FDCB2C] outline-none" />
-                    </div>
-
-                    <div className="grid grid-cols-2 gap-4">
-                      <div>
-                        <label className="block text-xs font-bold text-gray-700 mb-1">Burgerservicenummer (BSN)</label>
-                        <input type="text" placeholder="123456789" maxLength={9} required className="w-full px-3 py-2 border rounded-lg focus:ring-2 focus:ring-[#FDCB2C] outline-none font-mono" />
-                      </div>
-                      <div>
-                        <label className="block text-xs font-bold text-gray-700 mb-1">Interne Positie / Rol</label>
-                        <select required defaultValue={selectedEmployee.isSeller ? 'spits' : 'verdediger'} className="w-full px-3 py-2 bg-gray-50 border rounded-lg focus:ring-2 focus:ring-[#FDCB2C] outline-none font-bold text-gray-700">
-                          <option value="spits">Spits (Topverkoper)</option>
-                          <option value="aanvaller">Aanvaller (Verkoper)</option>
-                          <option value="middenvelder">Middenvelder (Service & Support)</option>
-                          <option value="verdediger">Verdediger (Magazijn & Logistiek)</option>
-                          <option value="trainer">Coach / Trainer</option>
-                        </select>
-                      </div>
-                    </div>
-
-                    <div className="pt-2">
-                      <label className="block text-xs font-bold text-gray-700 mb-1">Upload ID / Paspoort (PDF of Image)</label>
-                      <div className="border-2 border-dashed border-gray-300 rounded-lg p-4 text-center hover:bg-gray-50 cursor-pointer transition-colors">
-                        <FileText size={24} className="mx-auto text-gray-400 mb-2" />
-                        <p className="text-xs text-gray-500 font-bold">Klik om bestand te kiezen of sleep hierheen</p>
-                      </div>
-                    </div>
-
-                    <div className="pt-4 flex justify-end gap-3 border-t mt-6">
-                      <button type="button" onClick={() => setSelectedEmployee(null)} className="px-4 py-2 text-sm font-bold text-gray-600 hover:text-black">Annuleren</button>
-                      <button type="submit" className="px-6 py-2 bg-blue-600 text-white text-sm font-bold rounded-lg hover:bg-blue-700 transition-colors shadow-md">
-                        Opslaan in Database
-                      </button>
-                    </div>
-                  </form>
-                </div>
-              </div>
-            )}
           </div>
-        )}        {/* Tab 4: MijnKvK & Contracten */}
+        )}
+
+        {/* Tab 4: MijnKvK & Contracten */}
         {activeTab === 'contracten' && (
           <div className="bg-white rounded-2xl shadow-sm border border-gray-100 p-8">
             <h2 className="text-2xl font-bold text-gray-800 mb-2">MijnKvK: Contracten & Onderhandelingen</h2>
@@ -723,128 +638,6 @@ export function HR() {
         )}
 
       </div>
-
-      {/* Print Only Layout (Real PDF Loonstrook) */}
-      {printingLoonstrook && (
-        <div className="hidden print:block fixed inset-0 bg-white z-[9999] p-12 text-black text-left text-sm font-mono">
-          <div className="flex justify-between items-start border-b-2 border-black pb-8 mb-8">
-            <div>
-              <img src="/HelloTV.png" alt="HelloTV Logo" className="h-12 mb-4 filter brightness-0" />
-              <h1 className="text-2xl font-bold uppercase tracking-wider text-gray-900">Salarisspecificatie</h1>
-              <p className="text-gray-600">Periode: {printingLoonstrook.month}</p>
-              <p className="text-gray-600">Referentie: {printingLoonstrook.id}</p>
-            </div>
-            <div className="text-right">
-              <p className="font-bold">Werkgever:</p>
-              <p>HelloTV B.V.</p>
-              <p>Kalverstraat 1</p>
-              <p>1012 NX Amsterdam</p>
-              <p>KvK: 12345678</p>
-            </div>
-          </div>
-
-          <div className="mb-8 p-4 border border-gray-300 bg-gray-50 flex justify-between">
-            <div>
-              <p className="font-bold text-gray-900">Werknemer:</p>
-              <p>{getMedewerkerByCode(loginData.medewerkerId) || 'Onbekend'}</p>
-              <p>Personeelsnummer: {loginData.medewerkerId}</p>
-              <p>Functie: Verkoper / Specialist</p>
-            </div>
-            <div className="text-right">
-              <p><span className="text-gray-500">BSN:</span> 123456789</p>
-              <p><span className="text-gray-500">Geboortedatum:</span> 01-01-1990</p>
-              <p><span className="text-gray-500">Datum in dienst:</span> 01-09-2022</p>
-            </div>
-          </div>
-
-          <table className="w-full text-left mb-8 border-collapse">
-            <thead className="bg-gray-100 border-y border-black">
-              <tr>
-                <th className="py-2 px-2 font-bold">Omschrijving</th>
-                <th className="py-2 px-2 font-bold text-right">Aantal/Uren</th>
-                <th className="py-2 px-2 font-bold text-right">Tarief</th>
-                <th className="py-2 px-2 font-bold text-right">Bedrag</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr className="border-b border-gray-100">
-                <td className="py-2 px-2">Basis Salaris (Fulltime)</td>
-                <td className="py-2 px-2 text-right">160,00</td>
-                <td className="py-2 px-2 text-right">14,25</td>
-                <td className="py-2 px-2 text-right">2.280,00</td>
-              </tr>
-              <tr className="border-b border-gray-100">
-                <td className="py-2 px-2">Overuren (150%)</td>
-                <td className="py-2 px-2 text-right">6,50</td>
-                <td className="py-2 px-2 text-right">21,38</td>
-                <td className="py-2 px-2 text-right">138,97</td>
-              </tr>
-              <tr className="border-b border-gray-100">
-                <td className="py-2 px-2">Zondag Toeslag (200%)</td>
-                <td className="py-2 px-2 text-right">8,00</td>
-                <td className="py-2 px-2 text-right">14,25</td>
-                <td className="py-2 px-2 text-right">114,00</td>
-              </tr>
-              <tr className="border-b border-gray-100 text-green-700 font-bold bg-green-50/50">
-                <td className="py-2 px-2">Performance Bonus (Marge Target)</td>
-                <td className="py-2 px-2 text-right">-</td>
-                <td className="py-2 px-2 text-right">-</td>
-                <td className="py-2 px-2 text-right">450,00</td>
-              </tr>
-              <tr className="border-b border-gray-100">
-                <td className="py-2 px-2">Vakantiegeld (Opbouw)</td>
-                <td className="py-2 px-2 text-right">-</td>
-                <td className="py-2 px-2 text-right">8%</td>
-                <td className="py-2 px-2 text-right">182,40</td>
-              </tr>
-              <tr className="border-b border-gray-100">
-                <td className="py-2 px-2">Reiskostenvergoeding (Onbelast)</td>
-                <td className="py-2 px-2 text-right">21 dgn</td>
-                <td className="py-2 px-2 text-right">€ 0,23/km</td>
-                <td className="py-2 px-2 text-right">167,58</td>
-              </tr>
-              <tr className="border-b border-gray-400">
-                <td className="py-2 px-2 font-bold" colSpan={3}>Bruto Loon</td>
-                <td className="py-2 px-2 font-bold text-right">3.150,55</td>
-              </tr>
-              <tr className="border-b border-gray-100 text-red-700">
-                <td className="py-2 px-2">Loonheffing</td>
-                <td className="py-2 px-2 text-right" colSpan={2}>-</td>
-                <td className="py-2 px-2 text-right">- 650,43</td>
-              </tr>
-              <tr className="border-b border-gray-100 text-red-700">
-                <td className="py-2 px-2">Pensioenpremie (Werknemer)</td>
-                <td className="py-2 px-2 text-right" colSpan={2}>-</td>
-                <td className="py-2 px-2 text-right">- 50,00</td>
-              </tr>
-              <tr className="border-t-2 border-black bg-gray-100">
-                <td className="py-3 px-2 font-black text-lg" colSpan={3}>Netto Uit te Betalen</td>
-                <td className="py-3 px-2 font-black text-lg text-right">{printingLoonstrook.amount}</td>
-              </tr>
-            </tbody>
-          </table>
-
-          <div className="flex gap-16 mt-8">
-            <div className="w-1/2">
-              <h3 className="font-bold border-b border-gray-300 mb-2 pb-1">Vakantie Dagen (Uren)</h3>
-              <div className="flex justify-between text-gray-700"><span>Saldo Vorig Jaar:</span> <span>16,00</span></div>
-              <div className="flex justify-between text-gray-700"><span>Opgebouwd dit Jaar:</span> <span>40,00</span></div>
-              <div className="flex justify-between text-gray-700"><span>Opgenomen:</span> <span>- 8,00</span></div>
-              <div className="flex justify-between font-bold mt-1 pt-1 border-t border-gray-200"><span>Actueel Saldo:</span> <span>48,00</span></div>
-            </div>
-            <div className="w-1/2">
-              <h3 className="font-bold border-b border-gray-300 mb-2 pb-1">Betalingsgegevens</h3>
-              <div className="flex justify-between text-gray-700"><span>IBAN:</span> <span>NL99 BANK 0123 4567 89</span></div>
-              <div className="flex justify-between text-gray-700"><span>Betaaldatum:</span> <span>24 {printingLoonstrook.month.split(' ')[0]} 2026</span></div>
-            </div>
-          </div>
-          
-          <div className="mt-16 text-center text-xs text-gray-500 border-t border-gray-200 pt-4">
-            <p>Dit is een digitaal gegenereerd document en is geldig zonder handtekening.</p>
-            <p>HelloTV Management System (Powered by Viesa)</p>
-          </div>
-        </div>
-      )}
     </div>
   );
 }

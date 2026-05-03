@@ -444,6 +444,11 @@ export function Transport() {
                 </table>
               </div>
             </div>
+          </div>
+        )}
+
+        {/* PAKLIJSTEN TAB */}
+        {activeTab === 'paklijsten' && (
           <div className="animate-in fade-in slide-in-from-bottom-4">
             <div className="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden mb-6">
               <div className="p-6 border-b border-gray-100 bg-gray-50">
@@ -526,8 +531,8 @@ export function Transport() {
               </div>
             </div>
           </div>
-          </div>
         )}
+      </div>
 
       {/* Print Only Layout (Real PDF Look) */}
       {isPrintingPaklijst && (
@@ -603,6 +608,5 @@ export function Transport() {
         </div>
       )}
     </div>
-  </div>
   );
 }

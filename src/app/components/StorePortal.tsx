@@ -42,17 +42,17 @@ export function StorePortal() {
   return (
     <div className="min-h-screen bg-gray-50 pb-24">
       {/* Header */}
-      <div className="bg-[#FDCB2C] text-black p-8 shadow-md">
-        <div className="max-w-7xl mx-auto flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
+      <div className="p-8">
+        <div className="max-w-7xl mx-auto flex flex-col md:flex-row justify-between items-start md:items-center gap-4 border-b border-gray-200 pb-6 mb-8">
           <div>
-            <h1 className="text-4xl font-black mb-2 flex items-center gap-3">
-              <Store size={36} className="text-black" />
-              Mini-Filiaal Portol
+            <h1 className="text-4xl font-black mb-2 flex items-center gap-3 text-gray-900">
+              <Store size={40} className="text-[#FDCB2C]" />
+              Mini-Filiaal Portal
             </h1>
-            <p className="text-gray-800 font-medium">Lokaal management voor bestellingen, voorraad en targets</p>
+            <p className="text-gray-500 font-medium">Lokaal management voor bestellingen, voorraad en targets</p>
           </div>
           <div className="flex items-center gap-2">
-            <span className="font-bold">Huidig Filiaal:</span>
+            <span className="font-bold text-gray-700">Huidig Filiaal:</span>
             <select
               value={selectedStore}
               onChange={(e) => setSelectedStore(e.target.value)}
@@ -64,7 +64,7 @@ export function StorePortal() {
         </div>
       </div>
 
-      <div className="max-w-7xl mx-auto p-8">
+      <div className="max-w-7xl mx-auto px-8">
         <div className="grid grid-cols-1 md:grid-cols-4 gap-6 mb-8">
           <div className="bg-white rounded-2xl p-6 shadow-sm border border-gray-100">
             <div className="flex justify-between items-start mb-4">
