@@ -1,0 +1,37 @@
+
+> @figma/my-make-file@0.0.1 build
+> vite build
+
+vite v6.3.5 building for production...
+transforming...
+✓ 7 modules transformed.
+✗ Build failed in 145ms
+error during build:
+[vite:esbuild] Transform failed with 2 errors:
+/Users/tomvanbiene/Downloads/HelloTV backend system/src/app/components/Orders.tsx:209:0: ERROR: The character "}" is not valid inside a JSX element
+/Users/tomvanbiene/Downloads/HelloTV backend system/src/app/components/Orders.tsx:210:0: ERROR: Unexpected end of file before a closing "div" tag
+file: /Users/tomvanbiene/Downloads/HelloTV backend system/src/app/components/Orders.tsx:209:0
+
+The character "}" is not valid inside a JSX element
+207|      </div>
+208|    );
+209|  }
+   |  ^
+210|  
+
+Unexpected end of file before a closing "div" tag
+208|    );
+209|  }
+210|  
+   |  ^
+
+    at failureErrorWithLog (/Users/tomvanbiene/Downloads/HelloTV backend system/node_modules/esbuild/lib/main.js:1467:15)
+    at /Users/tomvanbiene/Downloads/HelloTV backend system/node_modules/esbuild/lib/main.js:736:50
+    at responseCallbacks.<computed> (/Users/tomvanbiene/Downloads/HelloTV backend system/node_modules/esbuild/lib/main.js:603:9)
+    at handleIncomingPacket (/Users/tomvanbiene/Downloads/HelloTV backend system/node_modules/esbuild/lib/main.js:658:12)
+    at Socket.readFromStdout (/Users/tomvanbiene/Downloads/HelloTV backend system/node_modules/esbuild/lib/main.js:581:7)
+    at Socket.emit (node:events:508:28)
+    at addChunk (node:internal/streams/readable:563:12)
+    at readableAddChunkPushByteMode (node:internal/streams/readable:514:3)
+    at Readable.push (node:internal/streams/readable:394:5)
+    at Pipe.onStreamRead (node:internal/stream_base_commons:189:23)
