@@ -1,4 +1,5 @@
-import { projectId, publicAnonKey } from '/utils/supabase/info';
+const projectId = 'mock-project-id';
+const publicAnonKey = 'mock-anon-key';
 
 const API_BASE = `https://${projectId}.supabase.co/functions/v1/make-server-1db0fc10`;
 

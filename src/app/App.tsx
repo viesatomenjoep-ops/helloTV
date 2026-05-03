@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { LayoutDashboard, Users, TrendingUp, Package, FileText, ShoppingCart, Menu, X } from 'lucide-react';
+import { LayoutDashboard, Users, TrendingUp, Package, FileText, ShoppingCart, Menu, X, Layers } from 'lucide-react';
 import { Dashboard } from './components/Dashboard';
 import { CRM } from './components/CRM';
 import { SalesTracker } from './components/SalesTracker';
