@@ -151,20 +151,7 @@ export default function App() {
           ))}
         </nav>
 
-        {sidebarOpen && (
-          <div className="absolute bottom-0 left-0 right-0 p-6 border-t border-gray-700">
-            <div className="bg-[#1A1A1A] border border-gray-700 rounded-xl p-4 mb-3">
-              <div className="text-sm font-bold text-[#FDCB2C] mb-1">HelloTV Management</div>
-              <div className="text-xs text-gray-300">Systeem is Volledig Operationeel</div>
-            </div>
-            <button 
-              onClick={() => setIsAuthenticated(false)}
-              className="w-full py-2 bg-gray-800 text-gray-300 rounded-lg text-sm font-medium hover:bg-gray-700 transition-colors"
-            >
-              Uitloggen
-            </button>
-          </div>
-        )}
+        
       </div>
 
       <div className="flex-1 overflow-y-auto">
