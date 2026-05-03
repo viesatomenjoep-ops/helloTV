@@ -20,7 +20,8 @@ import {
   HeartPulse,
   GraduationCap,
   Film,
-  Building2
+  Building2,
+  ShieldAlert
 } from 'lucide-react';
 import { Dashboard } from './components/Dashboard';
 import { CRM } from './components/CRM';
@@ -40,9 +41,10 @@ import { HelloTVWebsite } from './components/HelloTVWebsite';
 import { Reparatie } from './components/Reparatie';
 import { MagicLinks } from './components/MagicLinks';
 import { HelloTVLogo } from './components/ui/HelloTVLogo';
+import { MaickPortal } from './components/MaickPortal';
 import { initDemoData } from '../utils/initDemoData';
 
-type View = 'dashboard' | 'crm' | 'sales' | 'inventory' | 'quotes' | 'orders' | 'showcase' | 'hr' | 'shiftbase' | 'trainers' | 'transport' | 'media' | 'vendit' | 'reviews' | 'website' | 'reparatie' | 'magiclinks';
+type View = 'dashboard' | 'maick' | 'crm' | 'sales' | 'inventory' | 'quotes' | 'orders' | 'showcase' | 'hr' | 'shiftbase' | 'trainers' | 'transport' | 'media' | 'vendit' | 'reviews' | 'website' | 'reparatie' | 'magiclinks';
 
 export default function App() {
   const [currentView, setCurrentView] = useState<View>('dashboard');
@@ -56,6 +58,7 @@ export default function App() {
 
   const menuItems = [
     { id: 'dashboard', label: 'Dashboard', icon: Home },
+    { id: 'maick', label: 'MAICK Portaal (Admin)', icon: ShieldAlert },
     { id: 'website', label: 'HelloTV.nl (Live)', icon: Search },
     { id: 'reviews', label: 'Google Maps Reviews', icon: Star },
     { id: 'orders', label: 'Orders & Upsell', icon: ShoppingCart },
@@ -138,6 +141,7 @@ export default function App() {
       {/* Main Content Area */}
       <div className="flex-1 overflow-auto bg-white rounded-tl-2xl shadow-xl border-t border-l border-gray-200">
         {currentView === 'dashboard' && <Dashboard onNavigate={setCurrentView} />}
+        {currentView === 'maick' && <MaickPortal />}
         {currentView === 'website' && <HelloTVWebsite />}
         {currentView === 'reviews' && <GoogleReviews />}
         {currentView === 'orders' && <Orders />}

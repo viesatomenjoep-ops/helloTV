@@ -181,7 +181,7 @@ export function TrainersPortal() {
     }, 500);
   };
 
-  const TABS = ['OLED', 'Cleaners', 'Kabels', 'TV Beugels', 'SP TV', 'Trainers Database'];
+  const TABS = ['OLED', 'Cleaners', 'Kabels', 'TV Beugels', 'SP TV', 'Trainers Database', 'AI Coaching & Tips'];
   const currentData = getChartData();
   const currentTarget = getChartTarget();
 
@@ -316,6 +316,73 @@ export function TrainersPortal() {
               <button className="px-6 py-3 bg-[#1D6F42] hover:bg-green-700 text-white font-bold rounded-xl transition-colors">
                 + Nieuwe Trainer Toevoegen
               </button>
+            </div>
+          </div>
+        ) : activeTab === 'AI Coaching & Tips' ? (
+          <div className="bg-[#333333] rounded-xl shadow-2xl p-6 border border-gray-700 mb-8">
+            <h2 className="text-2xl font-bold text-white mb-6 flex items-center gap-2">
+              <span className="text-xl">🤖</span> AI Verkooptraining Overzicht (Week 15)
+            </h2>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+              <div className="bg-gradient-to-br from-blue-900/40 to-blue-800/40 border border-blue-700/50 p-6 rounded-xl">
+                <h3 className="text-lg font-bold text-blue-300 mb-3 flex items-center gap-2">
+                  <span className="text-xl">💡</span> Tip van de week: "De Beugel-Vraag"
+                </h3>
+                <p className="text-gray-300 text-sm leading-relaxed mb-4">
+                  AI Analyse toont aan dat klanten 40% vaker een muurbeugel kopen als je vraagt: 
+                  <span className="italic text-white"> "Heeft u al nagedacht over hoe plat u de TV aan de muur wilt hebben?"</span> in plaats van <span className="italic text-white">"Wilt u er een beugel bij?"</span>
+                </p>
+                <div className="text-xs text-blue-400 font-bold bg-blue-900/50 p-2 rounded inline-block">
+                  Aanbevolen focus voor: Utrecht, Groningen & Nijmegen
+                </div>
+              </div>
+
+              <div className="bg-gradient-to-br from-purple-900/40 to-purple-800/40 border border-purple-700/50 p-6 rounded-xl">
+                <h3 className="text-lg font-bold text-purple-300 mb-3 flex items-center gap-2">
+                  <span className="text-xl">📊</span> Focusgroep: Kabels & Cleaners
+                </h3>
+                <p className="text-gray-300 text-sm leading-relaxed mb-4">
+                  Bij de nieuwe OLED-lijn (2026) vergeten verkopers vaak de cleaners aan te bieden. 
+                  Geef deze week als trainer extra aandacht aan de <span className="font-bold text-white">HaloTec Sponge</span> bij aankoop van een OLED G6.
+                </p>
+                <div className="text-xs text-purple-400 font-bold bg-purple-900/50 p-2 rounded inline-block">
+                  Verwachte extra marge: € 12.000 per week
+                </div>
+              </div>
+            </div>
+            
+            <div className="bg-[#2D2D2D] p-6 rounded-xl border border-gray-600">
+              <h3 className="text-lg font-bold text-white mb-4">AI Gegenereerd Trainingsschema</h3>
+              <table className="w-full text-left text-sm text-gray-300">
+                <thead className="text-gray-500 font-bold uppercase text-xs border-b border-gray-700">
+                  <tr>
+                    <th className="pb-2">Filiaal</th>
+                    <th className="pb-2">Zwakste Punt (Data)</th>
+                    <th className="pb-2">Aanbevolen Training</th>
+                    <th className="pb-2">Coach Actie</th>
+                  </tr>
+                </thead>
+                <tbody className="divide-y divide-gray-700">
+                  <tr>
+                    <td className="py-3 font-bold text-white">Utrecht</td>
+                    <td className="py-3 text-red-400">Kabels (32.79%)</td>
+                    <td className="py-3">"De Perfecte Aansluiting" (Audio/Video integratie)</td>
+                    <td className="py-3"><button className="text-blue-400 text-xs font-bold border border-blue-400 px-2 py-1 rounded">Stuur Trainingsmateriaal</button></td>
+                  </tr>
+                  <tr>
+                    <td className="py-3 font-bold text-white">Den Bosch</td>
+                    <td className="py-3 text-orange-400">Cleaners (37.76%)</td>
+                    <td className="py-3">"Onderhoud = Levensduur" (HaloTec Pitch)</td>
+                    <td className="py-3"><button className="text-blue-400 text-xs font-bold border border-blue-400 px-2 py-1 rounded">Stuur Trainingsmateriaal</button></td>
+                  </tr>
+                  <tr>
+                    <td className="py-3 font-bold text-white">Cruquius</td>
+                    <td className="py-3 text-red-400">TV Beugels (25.45%)</td>
+                    <td className="py-3">"Design & Interieur" (Vogel's positionering)</td>
+                    <td className="py-3"><button className="text-blue-400 text-xs font-bold border border-blue-400 px-2 py-1 rounded">Stuur Trainingsmateriaal</button></td>
+                  </tr>
+                </tbody>
+              </table>
             </div>
           </div>
         ) : (

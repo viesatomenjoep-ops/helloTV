@@ -95,6 +95,7 @@ export function SalesTracker() {
         bbqMargin,
         accessoriesSold,
         accessoriesMargin,
+        points: Math.floor(totalRevenue / 100) + Math.floor(accessoriesSold * 2), // Eindejaarsbonus points
         recentSales: generateRecentSales(salesCount)
       });
     }
@@ -328,6 +329,42 @@ export function SalesTracker() {
           </div>
         </div>
 
+        {/* Incentives & Toppers */}
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+          <div className="bg-white rounded-2xl shadow-sm border border-gray-100 p-6 flex items-center gap-4">
+            <div className="w-16 h-16 bg-blue-100 text-blue-600 rounded-full flex items-center justify-center shrink-0">
+              <Cable size={32} />
+            </div>
+            <div>
+              <p className="text-xs font-bold text-gray-400 uppercase">#1 Kabel Verkoper</p>
+              <p className="text-xl font-black text-gray-900">Mark de Groot</p>
+              <p className="text-sm text-green-600 font-bold mt-1">452 verkocht (+120 pnt)</p>
+            </div>
+          </div>
+
+          <div className="bg-white rounded-2xl shadow-sm border border-gray-100 p-6 flex items-center gap-4">
+            <div className="w-16 h-16 bg-purple-100 text-purple-600 rounded-full flex items-center justify-center shrink-0">
+              <Tv size={32} />
+            </div>
+            <div>
+              <p className="text-xs font-bold text-gray-400 uppercase">#1 Cleaner Verkoper</p>
+              <p className="text-xl font-black text-gray-900">Lisa Visser</p>
+              <p className="text-sm text-green-600 font-bold mt-1">389 verkocht (+90 pnt)</p>
+            </div>
+          </div>
+
+          <div className="bg-white rounded-2xl shadow-sm border border-gray-100 p-6 flex items-center gap-4">
+            <div className="w-16 h-16 bg-yellow-100 text-yellow-600 rounded-full flex items-center justify-center shrink-0">
+              <Award size={32} />
+            </div>
+            <div>
+              <p className="text-xs font-bold text-gray-400 uppercase">#1 Spons Verkoper (HaloTec)</p>
+              <p className="text-xl font-black text-gray-900">Kevin Bakker</p>
+              <p className="text-sm text-green-600 font-bold mt-1">842 verkocht (+250 pnt)</p>
+            </div>
+          </div>
+        </div>
+
         {/* Global Stats */}
         <div className="grid grid-cols-1 md:grid-cols-4 gap-6 mb-8">
           <div className="bg-gradient-to-br from-green-500 to-green-600 text-white rounded-2xl shadow-lg p-6">
@@ -378,7 +415,7 @@ export function SalesTracker() {
                   <th className="px-6 py-4 text-left text-xs font-black text-gray-500 uppercase tracking-wider">Filiaal</th>
                   <th className="px-6 py-4 text-left text-xs font-black text-gray-500 uppercase tracking-wider">Omzet</th>
                   <th className="px-6 py-4 text-left text-xs font-black text-gray-500 uppercase tracking-wider">TV's (Marge)</th>
-                  <th className="px-6 py-4 text-left text-xs font-black text-gray-500 uppercase tracking-wider">BBQ's (Marge)</th>
+                  <th className="px-6 py-4 text-left text-xs font-black text-gray-500 uppercase tracking-wider">Punten (Eindejaarsbonus)</th>
                   <th className="px-6 py-4 text-left text-xs font-black text-gray-500 uppercase tracking-wider">Acties</th>
                 </tr>
               </thead>
@@ -426,9 +463,11 @@ export function SalesTracker() {
                         </div>
                       </td>
                       <td className="px-6 py-4">
-                        <div className="font-bold text-gray-800">{person.bbqSold} stuks</div>
-                        <div className="text-xs text-orange-600 font-bold">
-                          + €{person.bbqMargin.toLocaleString('nl-NL')} marge
+                        <div className="flex items-center gap-1 font-black text-blue-600 text-lg">
+                          <Award size={16} /> {person.points?.toLocaleString('nl-NL')} pnt
+                        </div>
+                        <div className="text-xs text-gray-500 font-medium mt-1">
+                          Schatting: €{Math.floor(person.points / 100) * 10},- bonus
                         </div>
                       </td>
                       <td className="px-6 py-4">

@@ -31,6 +31,22 @@ const TREND_DATA = [
   { week: 'Wk 15', reviews: 310, transacties: 5600 },
 ];
 
+const LIVE_REVIEWS = [
+  { id: 1, source: 'Google Maps', author: 'Jan K.', rating: 5, filiaal: 'Alkmaar', date: 'Zojuist', text: 'Geweldig geholpen door Max met onze nieuwe OLED tv. Helemaal top!', verkoper: 'Max' },
+  { id: 2, source: 'Trustpilot', author: 'Sanne de Vries', rating: 4, filiaal: 'Amsterdam', date: '1 uur geleden', text: 'Goede service in de winkel. Lisa gaf eerlijk advies over de kabels.', verkoper: 'Lisa' },
+  { id: 3, source: 'Google Maps', author: 'Peter Bos', rating: 5, filiaal: 'Eindhoven', date: '3 uur geleden', text: 'Daan heeft ons perfect geholpen. Wist echt alles van de nieuwe Samsung modellen. Bedankt Daan!', verkoper: 'Daan' },
+  { id: 4, source: 'Trustpilot', author: 'Mevr. Jansen', rating: 5, filiaal: 'Breda', date: 'Vandaag', text: 'Prachtige winkel. Tom was erg geduldig en heeft alles aangesloten.', verkoper: 'Tom' },
+  { id: 5, source: 'Google Maps', author: 'Mohammed A.', rating: 5, filiaal: 'Rotterdam', date: 'Vandaag', text: 'Supersnel geholpen door Kevin. Gelijk de goede muurbeugel erbij gekregen.', verkoper: 'Kevin' },
+];
+
+const TOP_REVIEW_SELLERS = [
+  { naam: 'Daan', filiaal: 'Eindhoven', reviews: 45, score: 4.9 },
+  { naam: 'Lisa', filiaal: 'Amsterdam', reviews: 38, score: 4.8 },
+  { naam: 'Max', filiaal: 'Alkmaar', reviews: 32, score: 4.9 },
+  { naam: 'Tom', filiaal: 'Breda', reviews: 28, score: 4.7 },
+  { naam: 'Kevin', filiaal: 'Rotterdam', reviews: 25, score: 4.6 }
+];
+
 export function GoogleReviews() {
   const [isExporting, setIsExporting] = useState(false);
 
@@ -171,6 +187,95 @@ export function GoogleReviews() {
               </ResponsiveContainer>
             </div>
           </div>
+        </div>
+
+        {/* Live Reviews & Verkoper Leaderboard */}
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 mb-8">
+          
+          {/* Live Reviews Feed */}
+          <div className="lg:col-span-2 bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden">
+            <div className="p-6 border-b border-gray-100 bg-gray-50 flex justify-between items-center">
+              <h2 className="text-xl font-bold text-gray-800 flex items-center gap-2">
+                <MessageCircle className="text-blue-500" /> Live Review Feed
+              </h2>
+              <span className="text-xs font-bold px-3 py-1 bg-green-100 text-green-700 rounded-full animate-pulse">Live API Sync</span>
+            </div>
+            <div className="divide-y divide-gray-100">
+              {LIVE_REVIEWS.map(review => (
+                <div key={review.id} className="p-6 hover:bg-gray-50 transition-colors">
+                  <div className="flex justify-between items-start mb-2">
+                    <div>
+                      <div className="flex items-center gap-2 mb-1">
+                        <span className="font-bold text-gray-900">{review.author}</span>
+                        <span className="text-xs text-gray-400">• {review.date}</span>
+                        <span className={`text-xs font-bold px-2 py-0.5 rounded ${
+                          review.source === 'Google Maps' ? 'bg-blue-100 text-blue-700' : 'bg-green-100 text-green-700'
+                        }`}>
+                          {review.source}
+                        </span>
+                      </div>
+                      <div className="flex items-center gap-1 text-yellow-400 mb-2">
+                        {[...Array(5)].map((_, i) => (
+                          <Star key={i} size={14} fill={i < review.rating ? 'currentColor' : 'none'} className={i >= review.rating ? 'text-gray-300' : ''} />
+                        ))}
+                      </div>
+                    </div>
+                    <div className="text-right">
+                      <div className="text-xs font-bold text-gray-500 flex items-center gap-1 justify-end">
+                        <MapPin size={12} /> {review.filiaal}
+                      </div>
+                      {review.verkoper && (
+                        <div className="mt-1 text-sm font-bold text-blue-600 bg-blue-50 px-2 py-1 rounded inline-block">
+                          Verkoper: {review.verkoper}
+                        </div>
+                      )}
+                    </div>
+                  </div>
+                  <p className="text-gray-600 text-sm italic">"{review.text}"</p>
+                </div>
+              ))}
+            </div>
+          </div>
+
+          {/* Top Review Sellers */}
+          <div className="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden">
+            <div className="p-6 border-b border-gray-100 bg-gray-50">
+              <h2 className="text-xl font-bold text-gray-800 flex items-center gap-2">
+                <Star className="text-yellow-500" /> Top Review Verkopers
+              </h2>
+            </div>
+            <div className="p-0">
+              <table className="w-full text-left text-sm">
+                <thead className="bg-gray-50 text-gray-500 font-bold border-b border-gray-100">
+                  <tr>
+                    <th className="px-4 py-3">Verkoper</th>
+                    <th className="px-4 py-3 text-center">Reviews</th>
+                    <th className="px-4 py-3 text-center">Score</th>
+                  </tr>
+                </thead>
+                <tbody className="divide-y divide-gray-100">
+                  {TOP_REVIEW_SELLERS.map((seller, idx) => (
+                    <tr key={idx} className="hover:bg-blue-50 transition-colors">
+                      <td className="px-4 py-3">
+                        <div className="font-bold text-gray-900 flex items-center gap-2">
+                          {idx === 0 ? '🥇' : idx === 1 ? '🥈' : idx === 2 ? '🥉' : <span className="w-4 text-center text-gray-400">{idx + 1}</span>}
+                          {seller.naam}
+                        </div>
+                        <div className="text-xs text-gray-500 ml-6">{seller.filiaal}</div>
+                      </td>
+                      <td className="px-4 py-3 text-center font-bold text-blue-600">{seller.reviews}</td>
+                      <td className="px-4 py-3 text-center">
+                        <div className="inline-flex items-center gap-1 font-bold text-yellow-600 bg-yellow-50 px-2 py-1 rounded">
+                          <Star size={12} fill="currentColor" /> {seller.score}
+                        </div>
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+          </div>
+
         </div>
 
         {/* Datatable: Categories */}

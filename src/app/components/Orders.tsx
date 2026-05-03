@@ -170,7 +170,7 @@ export function Orders() {
       };
       
       setOrdersList([newOrder, ...ordersList]);
-      alert('Upsell succesvol! Order is aangemaakt in het systeem.');
+      alert('Upsell succesvol! Order is aangemaakt in het systeem en direct via API doorgeschoten naar VMS.');
       setUpsellOrderId('');
     }, 1500);
   };
@@ -231,14 +231,14 @@ export function Orders() {
             
             {activeTab === 'overzicht' && (
               <div className="flex gap-3">
+                <button className="flex items-center gap-2 px-4 py-2 bg-[#FDCB2C] text-black rounded-lg font-bold shadow-sm hover:shadow-md transition-all">
+                  <Plus size={18} /> Nieuwe Order
+                </button>
                 <button 
                   onClick={handleExport}
                   className="flex items-center gap-2 px-4 py-2 bg-[#1D6F42] text-white rounded-lg font-bold shadow-sm hover:shadow-md transition-all"
                 >
                   <Download size={18} /> Exporteer
-                </button>
-                <button className="flex items-center gap-2 px-4 py-2 bg-[#FDCB2C] text-black rounded-lg font-bold shadow-sm hover:shadow-md transition-all">
-                  <Plus size={18} /> Nieuwe Order
                 </button>
               </div>
             )}
