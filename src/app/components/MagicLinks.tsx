@@ -1,10 +1,11 @@
 import React, { useState } from 'react';
-import { Link, MessageSquare, PhoneCall, Bot, Copy, ExternalLink, CheckCircle, Table as TableIcon } from 'lucide-react';
+import { Link, MessageSquare, PhoneCall, Bot, Copy, ExternalLink, CheckCircle, Table as TableIcon, Database, Terminal, RefreshCw } from 'lucide-react';
 import { HelloTVLogo } from './ui/HelloTVLogo';
 
 export function MagicLinks() {
-  const [activeTab, setActiveTab] = useState<'magic_links' | 'calling_agents'>('magic_links');
+  const [activeTab, setActiveTab] = useState<'magic_links' | 'calling_agents' | 'bessie_api'>('magic_links');
   const [copiedLink, setCopiedLink] = useState('');
+  const [bessieStatus, setBessieStatus] = useState<'connected' | 'syncing' | 'error'>('connected');
 
   const handleCopy = (link: string) => {
     navigator.clipboard.writeText(link);
@@ -61,6 +62,14 @@ export function MagicLinks() {
             }`}
           >
             <PhoneCall size={18} /> Voice AI Agents per Filiaal
+          </button>
+          <button
+            onClick={() => setActiveTab('bessie_api')}
+            className={`px-6 py-3 font-bold rounded-t-xl transition-colors flex items-center gap-2 ${
+              activeTab === 'bessie_api' ? 'bg-white text-blue-600 border-t-2 border-l-2 border-r-2 border-gray-100 shadow-sm' : 'bg-transparent text-gray-500 hover:bg-gray-100'
+            }`}
+          >
+            <Database size={18} /> Bessie API Koppeling
           </button>
         </div>
 
@@ -230,6 +239,103 @@ export function MagicLinks() {
                     </button>
                   </div>
                 </div>
+              </div>
+            </div>
+          </div>
+        )}
+
+        {activeTab === 'bessie_api' && (
+          <div className="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden max-w-4xl">
+            <div className="bg-gray-900 p-6 flex justify-between items-center text-white border-b border-gray-800">
+              <div className="flex items-center gap-4">
+                <div className="w-12 h-12 bg-[#FDCB2C] rounded-xl flex items-center justify-center">
+                  <Database className="text-gray-900" size={24} />
+                </div>
+                <div>
+                  <h2 className="text-2xl font-bold">Bessie Systeem Integratie</h2>
+                  <p className="text-gray-400 text-sm">Directe API koppeling met de HelloTV backend & AI-modules</p>
+                </div>
+              </div>
+              <div className="flex items-center gap-2 bg-gray-800 px-4 py-2 rounded-full border border-gray-700">
+                <span className="relative flex h-3 w-3">
+                  <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-green-400 opacity-75"></span>
+                  <span className="relative inline-flex rounded-full h-3 w-3 bg-green-500"></span>
+                </span>
+                <span className="text-green-400 font-bold text-sm">API Connected</span>
+              </div>
+            </div>
+
+            <div className="p-8">
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mb-8">
+                <div className="space-y-4">
+                  <h3 className="font-bold text-gray-900 text-lg">Huidige API Gegevens</h3>
+                  <div className="bg-gray-50 p-4 rounded-xl border border-gray-200">
+                    <p className="text-xs text-gray-500 font-bold uppercase mb-1">Bessie Endpoint URL</p>
+                    <p className="font-mono text-sm text-blue-600 bg-white p-2 rounded border border-gray-100">https://api.hellotv.nl/v1/bessie/graphql</p>
+                  </div>
+                  <div className="bg-gray-50 p-4 rounded-xl border border-gray-200">
+                    <div className="flex justify-between items-center mb-1">
+                      <p className="text-xs text-gray-500 font-bold uppercase">Productie API Key</p>
+                      <span className="text-[10px] bg-red-100 text-red-600 font-bold px-2 py-0.5 rounded">Geheim</span>
+                    </div>
+                    <div className="flex items-center gap-2">
+                      <input 
+                        type="password" 
+                        readOnly 
+                        value="htv_live_bessie_982y4h92834y7t2" 
+                        className="font-mono text-sm bg-white p-2 rounded border border-gray-100 flex-1 outline-none text-gray-700"
+                      />
+                      <button className="p-2 bg-gray-200 hover:bg-gray-300 rounded text-gray-600 transition-colors">
+                        <Copy size={16} />
+                      </button>
+                    </div>
+                  </div>
+                </div>
+
+                <div className="space-y-4">
+                  <h3 className="font-bold text-gray-900 text-lg">Datastromen</h3>
+                  <div className="flex flex-col gap-3">
+                    <div className="flex items-center justify-between p-3 border border-gray-200 rounded-xl bg-white hover:border-blue-300 transition-colors cursor-pointer">
+                      <div className="flex items-center gap-3">
+                        <Terminal size={18} className="text-blue-500" />
+                        <div>
+                          <p className="font-bold text-sm text-gray-900">Voorraad Synchronisatie</p>
+                          <p className="text-xs text-gray-500">Iedere 5 minuten</p>
+                        </div>
+                      </div>
+                      <CheckCircle size={18} className="text-green-500" />
+                    </div>
+                    <div className="flex items-center justify-between p-3 border border-gray-200 rounded-xl bg-white hover:border-blue-300 transition-colors cursor-pointer">
+                      <div className="flex items-center gap-3">
+                        <Terminal size={18} className="text-purple-500" />
+                        <div>
+                          <p className="font-bold text-sm text-gray-900">Klantdata (CRM) Sync</p>
+                          <p className="text-xs text-gray-500">Real-time webhooks</p>
+                        </div>
+                      </div>
+                      <CheckCircle size={18} className="text-green-500" />
+                    </div>
+                    <div className="flex items-center justify-between p-3 border border-gray-200 rounded-xl bg-white hover:border-blue-300 transition-colors cursor-pointer">
+                      <div className="flex items-center gap-3">
+                        <Terminal size={18} className="text-orange-500" />
+                        <div>
+                          <p className="font-bold text-sm text-gray-900">AI Agents Knowledge Base</p>
+                          <p className="text-xs text-gray-500">Gekoppeld aan Bessie Docs</p>
+                        </div>
+                      </div>
+                      <CheckCircle size={18} className="text-green-500" />
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div className="flex gap-4">
+                <button className="px-6 py-3 bg-[#1D6F42] hover:bg-green-700 text-white font-bold rounded-xl flex items-center gap-2 transition-all shadow-sm">
+                  <RefreshCw size={18} /> Forceer Volledige Sync
+                </button>
+                <button className="px-6 py-3 bg-gray-100 hover:bg-gray-200 text-gray-700 font-bold rounded-xl transition-all">
+                  API Documentatie
+                </button>
               </div>
             </div>
           </div>
