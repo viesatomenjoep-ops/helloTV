@@ -7,7 +7,7 @@ export function MediaPortal() {
     { id: 1, type: 'youtube', title: 'HelloTV Zomer Campagne', platform: 'YouTube', url: 'https://youtube.com/watch?v=123', date: '04-05-2026' },
     { id: 2, type: 'instagram', title: 'OLED 2026 Sneak Peek', platform: 'Instagram', url: 'https://instagram.com/p/123', date: '03-05-2026' },
     { id: 3, type: 'tiktok', title: 'Store Tour Breda', platform: 'TikTok', url: 'https://tiktok.com/@hellotv/123', date: '01-05-2026' },
-    { id: 4, type: 'image', title: 'LG G6 OLED Banner', platform: 'Cloudinary', url: 'cloudinary://img/lg-g6.jpg', date: '28-04-2026' },
+    { id: 4, type: 'image', title: 'LG G6 OLED Banner', platform: 'MediaServer', url: 'media://img/lg-g6.jpg', date: '28-04-2026' },
   ]);
 
   const [formData, setFormData] = useState({
@@ -23,7 +23,7 @@ export function MediaPortal() {
       id: Date.now(),
       title: formData.title,
       type: formData.type,
-      platform: formData.type === 'youtube' ? 'YouTube' : formData.type === 'instagram' ? 'Instagram' : formData.type === 'tiktok' ? 'TikTok' : 'Cloudinary',
+      platform: formData.type === 'youtube' ? 'YouTube' : formData.type === 'instagram' ? 'Instagram' : formData.type === 'tiktok' ? 'TikTok' : 'MediaServer',
       url: formData.url,
       date: new Date().toLocaleDateString('nl-NL')
     };
@@ -51,7 +51,7 @@ export function MediaPortal() {
               <Cloud className="text-blue-500" size={36} />
               Media & Content Portaal
             </h1>
-            <p className="text-gray-600">Beheer al je YouTube, Instagram, TikTok video's en Cloudinary afbeeldingen centraal.</p>
+            <p className="text-gray-600">Beheer al je YouTube, Instagram, TikTok video's en MediaServer afbeeldingen centraal.</p>
           </div>
           <div className="flex gap-4">
             <button
@@ -110,13 +110,13 @@ export function MediaPortal() {
 
                   <div>
                     <label className="block text-sm font-bold text-gray-700 mb-2">
-                      {formData.type === 'image' ? 'Upload Afbeelding (Cloudinary)' : 'Video URL / Link'}
+                      {formData.type === 'image' ? 'Upload Afbeelding (MediaServer)' : 'Video URL / Link'}
                     </label>
                     {formData.type === 'image' ? (
                       <div className="border-2 border-dashed border-gray-300 rounded-xl p-8 text-center bg-gray-50 hover:bg-gray-100 cursor-pointer transition-colors">
                         <Upload size={32} className="mx-auto text-gray-400 mb-3" />
                         <p className="text-sm font-bold text-gray-600">Klik of sleep afbeeldingen hierheen</p>
-                        <p className="text-xs text-gray-400 mt-1">Direct gekoppeld aan Cloudinary CDN</p>
+                        <p className="text-xs text-gray-400 mt-1">Direct uploaden naar database</p>
                       </div>
                     ) : (
                       <input

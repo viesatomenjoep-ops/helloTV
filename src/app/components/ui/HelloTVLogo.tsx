@@ -23,14 +23,14 @@ export function HelloTVLogo({ className = "h-8", theme = 'light' }: { className?
         hello
       </text>
       <g transform="translate(200, 15)">
-        <rect width="110" height="70" rx="20" fill="#FDCB2C" />
+        <rect width="110" height="70" rx="16" fill="#E52421" />
         <text 
           x="55" 
           y="52" 
           fontFamily="Arial, sans-serif" 
           fontWeight="900" 
           fontSize="50" 
-          fill="#1A1A1A"
+          fill="#FFFFFF"
           textAnchor="middle"
         >
           TV

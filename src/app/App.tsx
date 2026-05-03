@@ -1,21 +1,26 @@
 import React, { useState } from 'react';
 import { 
-  LayoutDashboard, 
+  Home, 
   Users, 
-  Package, 
+  Box, 
   ShoppingCart, 
   Settings, 
   Menu, 
   X, 
   TrendingUp, 
-  FileText, 
-  Clock,
-  Layers,
+  FileSignature, 
+  CalendarClock,
+  Briefcase,
   UserCircle,
   Search,
   Star,
   Link as LinkIcon,
-  Wrench as Tool
+  Wrench,
+  Truck,
+  HeartPulse,
+  GraduationCap,
+  Film,
+  Building2
 } from 'lucide-react';
 import { Dashboard } from './components/Dashboard';
 import { CRM } from './components/CRM';
@@ -50,22 +55,22 @@ export default function App() {
   }, []);
 
   const menuItems = [
-    { id: 'dashboard', label: 'Dashboard', icon: LayoutDashboard },
+    { id: 'dashboard', label: 'Dashboard', icon: Home },
     { id: 'website', label: 'HelloTV.nl (Live)', icon: Search },
     { id: 'reviews', label: 'Google Maps Reviews', icon: Star },
     { id: 'orders', label: 'Orders & Upsell', icon: ShoppingCart },
-    { id: 'quotes', label: 'Offertes', icon: FileText },
-    { id: 'showcase', label: 'Visie & Strategie', icon: Layers },
+    { id: 'quotes', label: 'Offertes', icon: FileSignature },
+    { id: 'showcase', label: 'Visie & Strategie', icon: Building2 },
     { id: 'crm', label: 'CRM', icon: Users },
     { id: 'sales', label: 'Sales Tracker', icon: TrendingUp },
-    { id: 'inventory', label: 'Voorraad & Inkoop', icon: Package },
-    { id: 'transport', label: 'Transport (Bessy)', icon: Clock },
-    { id: 'reparatie', label: 'Reparatie & Service', icon: Tool },
+    { id: 'inventory', label: 'Voorraad & Inkoop', icon: Box },
+    { id: 'transport', label: 'Transport (Bessy)', icon: Truck },
+    { id: 'reparatie', label: 'Reparatie & Service', icon: Wrench },
     { id: 'magiclinks', label: 'AI & Magic Links', icon: LinkIcon },
-    { id: 'media', label: 'Media & Cloudinary', icon: Layers },
-    { id: 'trainers', label: 'Sales Trainers', icon: Users },
-    { id: 'shiftbase', label: 'Hello Base (Uren)', icon: Clock },
-    { id: 'hr', label: 'HR & Reiskosten', icon: Users },
+    { id: 'media', label: 'Media Portaal', icon: Film },
+    { id: 'trainers', label: 'Sales Trainers', icon: GraduationCap },
+    { id: 'shiftbase', label: 'Hello Base (Uren)', icon: CalendarClock },
+    { id: 'hr', label: 'HR & Reiskosten', icon: HeartPulse },
     { id: 'vendit', label: 'Vendit API Koppeling', icon: Settings },
   ];
 
@@ -101,14 +106,14 @@ export default function App() {
               onClick={() => handleNavClick(item.id)}
               className={`w-full flex items-center gap-3 px-4 py-3 rounded-xl transition-all duration-200 group font-medium ${
                 currentView === item.id 
-                  ? 'bg-gradient-to-r from-[#1D6F42]/20 to-transparent text-white shadow-lg border-l-4 border-[#1D6F42]' 
+                  ? 'bg-gradient-to-r from-[#E52421]/20 to-transparent text-white shadow-lg border-l-4 border-[#E52421]' 
                   : 'hover:bg-gray-800 hover:text-white'
               }`}
             >
               <item.icon 
                 size={20} 
                 className={`transition-colors duration-200 ${
-                  currentView === item.id ? 'text-[#1D6F42]' : 'text-gray-500 group-hover:text-white'
+                  currentView === item.id ? 'text-[#E52421]' : 'text-gray-500 group-hover:text-white'
                 }`}
               />
               <span className="truncate">{item.label}</span>
@@ -120,7 +125,7 @@ export default function App() {
         <nav className="border-t border-gray-800 p-4 bg-gray-950 shrink-0">
           <div className="flex items-center justify-between p-3 rounded-xl bg-gray-800/50 backdrop-blur-sm border border-gray-700 hover:bg-gray-800 transition-colors cursor-pointer">
             <div className="flex items-center gap-3">
-              <UserCircle size={24} className="text-[#FDCB2C]" />
+              <UserCircle size={24} className="text-[#E52421]" />
               <div className="text-xs leading-tight">
                 <span className="font-bold text-white">Beheerder</span><br/>
                 <span className="text-gray-400">admin@heleutievier.nl</span>

@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Package, Plus, AlertTriangle, TrendingDown, Edit2, MessageSquare, Mail, ShoppingCart, Truck, CheckCircle } from 'lucide-react';
+import { Package, Plus, AlertTriangle, TrendingDown, Edit2, MessageSquare, Mail, ShoppingCart, Truck, CheckCircle, Building, Zap } from 'lucide-react';
 import { api } from '../../utils/api';
 import { mockInventory } from '../../utils/mockInventory';
 
@@ -446,12 +446,60 @@ export function Inventory() {
               )}
             </div>
 
-            <div className="bg-white rounded-2xl shadow-sm border border-gray-100 p-8 flex flex-col items-center justify-center text-center">
-              <div className="w-24 h-24 bg-gray-50 rounded-full flex items-center justify-center mb-6">
-                <Truck size={48} className="text-gray-300" />
+            <div className="bg-white rounded-2xl shadow-sm border border-gray-100 p-8 flex flex-col">
+              <h3 className="text-xl font-bold text-gray-800 mb-2 flex items-center gap-2">
+                <Building className="text-blue-600" />
+                Inkoopbedrijven & Leveranciers
+              </h3>
+              <p className="text-gray-500 mb-6">Voeg leveranciers toe en beheer API-koppelingen/automations.</p>
+
+              {/* Form to add supplier */}
+              <div className="bg-gray-50 p-5 rounded-xl mb-8 border border-gray-100">
+                <h4 className="font-bold text-sm text-gray-700 mb-3">Nieuw Bedrijf Toevoegen</h4>
+                <div className="space-y-3">
+                  <input type="text" placeholder="Naam leverancier (bijv. Samsung B.V.)" className="w-full px-3 py-2 border border-gray-200 rounded-lg text-sm focus:ring-2 focus:ring-[#1D6F42] outline-none" />
+                  <input type="email" placeholder="Contact e-mailadres voor orders" className="w-full px-3 py-2 border border-gray-200 rounded-lg text-sm focus:ring-2 focus:ring-[#1D6F42] outline-none" />
+                  <button onClick={() => alert('Leverancier succesvol toegevoegd aan inkoopdatabase!')} className="w-full py-2.5 bg-blue-600 text-white font-bold rounded-lg text-sm hover:bg-blue-700 transition-colors shadow-sm mt-2">
+                    Voeg Bedrijf Toe
+                  </button>
+                </div>
               </div>
-              <h3 className="text-xl font-bold text-gray-800 mb-2">Recente Inkooporders</h3>
-              <p className="text-gray-500 mb-6">Nog geen orders geplaatst vandaag. Zodra je een inkooporder toewijst aan een logistiek kanaal, verschijnt deze hier ter goedkeuring voor de levering.</p>
+
+              {/* Automations list */}
+              <h4 className="font-bold text-sm text-gray-700 mb-3 flex items-center gap-2">
+                <Zap className="text-yellow-500" size={18} fill="currentColor" /> Actieve Automations
+              </h4>
+              <div className="space-y-3 flex-1">
+                <div className="flex items-center justify-between p-4 border border-gray-100 rounded-xl bg-white shadow-sm hover:border-gray-300 transition-colors">
+                  <div>
+                    <p className="font-bold text-sm text-gray-800">Auto-Order bij Lage Voorraad</p>
+                    <p className="text-xs text-gray-500 mt-1">Verstuurt bestelformulier naar leverancier bij &lt; 5 stuks</p>
+                  </div>
+                  <div className="w-11 h-6 bg-green-500 rounded-full relative cursor-pointer shadow-inner">
+                    <div className="absolute right-1 top-1 w-4 h-4 bg-white rounded-full shadow-sm"></div>
+                  </div>
+                </div>
+                
+                <div className="flex items-center justify-between p-4 border border-gray-100 rounded-xl bg-white shadow-sm hover:border-gray-300 transition-colors">
+                  <div>
+                    <p className="font-bold text-sm text-gray-800">Vendit Auto-Factuur Fetch</p>
+                    <p className="text-xs text-gray-500 mt-1">Haalt inkoopfacturen automatisch op voor Vendit POS</p>
+                  </div>
+                  <div className="w-11 h-6 bg-green-500 rounded-full relative cursor-pointer shadow-inner">
+                    <div className="absolute right-1 top-1 w-4 h-4 bg-white rounded-full shadow-sm"></div>
+                  </div>
+                </div>
+
+                <div className="flex items-center justify-between p-4 border border-gray-100 rounded-xl bg-white shadow-sm hover:border-gray-300 transition-colors">
+                  <div>
+                    <p className="font-bold text-sm text-gray-800">Logistiek Notificaties (Duiven)</p>
+                    <p className="text-xs text-gray-500 mt-1">Stuur tracking/aanmelding direct door naar depot</p>
+                  </div>
+                  <div className="w-11 h-6 bg-gray-300 rounded-full relative cursor-pointer shadow-inner">
+                    <div className="absolute left-1 top-1 w-4 h-4 bg-white rounded-full shadow-sm"></div>
+                  </div>
+                </div>
+              </div>
             </div>
           </div>
         )}

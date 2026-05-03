@@ -57,6 +57,8 @@ const MOCK_PRODUCTS = [
 export function Orders() {
   const [activeTab, setActiveTab] = useState<'overzicht' | 'upsell'>('overzicht');
   
+  const [ordersList, setOrdersList] = useState(mockOrders);
+  
   // Orders State
   const [selectedOrderId, setSelectedOrderId] = useState<string | null>(null);
   const [searchTerm, setSearchTerm] = useState('');
@@ -133,18 +135,51 @@ export function Orders() {
     setIdealLink('');
     setTimeout(() => {
       setIsProcessing(false);
-      setIdealLink(`https://pay.hellotv.nl/ideal/req_8f9${Math.floor(Math.random() * 1000)}`);
-    }, 2000);
+      const link = `https://pay.hellotv.nl/ideal/req_8f9${Math.floor(Math.random() * 1000)}`;
+      setIdealLink(link);
+      
+      const upsellProduct = MOCK_PRODUCTS.find(p => p.id === upsellModelId);
+      
+      const newOrder = {
+        id: `UPS-${Math.floor(1000 + Math.random() * 9000)}`,
+        klant_id: 'CUST-' + Math.floor(10000 + Math.random() * 90000),
+        status: 'In behandeling (Betaling verwacht)',
+        aanschaf_datum: new Date(),
+        producten: [
+          {
+            naam: upsellProduct?.model || 'Upsell TV',
+            prijs: bijbetaling,
+            aantal: 1,
+            sku: upsellProduct?.id || 'UPSELL'
+          }
+        ],
+        order_totaal: bijbetaling,
+        communicatiekanaal: actieveMedewerker ? 'Winkel' : 'Chat',
+        filiaal: actieveMedewerker ? 'Amsterdam' : 'Online',
+        verzending: 'Premium Bezorging & Installatie',
+        klant_gegevens: {
+          naam: 'Upsell Klant',
+          email: 'klant@voorbeeld.nl',
+          telefoon: '0612345678',
+          adres: 'Dorpsstraat 1',
+          postcode: '1234AB',
+          woonplaats: 'Amsterdam'
+        }
+      };
+      
+      setOrdersList([newOrder, ...ordersList]);
+      alert('Upsell succesvol! Order is aangemaakt in het systeem.');
+    }, 1500);
   };
 
   if (selectedOrderId) {
-    const order = mockOrders.find(o => o.id === selectedOrderId);
+    const order = ordersList.find(o => o.id === selectedOrderId);
     if (order) {
       return <OrderDetailView order={order} onBack={() => setSelectedOrderId(null)} />;
     }
   }
 
-  const filteredOrders = mockOrders.filter(order => {
+  const filteredOrders = ordersList.filter(order => {
     const matchesSearch = order.id.toLowerCase().includes(searchTerm.toLowerCase()) || 
                           order.klant_id.toLowerCase().includes(searchTerm.toLowerCase());
     const matchesStatus = statusFilter === 'Alle' || order.status.toLowerCase().includes(statusFilter.toLowerCase());
@@ -408,7 +443,7 @@ export function Orders() {
                       className="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none font-medium"
                     >
                       <option value="">-- Kies een nieuwer/beter model --</option>
-                      {MOCK_PRODUCTS.filter(p => p.prijs > selectedProduct.prijs).map(p => (
+                      {MOCK_PRODUCTS.filter(p => p.prijs > selectedProduct.prijs || p.model.includes('2026')).map(p => (
                         <option key={p.id} value={p.id}>
                           {p.model} (Marge: {p.marge}%) - €{p.prijs}
                         </option>
