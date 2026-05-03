@@ -1,3 +1,5 @@
+import React from "react";
+
 import { useState, useEffect } from 'react';
 import { Users, Plus, Edit, Mail, Phone, MapPin, Calendar, Database } from 'lucide-react';
 import { api } from '../../utils/api';
@@ -47,12 +49,12 @@ export function CRM() {
         <div className="flex flex-col md:flex-row md:items-center justify-between mb-8 gap-4">
           <div>
             <h1 className="text-4xl font-bold text-gray-800 mb-2">Klantendatabase (CRM)</h1>
-            <p className="text-gray-600">Beheer klantinformatie – <span className="font-semibold text-blue-600">Gekoppeld aan Supabase SQL</span></p>
+            <p className="text-gray-600">Beheer klantinformatie</p>
           </div>
           <div className="flex gap-4">
             <div className="flex items-center gap-2 px-4 py-2 bg-green-100 text-green-700 rounded-lg font-medium text-sm">
               <Database size={16} />
-              Supabase public.customers
+              Beveiligde Database
             </div>
             <button
               onClick={() => setShowForm(!showForm)}
@@ -210,6 +212,37 @@ export function CRM() {
                     <span>Klant sinds {new Date(customer.created_at).toLocaleDateString('nl-NL')}</span>
                   </div>
                 )}
+                
+                {/* Order History Section */}
+                {customer.orders && customer.orders.length > 0 && (
+                  <div className="mt-6 pt-4 border-t border-gray-100">
+                    <div className="flex justify-between items-center mb-3">
+                      <span className="text-sm font-bold text-gray-800">Bestelhistorie</span>
+                      <span className="text-sm font-black text-green-600">
+                        Totale waarde: €{(customer.total_spent || 0).toLocaleString('nl-NL', { minimumFractionDigits: 2 })}
+                      </span>
+                    </div>
+                    <div className="space-y-2">
+                      {customer.orders.map((order: any) => (
+                        <div key={order.id} className="bg-gray-50 p-3 rounded-lg border border-gray-100 flex flex-col gap-1">
+                          <div className="flex justify-between items-center">
+                            <span className="text-xs font-bold text-gray-700">{order.id}</span>
+                            <span className="text-xs font-semibold text-gray-900">€{order.totaal.toLocaleString('nl-NL', { minimumFractionDigits: 2 })}</span>
+                          </div>
+                          <div className="text-xs text-gray-600 truncate">{order.product}</div>
+                          <div className="flex justify-between items-center mt-1">
+                            <span className="text-[10px] text-gray-400">{new Date(order.datum).toLocaleDateString('nl-NL')}</span>
+                            <span className={`text-[10px] px-2 py-0.5 rounded-full font-medium ${
+                              order.status === 'Afgehandeld' ? 'bg-green-100 text-green-700' : 'bg-orange-100 text-orange-700'
+                            }`}>
+                              {order.status}
+                            </span>
+                          </div>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                )}
               </div>
             </div>
           ))}
@@ -218,7 +251,7 @@ export function CRM() {
             <div className="col-span-full text-center py-16 bg-white rounded-3xl border border-dashed border-gray-200">
               <Users size={48} className="mx-auto text-gray-300 mb-4" />
               <p className="text-gray-500 text-lg font-medium">Nog geen klanten in de database</p>
-              <p className="text-gray-400 mt-1">Klik op "Nieuwe Klant" om te beginnen via Supabase.</p>
+              <p className="text-gray-400 mt-1">Klik op "Nieuwe Klant" om te beginnen.</p>
             </div>
           )}
         </div>

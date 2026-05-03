@@ -154,9 +154,8 @@ export default function App() {
         {sidebarOpen && (
           <div className="absolute bottom-0 left-0 right-0 p-6 border-t border-gray-700">
             <div className="bg-[#1A1A1A] border border-gray-700 rounded-xl p-4 mb-3">
-              <div className="text-sm font-bold text-[#FDCB2C] mb-1">Viesa Automations</div>
+              <div className="text-sm font-bold text-[#FDCB2C] mb-1">HelloTV Management</div>
               <div className="text-xs text-gray-300">Systeem is Volledig Operationeel</div>
-              <div className="mt-2 text-xs text-gray-500">WhatsApp & Supabase Actief</div>
             </div>
             <button 
               onClick={() => setIsAuthenticated(false)}
