@@ -69,15 +69,17 @@ export function SalesTracker() {
       
       const isTop = i <= 5;
       const salesCount = isTop ? Math.floor(Math.random() * 50) + 150 : Math.floor(Math.random() * 100) + 20;
-      const tvSold = Math.floor(salesCount * 0.7);
+      const tvSold = Math.floor(salesCount * 0.6);
+      const bbqSold = Math.floor(salesCount * 0.1);
       const accessoriesSold = Math.floor(salesCount * 1.5);
 
       const tvMargin = tvSold * (Math.floor(Math.random() * 200) + 150); 
+      const bbqMargin = bbqSold * (Math.floor(Math.random() * 150) + 100);
       const accessoriesMargin = accessoriesSold * 35; 
-      const totalRevenue = (tvSold * 1800) + (accessoriesSold * 50); 
+      const totalRevenue = (tvSold * 1800) + (bbqSold * 900) + (accessoriesSold * 50); 
       
       const todaySalesCount = Math.floor(Math.random() * 5);
-      const todayRevenue = todaySalesCount * 1800;
+      const todayRevenue = todaySalesCount * 1500;
 
       data.push({
         id: `EMP-${i}`,
@@ -89,6 +91,8 @@ export function SalesTracker() {
         todaySalesCount,
         tvSold,
         tvMargin,
+        bbqSold,
+        bbqMargin,
         accessoriesSold,
         accessoriesMargin,
         recentSales: generateRecentSales(salesCount)
@@ -374,6 +378,7 @@ export function SalesTracker() {
                   <th className="px-6 py-4 text-left text-xs font-black text-gray-500 uppercase tracking-wider">Filiaal</th>
                   <th className="px-6 py-4 text-left text-xs font-black text-gray-500 uppercase tracking-wider">Omzet</th>
                   <th className="px-6 py-4 text-left text-xs font-black text-gray-500 uppercase tracking-wider">TV's (Marge)</th>
+                  <th className="px-6 py-4 text-left text-xs font-black text-gray-500 uppercase tracking-wider">BBQ's (Marge)</th>
                   <th className="px-6 py-4 text-left text-xs font-black text-gray-500 uppercase tracking-wider">Acties</th>
                 </tr>
               </thead>
@@ -418,6 +423,12 @@ export function SalesTracker() {
                         <div className="font-bold text-gray-800">{person.tvSold} stuks</div>
                         <div className="text-xs text-green-600 font-bold">
                           + €{person.tvMargin.toLocaleString('nl-NL')} marge
+                        </div>
+                      </td>
+                      <td className="px-6 py-4">
+                        <div className="font-bold text-gray-800">{person.bbqSold} stuks</div>
+                        <div className="text-xs text-orange-600 font-bold">
+                          + €{person.bbqMargin.toLocaleString('nl-NL')} marge
                         </div>
                       </td>
                       <td className="px-6 py-4">

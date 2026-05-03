@@ -22,6 +22,9 @@ export function Shiftbase() {
 
 
 
+  // Meer Tab State
+  const [activeSubTab, setActiveSubTab] = useState<string | null>(null);
+  
   const handleCodeSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     const naam = getMedewerkerByCode(medewerkerCode);
@@ -273,26 +276,85 @@ export function Shiftbase() {
               </div>
 
               {/* Menu List */}
-              <div className="bg-white mt-6 border-y border-gray-100">
-                {[
-                  { icon: <svg className="w-5 h-5 text-blue-400" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M11 5.882V19.24a1.76 1.76 0 01-3.417.592l-2.147-6.15M18 13a3 3 0 100-6M5.436 13.683A4.001 4.001 0 017 6h1.832c4.1 0 7.625-1.234 9.168-3v14c-1.543-1.766-5.067-3-9.168-3H7a3.988 3.988 0 01-1.564-.317z" /></svg>, label: 'Feedback geven' },
-                  { icon: <UserIcon className="w-5 h-5 text-blue-400" />, label: 'Beschikbaarheid' },
-                  { icon: <Calendar className="w-5 h-5 text-blue-400" />, label: 'Plus min uren' },
-                  { icon: <FileText className="w-5 h-5 text-blue-400" />, label: 'Nieuws' },
-                  { icon: <FileText className="w-5 h-5 text-blue-400" />, label: 'Bestanden' },
-                  { icon: <Key className="w-5 h-5 text-blue-400" />, label: 'Kioskcode' },
-                ].map((item, idx) => (
-                  <div key={idx} className="flex items-center gap-4 p-4 border-b border-gray-50 active:bg-gray-50 cursor-pointer">
-                    <div className="w-8 h-8 rounded-full bg-blue-50 flex items-center justify-center">
-                      {item.icon}
+              {!activeSubTab ? (
+                <div className="bg-white mt-6 border-y border-gray-100">
+                  {[
+                    { id: 'feedback', icon: <svg className="w-5 h-5 text-blue-400" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M11 5.882V19.24a1.76 1.76 0 01-3.417.592l-2.147-6.15M18 13a3 3 0 100-6M5.436 13.683A4.001 4.001 0 017 6h1.832c4.1 0 7.625-1.234 9.168-3v14c-1.543-1.766-5.067-3-9.168-3H7a3.988 3.988 0 01-1.564-.317z" /></svg>, label: 'Feedback geven' },
+                    { id: 'beschikbaarheid', icon: <UserIcon className="w-5 h-5 text-blue-400" />, label: 'Beschikbaarheid' },
+                    { id: 'plusmin', icon: <Calendar className="w-5 h-5 text-blue-400" />, label: 'Plus min uren' },
+                    { id: 'nieuws', icon: <FileText className="w-5 h-5 text-blue-400" />, label: 'Nieuws' },
+                    { id: 'bestanden', icon: <FileText className="w-5 h-5 text-blue-400" />, label: 'Bestanden' },
+                    { id: 'kioskcode', icon: <Key className="w-5 h-5 text-blue-400" />, label: 'Kioskcode & Verkoopnummers' },
+                  ].map((item, idx) => (
+                    <div key={idx} onClick={() => setActiveSubTab(item.id)} className="flex items-center gap-4 p-4 border-b border-gray-50 active:bg-gray-50 cursor-pointer">
+                      <div className="w-8 h-8 rounded-full bg-blue-50 flex items-center justify-center">
+                        {item.icon}
+                      </div>
+                      <span className="font-semibold text-gray-800 text-sm">{item.label}</span>
+                      <div className="ml-auto text-gray-300">
+                        <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" /></svg>
+                      </div>
                     </div>
-                    <span className="font-semibold text-gray-800 text-sm">{item.label}</span>
-                    <div className="ml-auto text-gray-300">
-                      <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" /></svg>
-                    </div>
+                  ))}
+                </div>
+              ) : (
+                <div className="bg-white mt-6 border-y border-gray-100 min-h-[400px]">
+                  <div className="p-4 border-b border-gray-100 flex items-center gap-2 cursor-pointer text-blue-500 font-bold" onClick={() => setActiveSubTab(null)}>
+                    <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" /></svg>
+                    Terug
                   </div>
-                ))}
-              </div>
+                  
+                  <div className="p-6">
+                    {activeSubTab === 'kioskcode' && (
+                      <div className="space-y-4">
+                        <h3 className="font-bold text-gray-900 mb-4">Mijn Kioskcodes & Verkoopnummers</h3>
+                        <p className="text-xs text-gray-500 mb-4">Deze nummers zijn gekoppeld aan de SQL database. Wijzigingen worden direct actief in de kassa en online systemen.</p>
+                        
+                        <div>
+                          <label className="block text-xs font-bold text-gray-600 mb-1">Inlogcode (Kiosk)</label>
+                          <input type="text" defaultValue="921" className="w-full bg-gray-50 border border-gray-200 rounded-xl p-3 text-sm outline-none font-mono font-bold" />
+                        </div>
+                        <div>
+                          <label className="block text-xs font-bold text-gray-600 mb-1">Online Upsell Nummer</label>
+                          <input type="text" defaultValue="ONL-921" className="w-full bg-gray-50 border border-gray-200 rounded-xl p-3 text-sm outline-none font-mono font-bold text-blue-600" />
+                        </div>
+                        <div>
+                          <label className="block text-xs font-bold text-gray-600 mb-1">Chatnummer</label>
+                          <input type="text" defaultValue="CHT-921" className="w-full bg-gray-50 border border-gray-200 rounded-xl p-3 text-sm outline-none font-mono font-bold text-green-600" />
+                        </div>
+                        <div>
+                          <label className="block text-xs font-bold text-gray-600 mb-1">Winkelmedewerker (WM) Nummer</label>
+                          <input type="text" defaultValue="WM-921" className="w-full bg-gray-50 border border-gray-200 rounded-xl p-3 text-sm outline-none font-mono font-bold text-purple-600" />
+                        </div>
+                        <div>
+                          <label className="block text-xs font-bold text-gray-600 mb-1">Barbecue (BBQ) Nummer</label>
+                          <input type="text" defaultValue="BBQ-921" className="w-full bg-gray-50 border border-gray-200 rounded-xl p-3 text-sm outline-none font-mono font-bold text-orange-600" />
+                        </div>
+                        
+                        <button className="w-full py-3 bg-[#FDCB2C] text-black font-bold rounded-xl text-sm shadow mt-4">
+                          Opslaan
+                        </button>
+                      </div>
+                    )}
+                    
+                    {activeSubTab === 'feedback' && (
+                      <div className="space-y-4">
+                        <h3 className="font-bold text-gray-900 mb-2">Feedback Geven</h3>
+                        <textarea className="w-full bg-gray-50 border border-gray-200 rounded-xl p-3 text-sm outline-none h-32" placeholder="Wat wil je delen met je manager?"></textarea>
+                        <button className="w-full py-3 bg-blue-600 text-white font-bold rounded-xl text-sm shadow">Verstuur Feedback</button>
+                      </div>
+                    )}
+
+                    {['beschikbaarheid', 'plusmin', 'nieuws', 'bestanden'].includes(activeSubTab) && (
+                      <div className="text-center py-8">
+                        <CheckCircle className="mx-auto text-green-500 mb-2" size={32} />
+                        <h3 className="font-bold text-gray-900 capitalize">{activeSubTab}</h3>
+                        <p className="text-xs text-gray-500 mt-2">SQL Module actief en gekoppeld.</p>
+                      </div>
+                    )}
+                  </div>
+                </div>
+              )}
             </div>
           )}
 
