@@ -15,6 +15,84 @@ type View = 'dashboard' | 'crm' | 'sales' | 'inventory' | 'quotes' | 'orders' | 
 export default function App() {
   const [currentView, setCurrentView] = useState<View>('dashboard');
   const [sidebarOpen, setSidebarOpen] = useState(true);
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const [loginError, setLoginError] = useState('');
+
+  const handleLogin = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (email === 'test@hellotv.nl' && password === '1111') {
+      setIsAuthenticated(true);
+      setLoginError('');
+    } else {
+      setLoginError('Onjuiste inloggegevens. Probeer opnieuw.');
+    }
+  };
+
+  if (!isAuthenticated) {
+    return (
+      <div className="min-h-screen bg-[#1A1A1A] flex flex-col items-center justify-center p-4 relative overflow-hidden">
+        {/* Decorative brand background pattern */}
+        <div className="absolute inset-0 opacity-10 pointer-events-none" 
+             style={{ backgroundImage: 'radial-gradient(circle, #ffffff 1px, transparent 1px)', backgroundSize: '30px 30px' }}>
+        </div>
+        
+        <div className="w-full max-w-md bg-white rounded-3xl shadow-2xl p-8 relative z-10">
+          <div className="flex justify-center mb-8">
+            <HelloTVLogo className="h-12" />
+          </div>
+          
+          <div className="text-center mb-8">
+            <h1 className="text-2xl font-black text-gray-900 mb-2">Welkom bij Viesa</h1>
+            <p className="text-gray-500 font-medium">Log in op het HelloTV Backend Systeem</p>
+          </div>
+
+          <form onSubmit={handleLogin} className="space-y-6">
+            <div>
+              <label className="block text-sm font-bold text-gray-700 mb-2">E-mailadres</label>
+              <input 
+                type="email" 
+                value={email}
+                onChange={e => setEmail(e.target.value)}
+                placeholder="naam@hellotv.nl"
+                className="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-xl focus:ring-2 focus:ring-[#FDCB2C] focus:bg-white outline-none transition-all"
+                required
+              />
+            </div>
+            <div>
+              <label className="block text-sm font-bold text-gray-700 mb-2">Wachtwoord</label>
+              <input 
+                type="password" 
+                value={password}
+                onChange={e => setPassword(e.target.value)}
+                placeholder="••••"
+                className="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-xl focus:ring-2 focus:ring-[#FDCB2C] focus:bg-white outline-none transition-all"
+                required
+              />
+            </div>
+
+            {loginError && (
+              <div className="p-3 bg-red-50 text-red-600 rounded-lg text-sm font-semibold border border-red-100">
+                {loginError}
+              </div>
+            )}
+
+            <button 
+              type="submit"
+              className="w-full py-4 bg-[#FDCB2C] text-black font-black text-lg rounded-xl shadow-md hover:bg-yellow-400 transition-colors"
+            >
+              Inloggen
+            </button>
+          </form>
+          
+          <div className="mt-8 text-center">
+            <p className="text-xs text-gray-400">© 2026 Viesa Automations x HelloTV</p>
+          </div>
+        </div>
+      </div>
+    );
+  }
 
   useEffect(() => {
     initDemoData();
@@ -59,7 +137,7 @@ export default function App() {
               onClick={() => setCurrentView(item.id as View)}
               className={`w-full flex items-center gap-4 px-6 py-4 transition-all ${
                 currentView === item.id
-                  ? 'bg-gradient-to-r from-blue-600 to-purple-600 border-l-4 border-white'
+                  ? 'bg-[#1A1A1A] border-l-4 border-[#FDCB2C] text-[#FDCB2C]'
                   : 'hover:bg-gray-700/50'
               }`}
             >
@@ -71,11 +149,17 @@ export default function App() {
 
         {sidebarOpen && (
           <div className="absolute bottom-0 left-0 right-0 p-6 border-t border-gray-700">
-            <div className="bg-gradient-to-r from-blue-600 to-purple-600 rounded-lg p-4">
-              <div className="text-sm font-semibold mb-1">Powered by</div>
-              <div className="text-xs text-gray-200">Supabase + React + Tailwind</div>
-              <div className="mt-2 text-xs opacity-75">WhatsApp Integration Active</div>
+            <div className="bg-[#1A1A1A] border border-gray-700 rounded-xl p-4 mb-3">
+              <div className="text-sm font-bold text-[#FDCB2C] mb-1">Viesa Automations</div>
+              <div className="text-xs text-gray-300">Systeem is Volledig Operationeel</div>
+              <div className="mt-2 text-xs text-gray-500">WhatsApp & Supabase Actief</div>
             </div>
+            <button 
+              onClick={() => setIsAuthenticated(false)}
+              className="w-full py-2 bg-gray-800 text-gray-300 rounded-lg text-sm font-medium hover:bg-gray-700 transition-colors"
+            >
+              Uitloggen
+            </button>
           </div>
         )}
       </div>

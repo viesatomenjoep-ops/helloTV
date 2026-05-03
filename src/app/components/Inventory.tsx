@@ -1,9 +1,10 @@
 import { useState, useEffect } from 'react';
-import { Package, Plus, AlertTriangle, TrendingDown, Edit2 } from 'lucide-react';
+import { Package, Plus, AlertTriangle, TrendingDown, Edit2, MessageSquare, Mail } from 'lucide-react';
 import { api } from '../../utils/api';
+import { mockInventory } from '../../utils/mockInventory';
 
 export function Inventory() {
-  const [items, setItems] = useState<any[]>([]);
+  const [items, setItems] = useState<any[]>(mockInventory);
   const [showForm, setShowForm] = useState(false);
   const [formData, setFormData] = useState({
     name: '',
@@ -41,8 +42,7 @@ export function Inventory() {
     }
   };
 
-  const lowStockItems = items.filter(item => item.quantity <= (item.lowStockThreshold || 10));
-  const totalValue = items.reduce((sum, item) => sum + ((item.quantity || 0) * (item.price || 0)), 0);
+  const totalValue = items.reduce((sum, item) => sum + ((item.stock || item.quantity || 0) * (item.prijs || item.price || 0)), 0);
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-gray-50 to-gray-100 p-8">
@@ -185,14 +185,16 @@ export function Inventory() {
                   <th className="px-6 py-4 text-left text-sm font-semibold text-gray-700">SKU</th>
                   <th className="px-6 py-4 text-left text-sm font-semibold text-gray-700">Categorie</th>
                   <th className="px-6 py-4 text-left text-sm font-semibold text-gray-700">Voorraad</th>
-                  <th className="px-6 py-4 text-left text-sm font-semibold text-gray-700">Prijs</th>
-                  <th className="px-6 py-4 text-left text-sm font-semibold text-gray-700">Waarde</th>
+                  <th className="px-6 py-4 text-left text-sm font-semibold text-gray-700">Inkoop</th>
+                  <th className="px-6 py-4 text-left text-sm font-semibold text-gray-700">Verkoop</th>
+                  <th className="px-6 py-4 text-left text-sm font-semibold text-gray-700">Marge</th>
+                  <th className="px-6 py-4 text-left text-sm font-semibold text-gray-700">Magic Links</th>
                   <th className="px-6 py-4 text-left text-sm font-semibold text-gray-700">Status</th>
                 </tr>
               </thead>
               <tbody>
                 {items.map((item) => {
-                  const isLowStock = item.quantity <= (item.lowStockThreshold || 10);
+                  const isLowStock = (item.stock || item.quantity) <= (item.lowStockThreshold || 10);
                   return (
                     <tr
                       key={item.id}
@@ -201,9 +203,9 @@ export function Inventory() {
                       }`}
                     >
                       <td className="px-6 py-4">
-                        <div className="font-medium text-gray-800">{item.name}</div>
+                        <div className="font-medium text-gray-800">{item.productnaam || item.name}</div>
                       </td>
-                      <td className="px-6 py-4 text-gray-600 font-mono text-sm">{item.sku}</td>
+                      <td className="px-6 py-4 text-gray-600 font-mono text-sm">{item.id || item.sku}</td>
                       <td className="px-6 py-4">
                         {item.category && (
                           <span className="px-3 py-1 bg-blue-100 text-blue-800 rounded-full text-xs font-medium">
@@ -213,14 +215,30 @@ export function Inventory() {
                       </td>
                       <td className="px-6 py-4">
                         <div className={`font-semibold ${isLowStock ? 'text-red-600' : 'text-gray-800'}`}>
-                          {item.quantity} stuks
+                          {item.stock || item.quantity} stuks
                         </div>
                       </td>
                       <td className="px-6 py-4 text-gray-700">
-                        €{item.price?.toLocaleString('nl-NL', { minimumFractionDigits: 2 }) || '0.00'}
+                        €{item.inkoopprijs?.toLocaleString('nl-NL', { minimumFractionDigits: 2 }) || '0.00'}
                       </td>
                       <td className="px-6 py-4 font-semibold text-gray-800">
-                        €{((item.quantity || 0) * (item.price || 0)).toLocaleString('nl-NL', { minimumFractionDigits: 2 })}
+                        €{item.prijs?.toLocaleString('nl-NL', { minimumFractionDigits: 2 }) || '0.00'}
+                      </td>
+                      <td className="px-6 py-4">
+                        <div className="flex items-center gap-1">
+                          <span className="font-bold text-green-600">{Math.round((item.marge_procent || 0) * 100)}%</span>
+                          <span className="text-xs text-gray-500">(€{item.marge_euro?.toLocaleString('nl-NL', { minimumFractionDigits: 2 })})</span>
+                        </div>
+                      </td>
+                      <td className="px-6 py-4">
+                        <div className="flex items-center gap-2">
+                          <a href={`https://wa.me/?text=Interesse%20in%20${encodeURIComponent(item.productnaam || item.name)}`} target="_blank" rel="noreferrer" className="p-2 bg-green-100 text-green-600 rounded-full hover:bg-green-200 transition-colors tooltip" title="Deel via WhatsApp">
+                            <MessageSquare size={16} />
+                          </a>
+                          <a href={`mailto:?subject=Offerte%20Aanvraag:%20${encodeURIComponent(item.productnaam || item.name)}&body=Ik%20heb%20interesse%20in%20deze%20TV.`} className="p-2 bg-blue-100 text-blue-600 rounded-full hover:bg-blue-200 transition-colors tooltip" title="Deel via E-mail">
+                            <Mail size={16} />
+                          </a>
+                        </div>
                       </td>
                       <td className="px-6 py-4">
                         {isLowStock ? (
