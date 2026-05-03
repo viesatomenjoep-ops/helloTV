@@ -2,10 +2,9 @@ import React from "react";
 
 import { useState, useEffect } from 'react';
 import { AreaChart, Area, BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, LineChart, Line } from 'recharts';
-import { TrendingUp, Users, FileText, ShoppingCart, Package, Euro, AlertTriangle, Bell } from 'lucide-react';
+import { TrendingUp, Users, FileText, ShoppingCart, Package, Euro, AlertTriangle, Bell, Trophy, MessageCircle, Store, Mail } from 'lucide-react';
 import { api } from '../../utils/api';
 import { HelloTVLogo } from './ui/HelloTVLogo';
-import { BrandElements } from './BrandElements';
 import { NewOrderWidget } from './NewOrderWidget';
 
 export function Dashboard({ onNavigate }: { onNavigate?: (view: string) => void }) {
@@ -169,6 +168,48 @@ export function Dashboard({ onNavigate }: { onNavigate?: (view: string) => void 
           ))}
         </div>
 
+        {/* Top Performers van Vandaag */}
+        <div className="mb-8 bg-white rounded-2xl shadow-lg p-6 border border-gray-100">
+          <h2 className="text-xl font-bold mb-6 text-gray-800 flex items-center gap-2">
+            <Trophy className="text-[#FDCB2C]" size={24} />
+            Nummer 1 Verkopers (Vandaag)
+          </h2>
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+            <div className="flex items-center gap-4 p-4 bg-blue-50 rounded-xl border border-blue-100">
+              <div className="bg-blue-500 text-white p-3 rounded-full shadow-md">
+                <MessageCircle size={24} />
+              </div>
+              <div>
+                <div className="text-xs font-bold text-blue-600 uppercase tracking-wider mb-1">Online (Chat)</div>
+                <div className="text-lg font-black text-gray-900">Lisa Jansen</div>
+                <div className="text-sm font-semibold text-gray-500">24 orders gesloten</div>
+              </div>
+            </div>
+
+            <div className="flex items-center gap-4 p-4 bg-green-50 rounded-xl border border-green-100">
+              <div className="bg-green-500 text-white p-3 rounded-full shadow-md">
+                <Store size={24} />
+              </div>
+              <div>
+                <div className="text-xs font-bold text-green-600 uppercase tracking-wider mb-1">In de Verkoop (Winkel)</div>
+                <div className="text-lg font-black text-gray-900">Mark de Vries</div>
+                <div className="text-sm font-semibold text-gray-500">18 orders gesloten</div>
+              </div>
+            </div>
+
+            <div className="flex items-center gap-4 p-4 bg-purple-50 rounded-xl border border-purple-100">
+              <div className="bg-purple-500 text-white p-3 rounded-full shadow-md">
+                <Mail size={24} />
+              </div>
+              <div>
+                <div className="text-xs font-bold text-purple-600 uppercase tracking-wider mb-1">Via Mail (Tickets)</div>
+                <div className="text-lg font-black text-gray-900">Tom Peters</div>
+                <div className="text-sm font-semibold text-gray-500">12 orders gesloten</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-8">
           <div className="bg-white rounded-2xl shadow-lg p-6">
             <h2 className="text-xl font-bold mb-4 text-gray-800">Omzet Trend</h2>
@@ -237,9 +278,6 @@ export function Dashboard({ onNavigate }: { onNavigate?: (view: string) => void 
             <div className="text-6xl">🚀</div>
           </div>
         </div>
-
-        {/* Brand Elements Section */}
-        <BrandElements />
       </div>
     </div>
   );
