@@ -124,7 +124,10 @@ export function Dashboard({ onNavigate }: { onNavigate?: (view: string) => void 
                 <span>→</span>
               </button>
               <button
-                onClick={() => api.testNotification()}
+                onClick={() => {
+                  const text = encodeURIComponent('Hallo, dit is het HelloTVLogo dashboard.');
+                  window.open(`https://wa.me/31651641886?text=${text}`, '_blank');
+                }}
                 className="flex items-center gap-2 px-4 py-2 bg-white rounded-lg shadow-md hover:shadow-lg transition-shadow"
               >
                 <Bell size={18} />
