@@ -5,15 +5,53 @@ import { getMedewerkerByCode } from '../../utils/employees';
 import { OrderDetailView } from './OrderDetail';
 
 const MOCK_PRODUCTS = [
-  { id: 'OLED65G6', merk: 'LG', model: 'OLED65G66LA (2026)', categorie: 'OLED', prijs: 2499, inkoop: 1624, marge: 35, voorraad: 14 },
-  { id: 'OLED55C5', merk: 'LG', model: 'OLED55C54LA (2025)', categorie: 'OLED', prijs: 1399, inkoop: 1161, marge: 17, voorraad: 42 },
-  { id: 'OLED55C4', merk: 'LG', model: 'OLED55C44LA (2024)', categorie: 'OLED', prijs: 1099, inkoop: 989, marge: 10, voorraad: 8 },
-  { id: 'QE65S95D', merk: 'Samsung', model: 'QE65S95D (2026)', categorie: 'QD-OLED', prijs: 2799, inkoop: 1819, marge: 35, voorraad: 21 },
-  { id: 'QE55S90C', merk: 'Samsung', model: 'QE55S90C (2024)', categorie: 'QD-OLED', prijs: 1199, inkoop: 1055, marge: 12, voorraad: 3 },
-  { id: 'XR65A95L', merk: 'Sony', model: 'XR-65A95L (2025)', categorie: 'QD-OLED', prijs: 3499, inkoop: 2624, marge: 25, voorraad: 5 },
-  { id: '55PUS8809', merk: 'Philips', model: '55PUS8809 (2024)', categorie: 'LED', prijs: 699, inkoop: 601, marge: 14, voorraad: 15 },
-  { id: '65PUS8900', merk: 'Philips', model: '65PUS8900 (2026)', categorie: 'MiniLED', prijs: 1299, inkoop: 1039, marge: 20, voorraad: 19 },
-  { id: '65C805', merk: 'TCL', model: '65C805 (2025)', categorie: 'MiniLED', prijs: 899, inkoop: 629, marge: 30, voorraad: 33 },
+  // LG 2025
+  { id: 'OLED55G5', merk: 'LG', model: 'OLED55G56LA (2025)', categorie: 'OLED', prijs: 1999, inkoop: 1400, marge: 30, voorraad: 12 },
+  { id: 'OLED65G5', merk: 'LG', model: 'OLED65G56LA (2025)', categorie: 'OLED', prijs: 2699, inkoop: 1800, marge: 33, voorraad: 8 },
+  { id: 'OLED55C5', merk: 'LG', model: 'OLED55C54LA (2025)', categorie: 'OLED', prijs: 1499, inkoop: 1100, marge: 26, voorraad: 24 },
+  { id: 'OLED65C5', merk: 'LG', model: 'OLED65C54LA (2025)', categorie: 'OLED', prijs: 2099, inkoop: 1550, marge: 26, voorraad: 18 },
+  // LG 2026
+  { id: 'OLED55G6', merk: 'LG', model: 'OLED55G66LA (2026)', categorie: 'OLED', prijs: 2199, inkoop: 1500, marge: 31, voorraad: 5 },
+  { id: 'OLED65G6', merk: 'LG', model: 'OLED65G66LA (2026)', categorie: 'OLED', prijs: 2899, inkoop: 1900, marge: 34, voorraad: 7 },
+  { id: 'OLED55C6', merk: 'LG', model: 'OLED55C64LA (2026)', categorie: 'OLED', prijs: 1699, inkoop: 1250, marge: 26, voorraad: 15 },
+  { id: 'OLED65C6', merk: 'LG', model: 'OLED65C64LA (2026)', categorie: 'OLED', prijs: 2399, inkoop: 1750, marge: 27, voorraad: 11 },
+
+  // Samsung 2025
+  { id: 'QE55S95D', merk: 'Samsung', model: 'QE55S95D (2025)', categorie: 'QD-OLED', prijs: 1899, inkoop: 1350, marge: 28, voorraad: 14 },
+  { id: 'QE65S95D', merk: 'Samsung', model: 'QE65S95D (2025)', categorie: 'QD-OLED', prijs: 2599, inkoop: 1800, marge: 30, voorraad: 9 },
+  { id: 'QE55S95F', merk: 'Samsung', model: 'QE55S95F (2025)', categorie: 'QD-OLED', prijs: 2099, inkoop: 1450, marge: 30, voorraad: 6 },
+  { id: 'QE65S95F', merk: 'Samsung', model: 'QE65S95F (2025)', categorie: 'QD-OLED', prijs: 2899, inkoop: 1950, marge: 32, voorraad: 4 },
+  // Samsung 2026
+  { id: 'QE55S95H', merk: 'Samsung', model: 'QE55S95H (2026)', categorie: 'QD-OLED', prijs: 2299, inkoop: 1600, marge: 30, voorraad: 10 },
+  { id: 'QE65S95H', merk: 'Samsung', model: 'QE65S95H (2026)', categorie: 'QD-OLED', prijs: 3099, inkoop: 2100, marge: 32, voorraad: 8 },
+  { id: 'QN65QN90E', merk: 'Samsung', model: 'QE65QN90E (2026)', categorie: 'Neo QLED', prijs: 1999, inkoop: 1400, marge: 29, voorraad: 16 },
+
+  // Sony 2025
+  { id: 'XR55A95L', merk: 'Sony', model: 'XR-55A95L (2025)', categorie: 'QD-OLED', prijs: 2499, inkoop: 1900, marge: 23, voorraad: 5 },
+  { id: 'XR65A95L', merk: 'Sony', model: 'XR-65A95L (2025)', categorie: 'QD-OLED', prijs: 3299, inkoop: 2450, marge: 25, voorraad: 3 },
+  { id: 'XR65BRAVIA8', merk: 'Sony', model: 'Bravia 8 65" (2025)', categorie: 'OLED', prijs: 2399, inkoop: 1800, marge: 24, voorraad: 7 },
+  // Sony 2026
+  { id: 'XR65BRAVIA9', merk: 'Sony', model: 'Bravia 9 65" (2026)', categorie: 'MiniLED', prijs: 2999, inkoop: 2100, marge: 29, voorraad: 4 },
+  { id: 'XR75BRAVIA9', merk: 'Sony', model: 'Bravia 9 75" (2026)', categorie: 'MiniLED', prijs: 3999, inkoop: 2800, marge: 29, voorraad: 2 },
+  { id: 'XR65BRAVIA8G2', merk: 'Sony', model: 'Bravia 8 Gen2 65" (2026)', categorie: 'OLED', prijs: 2599, inkoop: 1900, marge: 26, voorraad: 5 },
+
+  // Philips 2025
+  { id: '55OLED810', merk: 'Philips', model: '55OLED810 (2025)', categorie: 'OLED', prijs: 1399, inkoop: 1050, marge: 24, voorraad: 22 },
+  { id: '65OLED810', merk: 'Philips', model: '65OLED810 (2025)', categorie: 'OLED', prijs: 1899, inkoop: 1400, marge: 26, voorraad: 15 },
+  { id: '65OLED910', merk: 'Philips', model: '65OLED910 (2025)', categorie: 'OLED+', prijs: 2599, inkoop: 1850, marge: 28, voorraad: 6 },
+  // Philips 2026
+  { id: '55OLED820', merk: 'Philips', model: '55OLED820 (2026)', categorie: 'OLED', prijs: 1599, inkoop: 1150, marge: 28, voorraad: 14 },
+  { id: '65OLED820', merk: 'Philips', model: '65OLED820 (2026)', categorie: 'OLED', prijs: 2199, inkoop: 1550, marge: 29, voorraad: 11 },
+  { id: '65OLED920', merk: 'Philips', model: '65OLED920 (2026)', categorie: 'OLED+', prijs: 2899, inkoop: 2000, marge: 30, voorraad: 4 },
+
+  // TCL 2025
+  { id: '55C865', merk: 'TCL', model: '55C865 (2025)', categorie: 'MiniLED', prijs: 799, inkoop: 550, marge: 31, voorraad: 35 },
+  { id: '65C865', merk: 'TCL', model: '65C865 (2025)', categorie: 'MiniLED', prijs: 1099, inkoop: 750, marge: 31, voorraad: 25 },
+  { id: '85X965', merk: 'TCL', model: '85X965 (2025)', categorie: 'MiniLED', prijs: 2499, inkoop: 1700, marge: 31, voorraad: 5 },
+  // TCL 2026
+  { id: '55C875', merk: 'TCL', model: '55C875 (2026)', categorie: 'MiniLED', prijs: 899, inkoop: 600, marge: 33, voorraad: 20 },
+  { id: '65C875', merk: 'TCL', model: '65C875 (2026)', categorie: 'MiniLED', prijs: 1299, inkoop: 850, marge: 34, voorraad: 18 },
+  { id: '85X975', merk: 'TCL', model: '85X975 (2026)', categorie: 'MiniLED', prijs: 2799, inkoop: 1850, marge: 33, voorraad: 3 },
 ];
 
 export function Orders() {
@@ -30,6 +68,8 @@ export function Orders() {
 
   // Upsell State
   const [productSearchTerm, setProductSearchTerm] = useState('');
+  const [upsellBrandFilter, setUpsellBrandFilter] = useState('Alle Merken');
+  const [upsellYearFilter, setUpsellYearFilter] = useState('Alle Jaren');
   const [selectedProduct, setSelectedProduct] = useState<any>(null);
   const [upsellModelId, setUpsellModelId] = useState('');
   const [bijbetaling, setBijbetaling] = useState(50);
@@ -114,10 +154,13 @@ export function Orders() {
     return matchesSearch && matchesStatus && matchesStore && matchesChannel;
   });
 
-  const filteredProducts = MOCK_PRODUCTS.filter(p => 
-    p.model.toLowerCase().includes(productSearchTerm.toLowerCase()) || 
-    p.merk.toLowerCase().includes(productSearchTerm.toLowerCase())
-  );
+  const filteredProducts = MOCK_PRODUCTS.filter(p => {
+    const matchesSearch = p.model.toLowerCase().includes(productSearchTerm.toLowerCase()) || 
+                          p.merk.toLowerCase().includes(productSearchTerm.toLowerCase());
+    const matchesBrand = upsellBrandFilter === 'Alle Merken' || p.merk === upsellBrandFilter;
+    const matchesYear = upsellYearFilter === 'Alle Jaren' || p.model.includes(upsellYearFilter);
+    return matchesSearch && matchesBrand && matchesYear;
+  });
 
   return (
     <div className="min-h-screen bg-gray-50 p-8 pb-24">
@@ -279,14 +322,28 @@ export function Orders() {
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
             {/* Product Lijst */}
             <div className="lg:col-span-2 bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden">
-              <div className="p-4 border-b border-gray-100 bg-gray-50 flex items-center justify-between">
+              <div className="p-4 border-b border-gray-100 bg-gray-50 flex flex-col md:flex-row gap-4 items-center justify-between">
                 <input
                   type="text"
-                  placeholder="Zoek model of merk (bijv. LG, 2026)..."
+                  placeholder="Zoek model of merk..."
                   value={productSearchTerm}
                   onChange={(e) => setProductSearchTerm(e.target.value)}
-                  className="w-full max-w-md px-4 py-2 border border-gray-200 rounded-lg text-sm focus:ring-2 focus:ring-blue-500 outline-none"
+                  className="w-full md:w-1/3 px-4 py-2 border border-gray-200 rounded-lg text-sm focus:ring-2 focus:ring-blue-500 outline-none"
                 />
+                <select
+                  value={upsellBrandFilter}
+                  onChange={(e) => setUpsellBrandFilter(e.target.value)}
+                  className="w-full md:w-1/3 px-4 py-2 bg-white border border-gray-200 rounded-lg text-sm focus:ring-2 focus:ring-blue-500 outline-none text-gray-700"
+                >
+                  {['Alle Merken', 'LG', 'Samsung', 'Sony', 'Philips', 'TCL'].map(b => <option key={b} value={b}>{b}</option>)}
+                </select>
+                <select
+                  value={upsellYearFilter}
+                  onChange={(e) => setUpsellYearFilter(e.target.value)}
+                  className="w-full md:w-1/3 px-4 py-2 bg-white border border-gray-200 rounded-lg text-sm focus:ring-2 focus:ring-blue-500 outline-none text-gray-700"
+                >
+                  {['Alle Jaren', '2025', '2026'].map(y => <option key={y} value={y}>{y}</option>)}
+                </select>
               </div>
               <div className="overflow-x-auto">
                 <table className="w-full text-left text-sm">

@@ -14,12 +14,12 @@ import {
 } from 'recharts';
 
 const REVIEW_DATA = [
-  { filiaal: 'Amsterdam', week: 45, maand: 180, jaar: 2150, rating: 4.8, transacties: 890, online: 300, winkel: 450, tickets: 140 },
-  { filiaal: 'Breda', week: 38, maand: 145, jaar: 1820, rating: 4.7, transacties: 750, online: 200, winkel: 450, tickets: 100 },
-  { filiaal: 'Eindhoven', week: 52, maand: 210, jaar: 2400, rating: 4.9, transacties: 1100, online: 400, winkel: 600, tickets: 100 },
-  { filiaal: 'Duiven', week: 41, maand: 160, jaar: 1950, rating: 4.6, transacties: 820, online: 250, winkel: 470, tickets: 100 },
-  { filiaal: 'Rotterdam', week: 48, maand: 195, jaar: 2300, rating: 4.8, transacties: 980, online: 350, winkel: 500, tickets: 130 },
-  { filiaal: 'Utrecht', week: 44, maand: 175, jaar: 2100, rating: 4.7, transacties: 880, online: 280, winkel: 500, tickets: 100 },
+  { filiaal: 'Amsterdam', week: 45, maand: 180, jaar: 2150, rating: 4.8, trustpilotRating: 4.6, trustpilotJaar: 850, transacties: 890, online: 300, winkel: 450, tickets: 140 },
+  { filiaal: 'Breda', week: 38, maand: 145, jaar: 1820, rating: 4.7, trustpilotRating: 4.5, trustpilotJaar: 620, transacties: 750, online: 200, winkel: 450, tickets: 100 },
+  { filiaal: 'Eindhoven', week: 52, maand: 210, jaar: 2400, rating: 4.9, trustpilotRating: 4.8, trustpilotJaar: 1100, transacties: 1100, online: 400, winkel: 600, tickets: 100 },
+  { filiaal: 'Duiven', week: 41, maand: 160, jaar: 1950, rating: 4.6, trustpilotRating: 4.4, trustpilotJaar: 780, transacties: 820, online: 250, winkel: 470, tickets: 100 },
+  { filiaal: 'Rotterdam', week: 48, maand: 195, jaar: 2300, rating: 4.8, trustpilotRating: 4.7, trustpilotJaar: 950, transacties: 980, online: 350, winkel: 500, tickets: 130 },
+  { filiaal: 'Utrecht', week: 44, maand: 175, jaar: 2100, rating: 4.7, trustpilotRating: 4.6, trustpilotJaar: 890, transacties: 880, online: 280, winkel: 500, tickets: 100 },
 ];
 
 const TREND_DATA = [
@@ -36,10 +36,22 @@ export function GoogleReviews() {
 
   const handleExport = () => {
     setIsExporting(true);
-    setTimeout(() => {
-      setIsExporting(false);
-      alert('Live Export voltooid: PDF en SQL Dump zijn succesvol gedownload!');
-    }, 2000);
+    let csvContent = "data:text/csv;charset=utf-8,";
+    csvContent += "Filiaal,Transacties,Google Rating,Google Reviews (Jaar),Trustpilot Rating,Trustpilot Reviews (Jaar)\n";
+
+    REVIEW_DATA.forEach(row => {
+      csvContent += `${row.filiaal},${row.transacties},${row.rating},${row.jaar},${row.trustpilotRating},${row.trustpilotJaar}\n`;
+    });
+
+    const encodedUri = encodeURI(csvContent);
+    const link = document.createElement("a");
+    link.setAttribute("href", encodedUri);
+    link.setAttribute("download", `HelloTV_Reviews_${new Date().toISOString().split('T')[0]}.csv`);
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+    
+    setIsExporting(false);
   };
 
   return (
@@ -49,10 +61,10 @@ export function GoogleReviews() {
           <div>
             <h1 className="text-4xl font-bold text-gray-800 mb-2 flex items-center gap-3">
               <Star className="text-yellow-500" size={36} fill="currentColor" />
-              Google Maps Live Reviews
+              Google Maps & Trustpilot Live Reviews
             </h1>
             <p className="text-gray-600">
-              Live SQL koppeling met Google API: Reviews gekoppeld aan transacties per kanaal.
+              Live SQL koppeling met Google & Trustpilot API: Reviews gekoppeld aan transacties.
             </p>
           </div>
           <button
@@ -183,6 +195,7 @@ export function GoogleReviews() {
                   <th className="px-6 py-4 text-center">Tickets / Order Desk</th>
                   <th className="px-6 py-4 text-center">Totaal Reviews (Jaar)</th>
                   <th className="px-6 py-4 text-center">Gem. Score</th>
+                  <th className="px-6 py-4 text-center">Trustpilot Score</th>
                 </tr>
               </thead>
               <tbody className="divide-y divide-gray-100">
@@ -197,6 +210,11 @@ export function GoogleReviews() {
                     <td className="px-6 py-4 text-center">
                       <div className="flex items-center justify-center gap-1 font-bold text-yellow-600 bg-yellow-50 px-2 py-1 rounded-lg w-16 mx-auto">
                         <Star size={12} fill="currentColor" /> {row.rating}
+                      </div>
+                    </td>
+                    <td className="px-6 py-4 text-center">
+                      <div className="flex items-center justify-center gap-1 font-bold text-green-600 bg-green-50 px-2 py-1 rounded-lg w-16 mx-auto">
+                        <Star size={12} fill="currentColor" /> {row.trustpilotRating}
                       </div>
                     </td>
                   </tr>
