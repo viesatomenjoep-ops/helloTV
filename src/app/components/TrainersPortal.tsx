@@ -119,6 +119,24 @@ const TOP_SELLERS_DATA = [
   { naam: 'Kim A (TIL)', omzetIncl: '190,99', omzetExcl: '157,84', margeExcl: '45,82', margePct: '29,03', stuks: 2, transacties: 2 }
 ];
 
+const INITIAL_INKOOP_DATA = [
+  { name: 'Amsterdam', value: 85.0 },
+  { name: 'Breda', value: 92.5 },
+  { name: 'Cruquius', value: 78.0 },
+  { name: 'Den Bosch', value: 88.4 },
+  { name: 'Doetinchem', value: 95.1 },
+  { name: 'Duiven', value: 82.0 },
+  { name: 'Eindhoven', value: 96.0 },
+  { name: 'Groningen', value: 84.5 },
+  { name: 'Naarden', value: 89.0 },
+  { name: 'Nijmegen', value: 76.5 },
+  { name: 'Rotterdam', value: 81.2 },
+  { name: 'Tilburg', value: 93.0 },
+  { name: 'Utrecht', value: 86.8 },
+  { name: 'Zoeterwoude', value: 79.5 },
+  { name: 'Target', value: 85.0, isTarget: true }
+];
+
 const getColor = (value: number, isTarget?: boolean, targetValue: number = 50) => {
   if (isTarget) return '#FFFF00'; 
   if (value >= targetValue) return '#4ade80'; 
@@ -128,7 +146,21 @@ const getColor = (value: number, isTarget?: boolean, targetValue: number = 50) =
 
 export function TrainersPortal() {
   const [oledData, setOledData] = useState(INITIAL_OLED_DATA);
-  const [globalTarget, setGlobalTarget] = useState(50);
+  const [cleanersData, setCleanersData] = useState(CLEANERS_DATA);
+  const [kabelsData, setKabelsData] = useState(KABELS_DATA);
+  const [beugelsData, setBeugelsData] = useState(BEUGELS_DATA);
+  const [sptvData, setSptvData] = useState(SPTV_DATA);
+  const [inkoopData, setInkoopData] = useState(INITIAL_INKOOP_DATA);
+
+  const [targets, setTargets] = useState<Record<string, number>>({
+    'OLED': 50,
+    'Cleaners': 35,
+    'Kabels': 50,
+    'TV Beugels': 36,
+    'SP TV': 80,
+    'Inkoop & Voorraad': 85
+  });
+
   const [activeTab, setActiveTab] = useState('OLED');
   const [isEditing, setIsEditing] = useState(false);
   const [isImporting, setIsImporting] = useState(false);
@@ -137,31 +169,38 @@ export function TrainersPortal() {
 
   const getChartData = () => {
     switch (activeTab) {
-      case 'Cleaners': return CLEANERS_DATA;
-      case 'Kabels': return KABELS_DATA;
-      case 'TV Beugels': return BEUGELS_DATA;
-      case 'SP TV': return SPTV_DATA;
+      case 'Cleaners': return cleanersData;
+      case 'Kabels': return kabelsData;
+      case 'TV Beugels': return beugelsData;
+      case 'SP TV': return sptvData;
+      case 'Inkoop & Voorraad': return inkoopData;
       default: return oledData;
     }
   };
 
   const getChartTarget = () => {
-    switch (activeTab) {
-      case 'Cleaners': return 35;
-      case 'Kabels': return 50;
-      case 'TV Beugels': return 36;
-      case 'SP TV': return 80;
-      default: return globalTarget;
-    }
+    return targets[activeTab] || 50;
   };
 
   const handleEditChange = (index: number, newValue: string) => {
-    if (activeTab !== 'OLED') return; // Alleen OLED aanpasbaar in demo
     const num = parseFloat(newValue.replace(',', '.'));
     if (isNaN(num)) return;
-    const newData = [...oledData];
+    
+    let currentDataSet;
+    let setDataSet;
+    
+    switch (activeTab) {
+      case 'Cleaners': currentDataSet = cleanersData; setDataSet = setCleanersData; break;
+      case 'Kabels': currentDataSet = kabelsData; setDataSet = setKabelsData; break;
+      case 'TV Beugels': currentDataSet = beugelsData; setDataSet = setBeugelsData; break;
+      case 'SP TV': currentDataSet = sptvData; setDataSet = setSptvData; break;
+      case 'Inkoop & Voorraad': currentDataSet = inkoopData; setDataSet = setInkoopData; break;
+      default: currentDataSet = oledData; setDataSet = setOledData; break;
+    }
+
+    const newData = [...currentDataSet];
     newData[index].value = num;
-    setOledData(newData);
+    setDataSet(newData);
   };
 
   const handleVMSImport = () => {
@@ -181,7 +220,7 @@ export function TrainersPortal() {
     }, 500);
   };
 
-  const TABS = ['OLED', 'Cleaners', 'Kabels', 'TV Beugels', 'SP TV', 'Trainers Database', 'AI Coaching & Tips'];
+  const TABS = ['OLED', 'Cleaners', 'Kabels', 'TV Beugels', 'SP TV', 'Inkoop & Voorraad', 'Trainers Database', 'AI Coaching & Tips'];
   const currentData = getChartData();
   const currentTarget = getChartTarget();
 
@@ -231,13 +270,13 @@ export function TrainersPortal() {
           <div className="bg-[#3D3D3D] rounded-xl p-6 border border-gray-600 shadow-xl">
             <div className="flex justify-between items-start">
               <div>
-                <p className="text-gray-400 text-sm font-bold mb-1 uppercase tracking-wider">Huidige Target (Wk 14/15)</p>
-                <h3 className="text-2xl font-black text-white">{globalTarget}% OLED</h3>
+                <p className="text-gray-400 text-sm font-bold mb-1 uppercase tracking-wider">Huidige Target ({activeTab})</p>
+                <h3 className="text-2xl font-black text-white">{currentTarget}%</h3>
               </div>
               <Target className="text-[#FDCB2C]" size={24} />
             </div>
             <div className="mt-4 pt-4 border-t border-gray-600">
-              <span className="text-green-400 font-bold">Doel: {globalTarget.toFixed(2)}%</span>
+              <span className="text-green-400 font-bold">Doel: {currentTarget.toFixed(2)}%</span>
             </div>
           </div>
           
@@ -402,14 +441,12 @@ export function TrainersPortal() {
                 {isExportingPdf ? <RefreshCw size={16} className="animate-spin" /> : <Download size={16} />} 
                 {isExportingPdf ? 'PDF Genereren...' : 'Exporteer Mooie PDF'}
               </button>
-              {activeTab === 'OLED' && (
-                <button 
-                  onClick={() => setIsEditing(!isEditing)}
-                  className="px-4 py-2 bg-gray-700 hover:bg-gray-600 rounded-lg text-sm font-bold flex items-center gap-2 transition-colors"
-                >
-                  {isEditing ? <><Save size={16} className="text-green-400" /> Opslaan</> : <><Edit2 size={16} /> Bewerk Data & Target</>}
-                </button>
-              )}
+              <button 
+                onClick={() => setIsEditing(!isEditing)}
+                className="px-4 py-2 bg-gray-700 hover:bg-gray-600 rounded-lg text-sm font-bold flex items-center gap-2 transition-colors"
+              >
+                {isEditing ? <><Save size={16} className="text-green-400" /> Opslaan</> : <><Edit2 size={16} /> Bewerk Data & Target</>}
+              </button>
             </div>
           </div>
           
@@ -449,23 +486,36 @@ export function TrainersPortal() {
             </ResponsiveContainer>
           </div>
 
-          {isEditing && activeTab === 'OLED' && (
+          {isEditing && (
             <div className="bg-[#2D2D2D] p-6 rounded-xl border border-gray-600 mt-4 animate-in fade-in slide-in-from-top-4">
               <div className="mb-6 pb-6 border-b border-gray-700">
-                <h3 className="text-sm font-bold text-gray-400 mb-2 uppercase tracking-wider">Algemeen Target Instellen</h3>
+                <h3 className="text-sm font-bold text-gray-400 mb-2 uppercase tracking-wider">Algemeen Target Instellen ({activeTab})</h3>
                 <div className="flex items-center gap-4">
                   <input 
                     type="number" 
                     step="1"
-                    value={globalTarget}
+                    value={currentTarget}
                     onChange={(e) => {
                       const tg = Number(e.target.value);
-                      setGlobalTarget(tg);
-                      const targetIndex = oledData.findIndex(d => d.isTarget);
+                      setTargets({...targets, [activeTab]: tg});
+                      
+                      let currentDataSet;
+                      let setDataSet;
+                      
+                      switch (activeTab) {
+                        case 'Cleaners': currentDataSet = cleanersData; setDataSet = setCleanersData; break;
+                        case 'Kabels': currentDataSet = kabelsData; setDataSet = setKabelsData; break;
+                        case 'TV Beugels': currentDataSet = beugelsData; setDataSet = setBeugelsData; break;
+                        case 'SP TV': currentDataSet = sptvData; setDataSet = setSptvData; break;
+                        case 'Inkoop & Voorraad': currentDataSet = inkoopData; setDataSet = setInkoopData; break;
+                        default: currentDataSet = oledData; setDataSet = setOledData; break;
+                      }
+
+                      const targetIndex = currentDataSet.findIndex(d => d.isTarget);
                       if(targetIndex !== -1) {
-                        const newData = [...oledData];
+                        const newData = [...currentDataSet];
                         newData[targetIndex].value = tg;
-                        setOledData(newData);
+                        setDataSet(newData);
                       }
                     }}
                     className="bg-[#1A1A1A] border border-gray-600 rounded px-4 py-2 text-xl font-bold text-[#FDCB2C] focus:border-[#FDCB2C] outline-none w-32"
@@ -476,7 +526,7 @@ export function TrainersPortal() {
 
               <h3 className="text-sm font-bold text-gray-400 mb-4 uppercase tracking-wider">Pas Filiaal Prestaties Aan (Live)</h3>
               <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-4">
-                {oledData.map((item, idx) => !item.isTarget && (
+                {currentData.map((item, idx) => !item.isTarget && (
                   <div key={item.name} className="flex flex-col gap-1">
                     <label className="text-xs text-gray-400">{item.name}</label>
                     <input 
