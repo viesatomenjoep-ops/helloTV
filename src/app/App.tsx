@@ -17,7 +17,9 @@ type View = 'dashboard' | 'crm' | 'sales' | 'inventory' | 'quotes' | 'orders' | 
 export default function App() {
   const [currentView, setCurrentView] = useState<View>('dashboard');
   const [sidebarOpen, setSidebarOpen] = useState(true);
-  const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const [isAuthenticated, setIsAuthenticated] = useState(() => {
+    return localStorage.getItem('hellotv_auth') === 'true';
+  });
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [loginError, setLoginError] = useState('');
@@ -26,6 +28,7 @@ export default function App() {
     e.preventDefault();
     if (email === 'test@hellotv.nl' && password === '1111') {
       setIsAuthenticated(true);
+      localStorage.setItem('hellotv_auth', 'true');
       setLoginError('');
     } else {
       setLoginError('Onjuiste inloggegevens. Probeer opnieuw.');
