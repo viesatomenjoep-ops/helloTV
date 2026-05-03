@@ -1,11 +1,38 @@
 import { useState } from 'react';
-import { Eye, Search, Filter } from 'lucide-react';
+import { Eye, Search, Filter, Download, Plus } from 'lucide-react';
 import { mockOrders } from '../../utils/mockOrders';
 import { OrderDetailView } from './OrderDetail';
 
 export function Orders() {
   const [selectedOrderId, setSelectedOrderId] = useState<string | null>(null);
   const [searchTerm, setSearchTerm] = useState('');
+  const [statusFilter, setStatusFilter] = useState('Alle');
+
+  const handleExport = () => {
+    let csvContent = "data:text/csv;charset=utf-8,";
+    csvContent += `Ordernummer,Datum,Klant ID,Status,Bedrag,Verzending,Kanaal\n`;
+
+    filteredOrders.forEach(o => {
+      const row = [
+        `"${o.id}"`,
+        `"${o.aanschaf_datum.toLocaleDateString('nl-NL')}"`,
+        `"${o.klant_id}"`,
+        `"${o.status}"`,
+        `"${o.order_totaal}"`,
+        `"${o.verzending}"`,
+        `"${o.communicatiekanaal}"`
+      ];
+      csvContent += row.join(",") + "\n";
+    });
+
+    const encodedUri = encodeURI(csvContent);
+    const link = document.createElement("a");
+    link.setAttribute("href", encodedUri);
+    link.setAttribute("download", `HelloTV_Orders_${new Date().toISOString().split('T')[0]}.csv`);
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+  };
 
   if (selectedOrderId) {
     const order = mockOrders.find(o => o.id === selectedOrderId);
@@ -14,9 +41,12 @@ export function Orders() {
     }
   }
 
-  const filteredOrders = mockOrders.filter(order => 
-    order.id.includes(searchTerm) || order.klant_id.includes(searchTerm)
-  );
+  const filteredOrders = mockOrders.filter(order => {
+    const matchesSearch = order.id.toLowerCase().includes(searchTerm.toLowerCase()) || 
+                          order.klant_id.toLowerCase().includes(searchTerm.toLowerCase());
+    const matchesStatus = statusFilter === 'Alle' || order.status.toLowerCase().includes(statusFilter.toLowerCase());
+    return matchesSearch && matchesStatus;
+  });
 
   return (
     <div className="p-8">
@@ -25,6 +55,35 @@ export function Orders() {
           <h1 className="text-2xl font-bold text-gray-800">Orderbeheer</h1>
           <p className="text-gray-500 text-sm mt-1">Beheer en volg alle HelloTV orders</p>
         </div>
+        <div className="flex gap-3">
+          <button 
+            onClick={handleExport}
+            className="flex items-center gap-2 px-4 py-2 bg-[#1D6F42] text-white rounded-lg font-bold shadow-sm hover:shadow-md transition-all"
+          >
+            <Download size={18} />
+            Exporteer (Excel)
+          </button>
+          <button className="flex items-center gap-2 px-4 py-2 bg-[#FDCB2C] text-black rounded-lg font-bold shadow-sm hover:shadow-md transition-all">
+            <Plus size={18} />
+            Nieuwe Order
+          </button>
+        </div>
+      </div>
+
+      <div className="flex gap-2 mb-6 overflow-x-auto pb-2">
+        {['Alle', 'In behandeling', 'Verzonden', 'Afgeleverd', 'Geannuleerd'].map(status => (
+          <button
+            key={status}
+            onClick={() => setStatusFilter(status)}
+            className={`px-4 py-2 rounded-full text-sm font-semibold whitespace-nowrap transition-colors ${
+              statusFilter === status 
+                ? 'bg-blue-600 text-white' 
+                : 'bg-white text-gray-600 border border-gray-200 hover:bg-gray-50'
+            }`}
+          >
+            {status}
+          </button>
+        ))}
       </div>
 
       <div className="bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden">
