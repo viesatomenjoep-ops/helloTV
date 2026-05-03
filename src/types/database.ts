@@ -92,3 +92,16 @@ export interface InterneBon {
     v: string;
   }[];
 }
+
+export interface Customer {
+  id: string;
+  voornaam: string;
+  achternaam: string;
+  email: string;
+  telefoon: string;
+  postcode: string;
+  huisnummer: string;
+  straat: string;
+  woonplaats: string;
+  created_at?: Date;
+}
