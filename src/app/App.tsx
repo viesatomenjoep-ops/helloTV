@@ -11,10 +11,11 @@ import { Orders } from './components/Orders';
 import { Showcase } from './components/Showcase';
 import { HR } from './components/HR';
 import { Shiftbase } from './components/Shiftbase';
+import { TrainersPortal } from './components/TrainersPortal';
 import { HelloTVLogo } from './components/ui/HelloTVLogo';
 import { initDemoData } from '../utils/initDemoData';
 
-type View = 'dashboard' | 'crm' | 'sales' | 'inventory' | 'quotes' | 'orders' | 'showcase' | 'hr' | 'shiftbase';
+type View = 'dashboard' | 'crm' | 'sales' | 'inventory' | 'quotes' | 'orders' | 'showcase' | 'hr' | 'shiftbase' | 'trainers';
 
 export default function App() {
   const [currentView, setCurrentView] = useState<View>('dashboard');
@@ -116,6 +117,7 @@ export default function App() {
     { id: 'crm', label: 'CRM', icon: Users },
     { id: 'sales', label: 'Sales Tracker', icon: TrendingUp },
     { id: 'inventory', label: 'Voorraad', icon: Package },
+    { id: 'trainers', label: 'Sales Trainers', icon: Users },
     { id: 'shiftbase', label: 'Shiftbase (Uren)', icon: Clock },
     { id: 'hr', label: 'HR & Reiskosten', icon: Users },
   ];
@@ -175,6 +177,7 @@ export default function App() {
         {currentView === 'crm' && <CRM />}
         {currentView === 'quotes' && <Quotes />}
         {currentView === 'sales' && <SalesTracker />}
+        {currentView === 'trainers' && <TrainersPortal />}
         {currentView === 'inventory' && <Inventory />}
         {currentView === 'shiftbase' && <Shiftbase />}
         {currentView === 'hr' && <HR />}
