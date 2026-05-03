@@ -174,8 +174,8 @@ export function Dashboard({ onNavigate }: { onNavigate?: (view: string) => void 
               <AreaChart data={mockRevenueData}>
                 <defs>
                   <linearGradient id="colorRevenue" x1="0" y1="0" x2="0" y2="1">
-                    <stop offset="5%" stopColor="#3b82f6" stopOpacity={0.8}/>
-                    <stop offset="95%" stopColor="#3b82f6" stopOpacity={0}/>
+                    <stop offset="5%" stopColor="#3b82f6" stopOpacity={0.8} />
+                    <stop offset="95%" stopColor="#3b82f6" stopOpacity={0} />
                   </linearGradient>
                 </defs>
                 <CartesianGrid strokeDasharray="3 3" stroke="#f0f0f0" />
@@ -215,8 +215,8 @@ export function Dashboard({ onNavigate }: { onNavigate?: (view: string) => void 
                 />
                 <defs>
                   <linearGradient id="colorBar" x1="0" y1="0" x2="0" y2="1">
-                    <stop offset="5%" stopColor="#8b5cf6" stopOpacity={0.9}/>
-                    <stop offset="95%" stopColor="#8b5cf6" stopOpacity={0.6}/>
+                    <stop offset="5%" stopColor="#8b5cf6" stopOpacity={0.9} />
+                    <stop offset="95%" stopColor="#8b5cf6" stopOpacity={0.6} />
                   </linearGradient>
                 </defs>
               </BarChart>
