@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Settings, MessageSquare, AlertTriangle, PenTool as Tool, Search, Clock, Mail, CheckCircle, Smartphone, MapPin, Printer } from 'lucide-react';
+import { Settings, MessageSquare, AlertTriangle, PenTool as Tool, Search, Clock, Mail, CheckCircle, Smartphone, MapPin, Printer, Bot, Sparkles, Send } from 'lucide-react';
 import { mockOrders } from '../../utils/mockOrders';
 import { HelloTVLogo } from './ui/HelloTVLogo';
 
@@ -15,6 +15,11 @@ export function Reparatie() {
   const [verpakking, setVerpakking] = useState('Originele doos aanwezig');
   const [locatie, setLocatie] = useState('Filiaal Breda');
   const [formSuccess, setFormSuccess] = useState(false);
+
+  // AI Gemini Integration State
+  const [isAnalyzing, setIsAnalyzing] = useState(false);
+  const [aiAnalysis, setAiAnalysis] = useState('');
+  const [sentToWhatsapp, setSentToWhatsapp] = useState(false);
 
   // Mock Tickets State
   const [tickets, setTickets] = useState([
@@ -67,7 +72,22 @@ export function Reparatie() {
       setActiveTab('overzicht');
       setSelectedOrder('');
       setKlacht('');
+      setAiAnalysis('');
     }, 3000);
+  };
+
+  const handleGeminiAnalysis = () => {
+    if (!klacht) return;
+    setIsAnalyzing(true);
+    setTimeout(() => {
+      setIsAnalyzing(false);
+      setAiAnalysis(`Oorzaak Analyse (Gemini AI):\nDit klinkt als een bekend firmware- of hardwareprobleem met de Ambient/Achterspiegels van de 99F serie. \n\nDirecte Oplossingen:\n1. Voer een harde reset uit (stekker 5 min eruit).\n2. Update naar firmware v1.42 via USB.\n3. Als dit niet werkt, is het een defect moederbord (DOA/Reparatie nodig).`);
+    }, 1500);
+  };
+
+  const handleSendToWhatsapp = () => {
+    setSentToWhatsapp(true);
+    setTimeout(() => setSentToWhatsapp(false), 3000);
   };
 
   return (
@@ -291,15 +311,56 @@ export function Reparatie() {
                     </select>
                   </div>
 
-                  <div>
-                    <label className="block text-sm font-bold text-gray-700 mb-2">Uitgebreide Klachtomschrijving</label>
-                    <textarea 
-                      required 
-                      value={klacht}
-                      onChange={(e) => setKlacht(e.target.value)}
-                      placeholder="Wat is het probleem? (Bijv: TV gaat niet meer aan, rode standby knop knippert 3x...)"
-                      className="w-full h-32 p-3 bg-gray-50 border border-gray-200 rounded-xl outline-none focus:ring-2 focus:ring-blue-500"
-                    />
+                  <div className="space-y-4">
+                    <label className="block text-sm font-bold text-gray-700">Uitgebreide Klachtomschrijving</label>
+                    <div className="flex gap-4">
+                      <textarea 
+                        required 
+                        value={klacht}
+                        onChange={(e) => setKlacht(e.target.value)}
+                        placeholder="Wat is het probleem? (Bijv: een 99F, de achterspiegels doen het niet...)"
+                        className="flex-1 h-32 p-3 bg-gray-50 border border-gray-200 rounded-xl outline-none focus:ring-2 focus:ring-[#FDCB2C]"
+                      />
+                      <div className="w-48 flex flex-col gap-2">
+                        <button 
+                          type="button" 
+                          onClick={handleGeminiAnalysis}
+                          disabled={!klacht || isAnalyzing}
+                          className="flex-1 flex flex-col items-center justify-center gap-1 bg-gradient-to-br from-indigo-500 to-purple-600 hover:from-indigo-600 hover:to-purple-700 text-white rounded-xl font-bold transition-all disabled:opacity-50"
+                        >
+                          {isAnalyzing ? <div className="animate-spin w-6 h-6 border-2 border-white border-t-transparent rounded-full" /> : <Sparkles size={24} />}
+                          <span className="text-xs">Gemini Analyse</span>
+                        </button>
+                      </div>
+                    </div>
+
+                    {/* AI Output Area */}
+                    {aiAnalysis && (
+                      <div className="bg-indigo-50 border border-indigo-100 rounded-xl p-4 animate-in fade-in slide-in-from-top-2">
+                        <div className="flex items-center gap-2 mb-2">
+                          <Bot size={18} className="text-indigo-600" />
+                          <h4 className="font-bold text-indigo-900 text-sm">Gemini Diagnostiek Resultaat</h4>
+                        </div>
+                        <p className="text-indigo-800 text-sm whitespace-pre-line mb-4 font-medium">{aiAnalysis}</p>
+                        <div className="flex justify-end">
+                          <button 
+                            type="button"
+                            onClick={handleSendToWhatsapp}
+                            className={`flex items-center gap-2 px-4 py-2 rounded-lg font-bold text-sm transition-all ${
+                              sentToWhatsapp 
+                                ? 'bg-green-100 text-green-700' 
+                                : 'bg-[#25D366] hover:bg-green-600 text-white shadow-sm'
+                            }`}
+                          >
+                            {sentToWhatsapp ? (
+                              <><CheckCircle size={16} /> Verzonden naar Klant (WhatsApp)</>
+                            ) : (
+                              <><Send size={16} /> Stuur Direct Oplossing (WhatsApp)</>
+                            )}
+                          </button>
+                        </div>
+                      </div>
+                    )}
                   </div>
 
                   <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
