@@ -308,7 +308,7 @@ export function Shiftbase() {
                     {activeSubTab === 'kioskcode' && (
                       <div className="space-y-4">
                         <h3 className="font-bold text-gray-900 mb-4">Mijn Kioskcodes & Verkoopnummers</h3>
-                        <p className="text-xs text-gray-500 mb-4">Deze nummers zijn gekoppeld aan de SQL database. Wijzigingen worden direct actief in de kassa en online systemen.</p>
+                        <p className="text-xs text-gray-500 mb-4">Deze nummers zijn gekoppeld aan de database. Wijzigingen worden direct actief in de kassa en online systemen.</p>
                         
                         <div>
                           <label className="block text-xs font-bold text-gray-600 mb-1">Inlogcode (Kiosk)</label>
@@ -349,7 +349,7 @@ export function Shiftbase() {
                       <div className="text-center py-8">
                         <CheckCircle className="mx-auto text-green-500 mb-2" size={32} />
                         <h3 className="font-bold text-gray-900 capitalize">{activeSubTab}</h3>
-                        <p className="text-xs text-gray-500 mt-2">SQL Module actief en gekoppeld.</p>
+                        <p className="text-xs text-gray-500 mt-2">API Module actief en gekoppeld.</p>
                       </div>
                     )}
                   </div>

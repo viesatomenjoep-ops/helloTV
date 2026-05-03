@@ -397,8 +397,8 @@ export function Reparatie() {
                 <li className="flex items-start gap-3 p-4 bg-gray-50 rounded-xl border border-gray-100">
                   <Tool className="text-blue-500 mt-1 flex-shrink-0" />
                   <div>
-                    <p className="font-bold text-gray-900">DOA vs Reparatie Classificatie</p>
-                    <p className="text-sm">De AI-bot koppelt de term "&lt; 8 dagen kapot" automatisch in de Supabase SQL aan het label "DOA" i.p.v. "Reparatie".</p>
+                    <p className="font-bold text-gray-900 mb-1">Scenario: "DOA" ipv "Reparatie"</p>
+                    <p className="text-sm">De AI-bot koppelt de term "&lt; 8 dagen kapot" automatisch in de Supabase database aan het label "DOA" i.p.v. "Reparatie".</p>
                   </div>
                 </li>
               </ul>

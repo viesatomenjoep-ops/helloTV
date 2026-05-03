@@ -99,7 +99,7 @@ export function StorePortal() {
                   </button>
                 </div>
               ))}
-              <p className="text-xs text-gray-400 text-center mt-2 italic">Data realtime gesynchroniseerd via SQL-koppeling Transport Portaal.</p>
+              <p className="text-xs text-gray-400 text-center mt-2 italic">Data realtime gesynchroniseerd via de API-koppeling Transport Portaal.</p>
             </div>
           </div>
 

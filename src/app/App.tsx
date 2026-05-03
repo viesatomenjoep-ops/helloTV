@@ -21,7 +21,8 @@ import {
   GraduationCap,
   Film,
   Building2,
-  ShieldAlert
+  ShieldAlert,
+  LogOut
 } from 'lucide-react';
 import { Dashboard } from './components/Dashboard';
 import { CRM } from './components/CRM';
@@ -128,14 +129,25 @@ export default function App() {
 
         {/* User Profile Footer */}
         <nav className="border-t border-gray-800 p-4 bg-gray-950 shrink-0">
-          <div className="flex items-center justify-between p-3 rounded-xl bg-gray-800/50 backdrop-blur-sm border border-gray-700 hover:bg-gray-800 transition-colors cursor-pointer">
-            <div className="flex items-center gap-3">
-              <UserCircle size={24} className="text-[#FDCB2C]" />
-              <div className="text-xs leading-tight">
-                <span className="font-bold text-white">Beheerder</span><br/>
-                <span className="text-gray-400">admin@heleutievier.nl</span>
+          <div className="flex flex-col gap-2">
+            <div className="flex items-center justify-between p-3 rounded-xl bg-gray-800/50 backdrop-blur-sm border border-gray-700 hover:bg-gray-800 transition-colors cursor-pointer">
+              <div className="flex items-center gap-3">
+                <UserCircle size={24} className="text-[#FDCB2C]" />
+                <div className="text-xs leading-tight">
+                  <span className="font-bold text-white">Beheerder</span><br/>
+                  <span className="text-gray-400">admin@heleutievier.nl</span>
+                </div>
               </div>
             </div>
+            <button 
+              onClick={() => {
+                alert('Je bent succesvol uitgelogd.');
+                window.location.reload();
+              }}
+              className="w-full flex items-center justify-center gap-2 p-2 rounded-xl bg-red-900/30 text-red-400 hover:bg-red-900/50 hover:text-red-300 transition-colors border border-red-900/50 text-sm font-bold"
+            >
+              <LogOut size={16} /> Uitloggen
+            </button>
           </div>
         </nav>
       </div>

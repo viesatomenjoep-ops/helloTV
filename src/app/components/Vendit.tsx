@@ -52,8 +52,8 @@ export function Vendit() {
             <div className="w-12 h-12 bg-orange-100 text-orange-600 rounded-full flex items-center justify-center mb-4">
               <Database size={24} />
             </div>
-            <h3 className="font-bold text-gray-900 mb-1">PostgreSQL Backup</h3>
-            <p className="text-xs text-gray-500">Alle Vendit-data wordt veilig gemirrored naar Supabase SQL.</p>
+            <h3 className="font-bold text-gray-900 mb-1">Database Backup</h3>
+            <p className="text-xs text-gray-500">Alle Vendit-data wordt veilig gemirrored naar Supabase.</p>
           </div>
         </div>
 

@@ -159,7 +159,7 @@ export function Transport() {
               </div>
               <div className="flex items-center gap-2 text-sm font-bold text-green-600 bg-green-50 px-3 py-1.5 rounded-lg border border-green-200">
                 <span className="w-2 h-2 rounded-full bg-green-500 animate-pulse"></span>
-                SQL SYNC ACTIEF
+                SYNC ACTIEF
               </div>
             </div>
 
