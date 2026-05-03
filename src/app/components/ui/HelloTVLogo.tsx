@@ -1,39 +1,48 @@
 import React from 'react';
 
 export function HelloTVLogo({ className = "h-8", theme = 'light' }: { className?: string, theme?: 'light' | 'dark' }) {
+  // Behoud de witte/zwarte kleur logica afhankelijk van het thema
   const textColor = theme === 'dark' ? '#FFFFFF' : '#1A1A1A';
   
   return (
     <svg 
       className={className} 
-      viewBox="0 0 400 100" 
+      viewBox="0 0 320 100" 
       fill="none" 
       xmlns="http://www.w3.org/2000/svg"
       style={{ minHeight: '100%', height: 'auto' }}
     >
+      {/* "hello" text */}
       <text 
         x="10" 
-        y="75" 
-        fontFamily="Arial, sans-serif" 
+        y="72" 
+        fontFamily="Arial, Helvetica, sans-serif" 
         fontWeight="900" 
-        fontSize="80" 
+        fontSize="72" 
         fill={textColor}
-        letterSpacing="-2"
+        letterSpacing="-3"
       >
         hello
       </text>
-      <g transform="translate(200, 15)">
-        <rect width="110" height="70" rx="16" fill="#FDCB2C" />
+      
+      {/* Yellow speech bubble outline */}
+      <g transform="translate(240, 48)">
+        <circle cx="0" cy="0" r="38" stroke="#FDCB2C" strokeWidth="14" fill="none" />
+        {/* Tail of the speech bubble pointing down-left */}
+        <path d="M -24 28 L -45 47 L -10 35 Z" fill="#FDCB2C" />
+        
+        {/* "tv" text inside the bubble */}
         <text 
-          x="55" 
-          y="52" 
-          fontFamily="Arial, sans-serif" 
+          x="0" 
+          y="18" 
+          fontFamily="Arial, Helvetica, sans-serif" 
           fontWeight="900" 
-          fontSize="50" 
-          fill="#1A1A1A"
+          fontSize="52" 
+          fill={textColor}
+          letterSpacing="-2"
           textAnchor="middle"
         >
-          TV
+          tv
         </text>
       </g>
     </svg>
