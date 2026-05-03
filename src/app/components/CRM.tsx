@@ -73,7 +73,7 @@ export function CRM() {
     }));
   };
 
-  const MODULES = ['SalesTrackers', 'Offertes', 'Orders', 'Voorraad', 'SalesTrainers', 'Reparatie', 'Shiftbase', 'CRM'];
+  const MODULES = ['SalesTrackers', 'Offertes', 'Orders', 'Voorraad', 'SalesTrainers', 'Reparatie', 'Hello Base', 'CRM'];
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-gray-50 to-gray-100 p-8 pb-24">
@@ -342,7 +342,7 @@ export function CRM() {
                       </td>
                       {MODULES.map(mod => {
                         // Default wat logische rechten
-                        const hasAccess = permissions[emp.code]?.[mod] ?? (emp.isSeller && ['Offertes', 'Orders', 'SalesTrackers'].includes(mod) || mod === 'Shiftbase');
+                        const hasAccess = permissions[emp.code]?.[mod] ?? (emp.isSeller && ['Offertes', 'Orders', 'SalesTrackers'].includes(mod) || mod === 'Hello Base');
                         return (
                           <td key={mod} className="p-4 text-center align-middle">
                             <button 
