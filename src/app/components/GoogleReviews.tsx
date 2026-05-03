@@ -14,12 +14,21 @@ import {
 } from 'recharts';
 
 const REVIEW_DATA = [
+  { filiaal: 'Alkmaar', week: 32, maand: 130, jaar: 1600, rating: 4.8, trustpilotRating: 4.5, trustpilotJaar: 600, transacties: 650, online: 180, winkel: 370, tickets: 100 },
   { filiaal: 'Amsterdam', week: 45, maand: 180, jaar: 2150, rating: 4.8, trustpilotRating: 4.6, trustpilotJaar: 850, transacties: 890, online: 300, winkel: 450, tickets: 140 },
   { filiaal: 'Breda', week: 38, maand: 145, jaar: 1820, rating: 4.7, trustpilotRating: 4.5, trustpilotJaar: 620, transacties: 750, online: 200, winkel: 450, tickets: 100 },
-  { filiaal: 'Eindhoven', week: 52, maand: 210, jaar: 2400, rating: 4.9, trustpilotRating: 4.8, trustpilotJaar: 1100, transacties: 1100, online: 400, winkel: 600, tickets: 100 },
+  { filiaal: 'Cruquius', week: 28, maand: 110, jaar: 1350, rating: 4.6, trustpilotRating: 4.4, trustpilotJaar: 510, transacties: 550, online: 150, winkel: 320, tickets: 80 },
+  { filiaal: 'Den Bosch', week: 42, maand: 165, jaar: 1980, rating: 4.8, trustpilotRating: 4.7, trustpilotJaar: 780, transacties: 810, online: 220, winkel: 480, tickets: 110 },
+  { filiaal: 'Doetinchem', week: 35, maand: 140, jaar: 1700, rating: 4.9, trustpilotRating: 4.8, trustpilotJaar: 690, transacties: 720, online: 190, winkel: 430, tickets: 100 },
   { filiaal: 'Duiven', week: 41, maand: 160, jaar: 1950, rating: 4.6, trustpilotRating: 4.4, trustpilotJaar: 780, transacties: 820, online: 250, winkel: 470, tickets: 100 },
+  { filiaal: 'Eindhoven', week: 52, maand: 210, jaar: 2400, rating: 4.9, trustpilotRating: 4.8, trustpilotJaar: 1100, transacties: 1100, online: 400, winkel: 600, tickets: 100 },
+  { filiaal: 'Groningen', week: 39, maand: 155, jaar: 1850, rating: 4.7, trustpilotRating: 4.6, trustpilotJaar: 720, transacties: 780, online: 210, winkel: 460, tickets: 110 },
+  { filiaal: 'Naarden', week: 30, maand: 120, jaar: 1450, rating: 4.8, trustpilotRating: 4.5, trustpilotJaar: 550, transacties: 600, online: 170, winkel: 350, tickets: 80 },
+  { filiaal: 'Nijmegen', week: 40, maand: 158, jaar: 1900, rating: 4.6, trustpilotRating: 4.5, trustpilotJaar: 740, transacties: 790, online: 230, winkel: 450, tickets: 110 },
   { filiaal: 'Rotterdam', week: 48, maand: 195, jaar: 2300, rating: 4.8, trustpilotRating: 4.7, trustpilotJaar: 950, transacties: 980, online: 350, winkel: 500, tickets: 130 },
+  { filiaal: 'Tilburg', week: 37, maand: 148, jaar: 1780, rating: 4.7, trustpilotRating: 4.6, trustpilotJaar: 680, transacties: 740, online: 190, winkel: 440, tickets: 110 },
   { filiaal: 'Utrecht', week: 44, maand: 175, jaar: 2100, rating: 4.7, trustpilotRating: 4.6, trustpilotJaar: 890, transacties: 880, online: 280, winkel: 500, tickets: 100 },
+  { filiaal: 'Zoeterwoude', week: 33, maand: 135, jaar: 1650, rating: 4.8, trustpilotRating: 4.7, trustpilotJaar: 640, transacties: 690, online: 180, winkel: 410, tickets: 100 },
 ];
 
 const TREND_DATA = [
@@ -51,7 +60,7 @@ export function GoogleReviews() {
   const [isExporting, setIsExporting] = useState(false);
   const [filterStore, setFilterStore] = useState('Alle Winkels');
   
-  const STORES = ['Alle Winkels', 'Alkmaar', 'Amsterdam', 'Breda', 'Duiven', 'Eindhoven', 'Rotterdam', 'Utrecht'];
+  const STORES = ['Alle Winkels', ...REVIEW_DATA.map(r => r.filiaal).sort()];
 
   const handleExportPDF = (platform: 'Google Maps' | 'Trustpilot') => {
     setIsExporting(true);
@@ -132,8 +141,102 @@ export function GoogleReviews() {
     setTimeout(() => setIsExporting(false), 1000);
   };
 
-  const handleExport = () => {
+  const handleExportTable = () => {
+    setIsExporting(true);
+    const storeData = filterStore === 'Alle Winkels' ? REVIEW_DATA : REVIEW_DATA.filter(r => r.filiaal === filterStore);
+    
+    // Calculate totals
+    const totalTransacties = storeData.reduce((acc, row) => acc + row.transacties, 0);
+    const totalWinkel = storeData.reduce((acc, row) => acc + row.winkel, 0);
+    const totalOnline = storeData.reduce((acc, row) => acc + row.online, 0);
+    const totalTickets = storeData.reduce((acc, row) => acc + row.tickets, 0);
+    const totalReviews = storeData.reduce((acc, row) => acc + row.jaar, 0);
+    const avgRating = storeData.length > 0 ? (storeData.reduce((acc, row) => acc + row.rating, 0) / storeData.length).toFixed(1) : "0.0";
+    const avgTrustpilot = storeData.length > 0 ? (storeData.reduce((acc, row) => acc + row.trustpilotRating, 0) / storeData.length).toFixed(1) : "0.0";
 
+    const printWindow = window.open('', '_blank');
+    if (!printWindow) {
+      alert("Popup blocker verhinderde het openen van de PDF. Sta popups toe voor deze site.");
+      setIsExporting(false);
+      return;
+    }
+
+    const htmlContent = `
+      <html>
+        <head>
+          <title>Kanaalsplitsing Rapportage - ${filterStore}</title>
+          <style>
+            body { font-family: Arial, sans-serif; padding: 40px; color: #1a1a1a; }
+            .header { display: flex; justify-content: space-between; align-items: center; border-bottom: 2px solid #FDCB2C; padding-bottom: 20px; margin-bottom: 40px; }
+            .logo { display: flex; align-items: center; gap: 6px; font-weight: 900; font-size: 38px; letter-spacing: -2px; }
+            .logo-bubble { background: white; border: 8px solid #FDCB2C; padding: 8px 12px; border-radius: 40px; color: #1a1a1a; font-size: 28px; position: relative; border-bottom-left-radius: 4px; }
+            .title { font-size: 24px; font-weight: bold; color: #3b82f6; }
+            .subtitle { color: #666; margin-bottom: 20px; font-weight: bold; }
+            table { width: 100%; border-collapse: collapse; margin-bottom: 40px; font-size: 14px; }
+            th, td { padding: 12px; text-align: right; border-bottom: 1px solid #eee; }
+            th:first-child, td:first-child { text-align: left; }
+            th { background-color: #f8f9fa; font-weight: bold; color: #555; text-transform: uppercase; font-size: 11px; }
+            .total-row td { font-weight: bold; border-top: 2px solid #333; background-color: #f8f9fa; }
+            .footer { margin-top: 50px; font-size: 12px; color: #888; text-align: center; }
+          </style>
+        </head>
+        <body>
+          <div class="header">
+            <div class="logo">hello <div class="logo-bubble">tv</div></div>
+            <div class="title">Kanaalsplitsing & Reviews Rapportage</div>
+          </div>
+          <div class="subtitle">Locatie Filter: ${filterStore} | Datum: ${new Date().toLocaleDateString('nl-NL')}</div>
+          
+          <table>
+            <thead>
+              <tr>
+                <th>Filiaal</th>
+                <th>Totaal Transacties</th>
+                <th>Winkel Orders</th>
+                <th>Online / Webshop</th>
+                <th>Tickets / Order Desk</th>
+                <th>Totaal Reviews (Jaar)</th>
+                <th>Google Score</th>
+                <th>Trustpilot Score</th>
+              </tr>
+            </thead>
+            <tbody>
+              ${storeData.map(row => `
+                <tr>
+                  <td><strong>${row.filiaal}</strong></td>
+                  <td>${row.transacties}</td>
+                  <td>${row.winkel}</td>
+                  <td>${row.online}</td>
+                  <td>${row.tickets}</td>
+                  <td>${row.jaar}</td>
+                  <td>${row.rating}</td>
+                  <td>${row.trustpilotRating}</td>
+                </tr>
+              `).join('')}
+              <tr class="total-row">
+                <td>TOTAAL</td>
+                <td>${totalTransacties}</td>
+                <td>${totalWinkel}</td>
+                <td>${totalOnline}</td>
+                <td>${totalTickets}</td>
+                <td>${totalReviews}</td>
+                <td>${avgRating}</td>
+                <td>${avgTrustpilot}</td>
+              </tr>
+            </tbody>
+          </table>
+
+          <div class="footer">Automatisch gegenereerd door het HelloTV Management Systeem • Vertrouwelijk</div>
+          <script>window.onload = function() { window.print(); window.close(); }</script>
+        </body>
+      </html>
+    `;
+    
+    printWindow.document.open();
+    printWindow.document.write(htmlContent);
+    printWindow.document.close();
+    
+    setTimeout(() => setIsExporting(false), 1000);
   };
 
   return (
@@ -376,9 +479,18 @@ export function GoogleReviews() {
             <h2 className="text-xl font-bold text-gray-800 flex items-center gap-2">
               <Database className="text-gray-500" /> Transactie Splitsing per Kanaal
             </h2>
-            <div className="relative">
-              <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" size={16} />
-              <input type="text" placeholder="Zoek filiaal..." className="pl-9 pr-4 py-2 border border-gray-200 rounded-lg text-sm focus:ring-2 focus:ring-blue-500 outline-none" />
+            <div className="flex gap-4 items-center">
+              <div className="relative">
+                <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" size={16} />
+                <input type="text" placeholder="Zoek filiaal..." className="pl-9 pr-4 py-2 border border-gray-200 rounded-lg text-sm focus:ring-2 focus:ring-blue-500 outline-none" />
+              </div>
+              <button
+                onClick={handleExportTable}
+                disabled={isExporting}
+                className="px-4 py-2 bg-gray-900 hover:bg-gray-800 text-white font-bold rounded-lg shadow-sm flex items-center gap-2 transition-colors disabled:opacity-50 text-sm"
+              >
+                <Download size={16} /> Exporteer PDF (Totalen)
+              </button>
             </div>
           </div>
           <div className="overflow-x-auto">
@@ -416,6 +528,32 @@ export function GoogleReviews() {
                     </td>
                   </tr>
                 ))}
+                
+                {/* Totaal Rij */}
+                <tr className="bg-gray-50 border-t-2 border-gray-300">
+                  <td className="px-6 py-4 font-black text-gray-900 uppercase">Totaal</td>
+                  <td className="px-6 py-4 text-center font-black">
+                    {REVIEW_DATA.filter(r => filterStore === 'Alle Winkels' || r.filiaal === filterStore).reduce((acc, r) => acc + r.transacties, 0)}
+                  </td>
+                  <td className="px-6 py-4 text-center font-black text-blue-600">
+                    {REVIEW_DATA.filter(r => filterStore === 'Alle Winkels' || r.filiaal === filterStore).reduce((acc, r) => acc + r.winkel, 0)}
+                  </td>
+                  <td className="px-6 py-4 text-center font-black text-purple-600">
+                    {REVIEW_DATA.filter(r => filterStore === 'Alle Winkels' || r.filiaal === filterStore).reduce((acc, r) => acc + r.online, 0)}
+                  </td>
+                  <td className="px-6 py-4 text-center font-black text-orange-600">
+                    {REVIEW_DATA.filter(r => filterStore === 'Alle Winkels' || r.filiaal === filterStore).reduce((acc, r) => acc + r.tickets, 0)}
+                  </td>
+                  <td className="px-6 py-4 text-center font-black">
+                    {REVIEW_DATA.filter(r => filterStore === 'Alle Winkels' || r.filiaal === filterStore).reduce((acc, r) => acc + r.jaar, 0)}
+                  </td>
+                  <td className="px-6 py-4 text-center font-black text-yellow-600">
+                    {(REVIEW_DATA.filter(r => filterStore === 'Alle Winkels' || r.filiaal === filterStore).reduce((acc, r) => acc + r.rating, 0) / (REVIEW_DATA.filter(r => filterStore === 'Alle Winkels' || r.filiaal === filterStore).length || 1)).toFixed(1)}
+                  </td>
+                  <td className="px-6 py-4 text-center font-black text-green-600">
+                    {(REVIEW_DATA.filter(r => filterStore === 'Alle Winkels' || r.filiaal === filterStore).reduce((acc, r) => acc + r.trustpilotRating, 0) / (REVIEW_DATA.filter(r => filterStore === 'Alle Winkels' || r.filiaal === filterStore).length || 1)).toFixed(1)}
+                  </td>
+                </tr>
               </tbody>
             </table>
           </div>
