@@ -1,7 +1,7 @@
 import React from "react";
 
 import { useState, useEffect } from 'react';
-import { LayoutDashboard, Users, TrendingUp, Package, FileText, ShoppingCart, Menu, X, Layers } from 'lucide-react';
+import { LayoutDashboard, Users, TrendingUp, Package, FileText, ShoppingCart, Menu, X, Layers, LogOut, UserCircle } from 'lucide-react';
 import { Dashboard } from './components/Dashboard';
 import { CRM } from './components/CRM';
 import { SalesTracker } from './components/SalesTracker';
@@ -154,7 +154,42 @@ export default function App() {
           ))}
         </nav>
 
-        
+        {sidebarOpen ? (
+          <div className="absolute bottom-0 left-0 right-0 p-6 border-t border-gray-700 bg-gray-900/50">
+            <div className="flex items-center gap-3 mb-4">
+              <div className="bg-gray-800 p-2 rounded-full">
+                <UserCircle size={24} className="text-[#FDCB2C]" />
+              </div>
+              <div>
+                <div className="text-sm font-bold text-white">Beheerder</div>
+                <div className="text-xs text-gray-400">admin@hellotv.nl</div>
+              </div>
+            </div>
+            <button 
+              onClick={() => {
+                setIsAuthenticated(false);
+                localStorage.removeItem('hellotv_auth');
+              }}
+              className="w-full py-2.5 bg-gray-800 text-gray-300 rounded-lg text-sm font-medium hover:bg-red-500 hover:text-white transition-colors flex items-center justify-center gap-2"
+            >
+              <LogOut size={16} />
+              Uitloggen
+            </button>
+          </div>
+        ) : (
+          <div className="absolute bottom-0 left-0 right-0 p-4 border-t border-gray-700 bg-gray-900/50 flex justify-center">
+            <button 
+              onClick={() => {
+                setIsAuthenticated(false);
+                localStorage.removeItem('hellotv_auth');
+              }}
+              className="p-2 text-gray-400 hover:text-red-500 transition-colors"
+              title="Uitloggen"
+            >
+              <LogOut size={20} />
+            </button>
+          </div>
+        )}
       </div>
 
       <div className="flex-1 overflow-y-auto">
