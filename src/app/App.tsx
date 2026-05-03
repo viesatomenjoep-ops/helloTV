@@ -98,12 +98,13 @@ export default function App() {
 
       {/* Sidebar */}
       <div className={`
-        fixed inset-y-0 left-0 z-40 w-64 bg-gray-50 text-gray-900 transform transition-transform duration-300 ease-in-out flex flex-col shadow-2xl border-r border-gray-200
+        fixed inset-y-0 left-0 z-40 w-64 bg-gray-100 text-gray-900 transform transition-transform duration-300 ease-in-out flex flex-col shadow-2xl border-r border-gray-200
         ${mobileMenuOpen ? 'translate-x-0' : '-translate-x-full'}
         md:relative md:translate-x-0
       `}>
-        <div className="flex items-center justify-center py-6 h-40 border-b border-gray-200 bg-white px-6 shrink-0">
-          <HelloTVLogo className="h-28 w-auto" />
+        <div className="flex flex-col items-center justify-center py-6 h-44 border-b border-gray-200 bg-white px-6 shrink-0 text-center">
+          <HelloTVLogo className="h-24 w-auto object-contain" />
+          <span className="text-black font-black text-[10px] sm:text-xs uppercase tracking-widest mt-3 opacity-80">Master Management</span>
         </div>
         
         <nav className="flex-1 px-4 py-6 space-y-1 overflow-y-auto custom-scrollbar">
