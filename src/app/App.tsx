@@ -98,12 +98,12 @@ export default function App() {
 
       {/* Sidebar */}
       <div className={`
-        fixed inset-y-0 left-0 z-40 w-64 bg-white text-gray-900 transform transition-transform duration-300 ease-in-out flex flex-col shadow-2xl border-r border-gray-200
+        fixed inset-y-0 left-0 z-40 w-64 bg-gray-50 text-gray-900 transform transition-transform duration-300 ease-in-out flex flex-col shadow-2xl border-r border-gray-200
         ${mobileMenuOpen ? 'translate-x-0' : '-translate-x-full'}
         md:relative md:translate-x-0
       `}>
-        <div className="flex items-center justify-center h-24 border-b border-gray-200 bg-white px-6 shrink-0">
-          <HelloTVLogo className="h-10 w-auto" />
+        <div className="flex items-center justify-center py-6 h-40 border-b border-gray-200 bg-white px-6 shrink-0">
+          <HelloTVLogo className="h-28 w-auto" />
         </div>
         
         <nav className="flex-1 px-4 py-6 space-y-1 overflow-y-auto custom-scrollbar">
