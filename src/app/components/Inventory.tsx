@@ -4,7 +4,7 @@ import { api } from '../../utils/api';
 import { mockInventory } from '../../utils/mockInventory';
 
 export function Inventory() {
-  const [activeTab, setActiveTab] = useState<'voorraad' | 'inkoop'>('voorraad');
+  const [activeTab, setActiveTab] = useState<'voorraad' | 'inkoop' | 'voorraad_per_filiaal'>('voorraad');
   const [items, setItems] = useState<any[]>(mockInventory);
   
   // Voorraad State
@@ -29,6 +29,27 @@ export function Inventory() {
   });
   const [isInkopping, setIsInkopping] = useState(false);
   const [inkoopSuccess, setInkoopSuccess] = useState(false);
+
+  // Filiaal Voorraad State
+  const [selectedLocation, setSelectedLocation] = useState('Breda');
+  const [allocationForm, setAllocationForm] = useState({
+    product: '',
+    aantal: 0,
+    minVoorraad: 2,
+    maxVoorraad: 10,
+    whatsappAlert: true,
+    emailAlert: false
+  });
+  const [allocationSuccess, setAllocationSuccess] = useState(false);
+
+  const LOCATIONS = [
+    // 3 Logistieke Centra
+    'DC Duiven', 'DC Amsterdam', 'DC Eindhoven',
+    // 18 Filialen
+    'Alkmaar', 'Amsterdam', 'Apeldoorn', 'Arnhem', 'Bergen op Zoom', 'Breda',
+    'Cruquius', 'Den Bosch', 'Doetinchem', 'Duiven', 'Eindhoven', 'Groningen',
+    'Leeuwarden', 'Naarden', 'Nijmegen', 'Rotterdam', 'Tilburg', 'Zoeterwoude'
+  ];
 
   useEffect(() => {
     loadInventory();
@@ -70,6 +91,15 @@ export function Inventory() {
     }, 1500);
   };
 
+  const handleAllocationSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    setAllocationSuccess(true);
+    setTimeout(() => {
+      setAllocationSuccess(false);
+      setAllocationForm({ ...allocationForm, product: '', aantal: 0 });
+    }, 3000);
+  };
+
   const lowStockItems = items.filter(item => (item.stock || item.quantity) <= (item.lowStockThreshold || 10));
   const totalValue = items.reduce((sum, item) => sum + ((item.stock || item.quantity || 0) * (item.prijs || item.price || 0)), 0);
 
@@ -98,6 +128,14 @@ export function Inventory() {
             }`}
           >
             <ShoppingCart size={18} /> Inkoopsysteem (Guido, Rob, Joeri & Bas)
+          </button>
+          <button
+            onClick={() => setActiveTab('voorraad_per_filiaal')}
+            className={`px-6 py-3 font-bold rounded-t-xl transition-colors flex items-center gap-2 ${
+              activeTab === 'voorraad_per_filiaal' ? 'bg-[#FDCB2C] text-black' : 'bg-white text-gray-500 hover:bg-gray-100'
+            }`}
+          >
+            <Building size={18} /> Voorraad per Filiaal & DC
           </button>
         </div>
 
@@ -320,6 +358,199 @@ export function Inventory() {
                     })}
                   </tbody>
                 </table>
+              </div>
+            </div>
+          </div>
+        )}
+
+        {/* Tab 3: Voorraad per Filiaal & DC */}
+        {activeTab === 'voorraad_per_filiaal' && (
+          <div className="grid grid-cols-1 lg:grid-cols-4 gap-8">
+            <div className="lg:col-span-1 space-y-4">
+              <h2 className="text-xl font-bold text-gray-800 mb-4">Kies Locatie</h2>
+              <div className="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden">
+                <div className="p-4 bg-gray-50 font-bold text-gray-700 border-b border-gray-200">
+                  Logistieke Centra (DC)
+                </div>
+                <div className="flex flex-col">
+                  {LOCATIONS.slice(0, 3).map(loc => (
+                    <button
+                      key={loc}
+                      onClick={() => setSelectedLocation(loc)}
+                      className={`text-left p-4 font-bold transition-colors border-b border-gray-100 last:border-0 ${
+                        selectedLocation === loc ? 'bg-blue-50 text-blue-700' : 'text-gray-600 hover:bg-gray-50'
+                      }`}
+                    >
+                      {loc}
+                    </button>
+                  ))}
+                </div>
+                <div className="p-4 bg-gray-50 font-bold text-gray-700 border-y border-gray-200">
+                  18 Winkels (Filialen)
+                </div>
+                <div className="flex flex-col max-h-[400px] overflow-y-auto">
+                  {LOCATIONS.slice(3).map(loc => (
+                    <button
+                      key={loc}
+                      onClick={() => setSelectedLocation(loc)}
+                      className={`text-left p-3 font-medium transition-colors border-b border-gray-100 last:border-0 ${
+                        selectedLocation === loc ? 'bg-[#FDCB2C]/20 text-black font-bold' : 'text-gray-600 hover:bg-gray-50'
+                      }`}
+                    >
+                      Filiaal {loc}
+                    </button>
+                  ))}
+                </div>
+              </div>
+            </div>
+
+            <div className="lg:col-span-3 space-y-8">
+              <div className="bg-white rounded-2xl shadow-lg border border-gray-100 p-6">
+                <div className="flex justify-between items-center mb-6">
+                  <div>
+                    <h2 className="text-2xl font-bold text-gray-900">Voorraad: {selectedLocation}</h2>
+                    <p className="text-gray-500">Huidige toegewezen items en notificatie-instellingen.</p>
+                  </div>
+                  <div className="flex gap-2">
+                    <span className="px-3 py-1 bg-green-100 text-green-800 rounded-full text-xs font-bold flex items-center gap-1">
+                      <MessageSquare size={14} /> WhatsApp Actief
+                    </span>
+                    <span className="px-3 py-1 bg-blue-100 text-blue-800 rounded-full text-xs font-bold flex items-center gap-1">
+                      <Mail size={14} /> E-mail Actief
+                    </span>
+                  </div>
+                </div>
+
+                <div className="overflow-x-auto rounded-xl border border-gray-200">
+                  <table className="w-full text-left text-sm">
+                    <thead className="bg-gray-50 border-b border-gray-200">
+                      <tr>
+                        <th className="p-4 font-bold text-gray-700">Product (SKU)</th>
+                        <th className="p-4 font-bold text-gray-700 text-center">Huidige Voorraad</th>
+                        <th className="p-4 font-bold text-gray-700 text-center">Min (Kritiek)</th>
+                        <th className="p-4 font-bold text-gray-700 text-center">Max (Veilig)</th>
+                        <th className="p-4 font-bold text-gray-700 text-center">Status</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr className="border-b border-gray-100 hover:bg-gray-50">
+                        <td className="p-4 font-bold">QE65S95F (Samsung QD-OLED)</td>
+                        <td className="p-4 text-center text-lg font-black">10</td>
+                        <td className="p-4 text-center text-gray-500">2</td>
+                        <td className="p-4 text-center text-gray-500">15</td>
+                        <td className="p-4 text-center">
+                          <span className="px-2 py-1 bg-green-100 text-green-700 rounded text-xs font-bold">Gezond</span>
+                        </td>
+                      </tr>
+                      <tr className="border-b border-gray-100 hover:bg-gray-50">
+                        <td className="p-4 font-bold">OLED55G5 (LG OLED evo)</td>
+                        <td className="p-4 text-center text-lg font-black text-red-600">1</td>
+                        <td className="p-4 text-center text-gray-500">3</td>
+                        <td className="p-4 text-center text-gray-500">10</td>
+                        <td className="p-4 text-center">
+                          <span className="px-2 py-1 bg-red-100 text-red-700 rounded text-xs font-bold animate-pulse">Kritiek</span>
+                        </td>
+                      </tr>
+                      <tr className="hover:bg-gray-50">
+                        <td className="p-4 font-bold">Bravia 9 75" (Sony MiniLED)</td>
+                        <td className="p-4 text-center text-lg font-black">4</td>
+                        <td className="p-4 text-center text-gray-500">1</td>
+                        <td className="p-4 text-center text-gray-500">5</td>
+                        <td className="p-4 text-center">
+                          <span className="px-2 py-1 bg-green-100 text-green-700 rounded text-xs font-bold">Gezond</span>
+                        </td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+
+              <div className="bg-white rounded-2xl shadow-lg border border-gray-100 p-6">
+                <h3 className="text-xl font-bold text-gray-900 mb-4 flex items-center gap-2">
+                  <Truck className="text-blue-600" /> Voorraad Toebedelen aan {selectedLocation}
+                </h3>
+                
+                <form onSubmit={handleAllocationSubmit} className="space-y-6">
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div>
+                      <label className="block text-sm font-bold text-gray-700 mb-2">Selecteer Product</label>
+                      <select 
+                        required
+                        value={allocationForm.product}
+                        onChange={(e) => setAllocationForm({...allocationForm, product: e.target.value})}
+                        className="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-lg outline-none focus:ring-2 focus:ring-blue-500"
+                      >
+                        <option value="">-- Kies een product uit algemene voorraad --</option>
+                        <option value="QE65S95F">Samsung QE65S95F (14 beschikbaar)</option>
+                        <option value="OLED65G5">LG OLED65G5 (8 beschikbaar)</option>
+                        <option value="XR65A95L">Sony XR-65A95L (5 beschikbaar)</option>
+                      </select>
+                    </div>
+                    <div>
+                      <label className="block text-sm font-bold text-gray-700 mb-2">Aantal Toebedelen</label>
+                      <input 
+                        type="number" 
+                        min="1"
+                        required
+                        value={allocationForm.aantal}
+                        onChange={(e) => setAllocationForm({...allocationForm, aantal: Number(e.target.value)})}
+                        className="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-lg outline-none focus:ring-2 focus:ring-blue-500"
+                      />
+                    </div>
+                  </div>
+
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-6 bg-gray-50 p-4 rounded-xl border border-gray-200">
+                    <div>
+                      <label className="block text-sm font-bold text-gray-700 mb-2">Minimale Voorraad (Kritiek Alarm)</label>
+                      <input 
+                        type="number" 
+                        min="0"
+                        value={allocationForm.minVoorraad}
+                        onChange={(e) => setAllocationForm({...allocationForm, minVoorraad: Number(e.target.value)})}
+                        className="w-full px-4 py-2 bg-white border border-gray-200 rounded-lg outline-none focus:ring-2 focus:ring-red-500 text-red-600 font-bold"
+                      />
+                    </div>
+                    <div>
+                      <label className="block text-sm font-bold text-gray-700 mb-2">Maximale Voorraad (Veilig)</label>
+                      <input 
+                        type="number" 
+                        min="1"
+                        value={allocationForm.maxVoorraad}
+                        onChange={(e) => setAllocationForm({...allocationForm, maxVoorraad: Number(e.target.value)})}
+                        className="w-full px-4 py-2 bg-white border border-gray-200 rounded-lg outline-none focus:ring-2 focus:ring-green-500 text-green-600 font-bold"
+                      />
+                    </div>
+                  </div>
+
+                  <div className="bg-blue-50 p-4 rounded-xl border border-blue-100 flex flex-col gap-3">
+                    <p className="text-sm font-bold text-blue-900 mb-1">Dagelijkse Notificatie Instellingen</p>
+                    <label className="flex items-center gap-3 cursor-pointer">
+                      <input 
+                        type="checkbox" 
+                        checked={allocationForm.whatsappAlert}
+                        onChange={(e) => setAllocationForm({...allocationForm, whatsappAlert: e.target.checked})}
+                        className="w-5 h-5 rounded text-blue-600"
+                      />
+                      <span className="text-sm text-blue-800 flex items-center gap-2"><MessageSquare size={16}/> Stuur WhatsApp-bericht bij kritieke voorraad</span>
+                    </label>
+                    <label className="flex items-center gap-3 cursor-pointer">
+                      <input 
+                        type="checkbox" 
+                        checked={allocationForm.emailAlert}
+                        onChange={(e) => setAllocationForm({...allocationForm, emailAlert: e.target.checked})}
+                        className="w-5 h-5 rounded text-blue-600"
+                      />
+                      <span className="text-sm text-blue-800 flex items-center gap-2"><Mail size={16}/> Stuur dagelijkse E-mail rapportage</span>
+                    </label>
+                  </div>
+
+                  <button 
+                    type="submit"
+                    className="w-full py-4 bg-[#1D6F42] hover:bg-green-800 text-white font-bold rounded-xl shadow-lg transition-colors flex justify-center items-center gap-2"
+                  >
+                    {allocationSuccess ? <><CheckCircle size={20} /> Succesvol Toebedeeld!</> : <><Truck size={20} /> Bevestig Voorraad Toewijzing</>}
+                  </button>
+                </form>
               </div>
             </div>
           </div>
