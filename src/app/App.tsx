@@ -5,6 +5,8 @@ import { CRM } from './components/CRM';
 import { SalesTracker } from './components/SalesTracker';
 import { Inventory } from './components/Inventory';
 import { Quotes } from './components/Quotes';
+import { Orders } from './components/Orders';
+import { HelloTVLogo } from './components/ui/HelloTVLogo';
 import { initDemoData } from '../utils/initDemoData';
 
 type View = 'dashboard' | 'crm' | 'sales' | 'inventory' | 'quotes' | 'orders';
@@ -19,6 +21,7 @@ export default function App() {
 
   const menuItems = [
     { id: 'dashboard', label: 'Dashboard', icon: LayoutDashboard },
+    { id: 'orders', label: 'Orders', icon: ShoppingCart },
     { id: 'crm', label: 'CRM', icon: Users },
     { id: 'quotes', label: 'Offertes', icon: FileText },
     { id: 'sales', label: 'Sales Tracker', icon: TrendingUp },
@@ -34,11 +37,9 @@ export default function App() {
       >
         <div className="flex items-center justify-between p-6">
           {sidebarOpen && (
-            <div>
-              <div className="text-2xl font-bold bg-gradient-to-r from-blue-400 to-purple-400 bg-clip-text text-transparent">
-                HelloTV
-              </div>
-              <div className="text-xs text-gray-400 mt-1">Management System</div>
+            <div className="flex-1">
+              <HelloTVLogo className="h-10 mb-1" theme="dark" />
+              <div className="text-xs text-gray-400">Management System</div>
             </div>
           )}
           <button
@@ -79,6 +80,7 @@ export default function App() {
 
       <div className="flex-1 overflow-y-auto">
         {currentView === 'dashboard' && <Dashboard />}
+        {currentView === 'orders' && <Orders />}
         {currentView === 'crm' && <CRM />}
         {currentView === 'quotes' && <Quotes />}
         {currentView === 'sales' && <SalesTracker />}

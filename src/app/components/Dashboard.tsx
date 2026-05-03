@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import { AreaChart, Area, BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, LineChart, Line } from 'recharts';
 import { TrendingUp, Users, FileText, ShoppingCart, Package, DollarSign, AlertTriangle, Bell } from 'lucide-react';
 import { api } from '../../utils/api';
+import { HelloTVLogo } from './ui/HelloTVLogo';
 
 export function Dashboard() {
   const [stats, setStats] = useState<any>(null);
@@ -102,11 +103,14 @@ export function Dashboard() {
       <div className="max-w-7xl mx-auto p-8">
         <div className="mb-8">
           <div className="flex items-center justify-between">
-            <div>
-              <h1 className="text-4xl font-bold bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent mb-2">
-                HelloTV Dashboard
-              </h1>
-              <p className="text-gray-600">Welkom terug! Hier is je overzicht van vandaag.</p>
+            <div className="flex items-center gap-4">
+              <HelloTVLogo className="h-12" />
+              <div>
+                <h1 className="text-3xl font-bold text-gray-800 mb-1">
+                  Dashboard
+                </h1>
+                <p className="text-gray-500">Welkom terug! Hier is je overzicht van vandaag.</p>
+              </div>
             </div>
             <div className="flex items-center gap-4">
               <button
