@@ -1,30 +1,10 @@
 import React, { useState } from 'react';
 import { MapPin, Send, CheckCircle, Car, FileText, Lock, Download, Mail, RefreshCw, Users } from 'lucide-react';
 
-const EMPLOYEES = [
-  "Tom van Bienen",
-  "Joep Morsink",
-  "Thijs Meijer",
-  "Maick",
-  "Wendy",
-  "Johan",
-  "Sophie de Vries",
-  "Daan Bakker",
-  "Julia Jansen",
-  "Lars Visser"
-];
+import { EMPLOYEES, getMedewerkerByCode } from '../../utils/employees';
 
 export function HR() {
   const [activeTab, setActiveTab] = useState<'reiskosten' | 'loonstroken_personeel' | 'beheer'>('reiskosten');
-
-  // Shared Helper
-  const getMedewerkerByCode = (code: string) => {
-    if (code === '921') return 'Tom van Bienen';
-    if (code === '811') return 'Joep Morsink';
-    if (code === '711') return 'Maick';
-    if (code.length >= 3) return 'Medewerker ' + code;
-    return null;
-  };
 
   // Reiskosten State
   const [medewerkerCode, setMedewerkerCode] = useState('');
@@ -394,6 +374,26 @@ export function HR() {
                     <p>...</p>
                   </div>
                 </div>
+              </div>
+            </div>
+
+            <div className="mt-8">
+              <h3 className="text-xl font-bold text-gray-800 mb-4 flex items-center gap-2">
+                <Users className="text-blue-600" />
+                Medewerker Database ({EMPLOYEES.length})
+              </h3>
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                {EMPLOYEES.map((medewerker) => (
+                  <div key={medewerker.code} className="flex justify-between items-center p-4 bg-gray-50 rounded-xl border border-gray-100">
+                    <div>
+                      <p className="font-bold text-gray-900">{medewerker.name}</p>
+                      <p className="text-xs text-gray-500">Code: {medewerker.code} • {medewerker.isSeller ? 'Verkoper' : 'Anders'}</p>
+                    </div>
+                    <button className="text-xs font-bold text-blue-600 hover:text-blue-800">
+                      Beheer
+                    </button>
+                  </div>
+                ))}
               </div>
             </div>
           </div>

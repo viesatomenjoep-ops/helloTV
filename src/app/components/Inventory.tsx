@@ -78,7 +78,7 @@ export function Inventory() {
       <div className="max-w-7xl mx-auto">
         <div className="mb-8">
           <h1 className="text-4xl font-bold text-gray-800 mb-2">Voorraad & Inkoop</h1>
-          <p className="text-gray-600">Beheer voorraadniveaus of plaats inkooporders (Guido & Rob).</p>
+          <p className="text-gray-600">Beheer voorraadniveaus of plaats inkooporders (Guido, Rob, Joeri & Bas).</p>
         </div>
 
         {/* Tabs */}
@@ -97,7 +97,7 @@ export function Inventory() {
               activeTab === 'inkoop' ? 'bg-[#1D6F42] text-white' : 'bg-white text-gray-500 hover:bg-gray-100'
             }`}
           >
-            <ShoppingCart size={18} /> Inkoopsysteem (Guido & Rob)
+            <ShoppingCart size={18} /> Inkoopsysteem (Guido, Rob, Joeri & Bas)
           </button>
         </div>
 

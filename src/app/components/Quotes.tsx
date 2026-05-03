@@ -4,6 +4,7 @@ import { mockQuotes } from '../../utils/mockQuotes';
 import { mockOrders } from '../../utils/mockOrders';
 import { QuoteDetailView } from './QuoteDetail';
 import { OrderDetail } from '../../types/database';
+import { getMedewerkerByCode } from '../../utils/employees';
 
 export function Quotes() {
   const [quotes, setQuotes] = useState(mockQuotes);
@@ -16,13 +17,6 @@ export function Quotes() {
   const [medewerkerCode, setMedewerkerCode] = useState('');
   const [actieveMedewerker, setActieveMedewerker] = useState<string | null>(null);
 
-  const getMedewerkerByCode = (code: string) => {
-    if (code === '921') return 'Tom van Bienen';
-    if (code === '811') return 'Joep Morsink';
-    if (code === '711') return 'Maick';
-    if (code.length >= 3) return 'Onbekende Medewerker';
-    return null;
-  };
 
   const handleCodeChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const val = e.target.value;

@@ -1,21 +1,11 @@
 import React, { useState, useEffect } from 'react';
-import { Clock, Play, Square, Coffee, Calendar, Search, CheckCircle } from 'lucide-react';
+import { Clock, Play, Square, Coffee, Calendar, Search, CheckCircle, Home, FileText, User as UserIcon, Plus, Bell, Key, Briefcase } from 'lucide-react';
 import { HelloTVLogo } from './ui/HelloTVLogo';
 
-const EMPLOYEES = [
-  "Tom van Bienen",
-  "Joep Morsink",
-  "Thijs Meijer",
-  "Maick",
-  "Wendy",
-  "Johan",
-  "Sophie de Vries",
-  "Daan Bakker",
-  "Julia Jansen",
-  "Lars Visser"
-];
+import { getMedewerkerByCode } from '../../utils/employees';
 
 type ShiftState = 'UITGEKLOKT' | 'INGEKLOKT' | 'PAUZE';
+type HelloBaseTab = 'home' | 'rooster' | 'urenregistratie' | 'afwezigheid' | 'meer';
 
 export function Shiftbase() {
   const [medewerkerCode, setMedewerkerCode] = useState('');
@@ -24,14 +14,13 @@ export function Shiftbase() {
   const [shiftState, setShiftState] = useState<ShiftState>('UITGEKLOKT');
   const [clockInTime, setClockInTime] = useState<Date | null>(null);
   const [currentTime, setCurrentTime] = useState(new Date());
+  
+  // Hello Base App State
+  const [activeTab, setActiveTab] = useState<HelloBaseTab>('urenregistratie');
+  const [vakantieType, setVakantieType] = useState('Vakantie');
+  const [vakantieSuccess, setVakantieSuccess] = useState(false);
 
-  const getMedewerkerByCode = (code: string) => {
-    if (code === '921') return 'Tom van Bienen';
-    if (code === '811') return 'Joep Morsink';
-    if (code === '711') return 'Maick';
-    if (code.length >= 3) return 'Onbekende Medewerker';
-    return null;
-  };
+
 
   const handleCodeSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -76,190 +65,267 @@ export function Shiftbase() {
   };
 
   return (
-    <div className="p-8 pb-24 min-h-screen bg-gray-50">
-      <div className="max-w-5xl mx-auto">
-        <div className="mb-8">
-          <h1 className="text-3xl font-bold text-gray-900 mb-2">Hello Base (Tijdregistratie)</h1>
-          <p className="text-gray-600">Inklokken, urenregistratie en pauzebeheer voor HelloTV medewerkers.</p>
+    <div className="flex justify-center bg-gray-100 min-h-screen pt-8 pb-24">
+      {/* Mobile App Container Simulation */}
+      <div className="w-full max-w-[400px] bg-gray-50 h-[800px] shadow-2xl rounded-[3rem] border-[8px] border-gray-900 relative overflow-hidden flex flex-col">
+        
+        {/* Status Bar Mock */}
+        <div className="h-7 w-full bg-blue-500 flex justify-between items-center px-6 text-white text-[10px] font-bold z-20">
+          <span>{formatTime(currentTime).substring(0,5)}</span>
+          <div className="flex gap-1 items-center">
+            <div className="w-4 h-3 bg-white rounded-sm"></div>
+          </div>
         </div>
 
-        {botWarning && (
-          <div className="mb-8 p-6 bg-red-50 border-2 border-red-200 rounded-2xl flex items-start gap-4 animate-in fade-in slide-in-from-top-4">
-            <div className="w-12 h-12 bg-red-100 text-red-600 rounded-full flex items-center justify-center flex-shrink-0">
-              <svg className="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 18h.01M8 21h8a2 2 0 002-2V5a2 2 0 00-2-2H8a2 2 0 00-2 2v14a2 2 0 002 2z" />
+        {/* Header */}
+        <div className="bg-blue-500 pt-4 pb-6 px-6 text-white relative z-10 rounded-b-3xl shadow-md">
+          <h1 className="text-xl font-bold text-center capitalize">{activeTab}</h1>
+          <div className="absolute right-6 top-4">
+            <div className="w-8 h-8 rounded-full bg-white/20 flex items-center justify-center">
+              <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z" />
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
               </svg>
             </div>
-            <div>
-              <h3 className="text-lg font-black text-red-800 mb-1">Call Me Bot (WhatsApp) Alert Verstuurd</h3>
-              <p className="text-red-700 font-medium">
-                Systeem heeft gedetecteerd dat het na 18:15 uur is. Je was vergeten uit te klokken. Je bent nu automatisch uitgeklokt. Neem contact op met je roostermaker als je toch langer hebt gewerkt.
-              </p>
-            </div>
           </div>
-        )}
+        </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+        {/* Scrollable Content */}
+        <div className="flex-1 overflow-y-auto bg-gray-50 pb-20 relative z-0">
           
-          {/* Selecteer Medewerker Widget */}
-          <div className="col-span-1 md:col-span-1 space-y-6">
-            <div className="bg-white rounded-2xl shadow-sm border border-gray-100 p-6">
-              <h2 className="text-lg font-bold text-gray-800 mb-4 flex items-center gap-2">
-                <Search className="text-blue-500" size={20} />
-                Selecteer Medewerker
-              </h2>
-              <form onSubmit={handleCodeSubmit} className="relative">
-                <input
-                  type="text"
-                  placeholder="Voer code in (bijv. 921)"
-                  value={medewerkerCode}
-                  onChange={(e) => setMedewerkerCode(e.target.value)}
-                  maxLength={4}
-                  className="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-xl focus:ring-2 focus:ring-[#FDCB2C] outline-none font-bold text-gray-800 text-center text-lg tracking-widest"
-                />
-                <button 
-                  type="submit" 
-                  className="w-full mt-3 py-3 bg-blue-600 text-white rounded-xl font-bold hover:bg-blue-700 transition-colors"
-                >
-                  Inloggen
-                </button>
-              </form>
-              
-              <div className="mt-6 pt-6 border-t border-gray-100">
-                <div className="flex justify-between items-center mb-2">
-                  <p className="text-sm text-gray-500">Actieve Medewerker</p>
-                  <button 
-                    onClick={() => {
-                      setSelectedEmployee('Niet geselecteerd');
-                      setMedewerkerCode('');
-                      setShiftState('UITGEKLOKT');
-                      setClockInTime(null);
-                    }}
-                    className="text-xs font-bold text-red-500 hover:text-red-700 underline"
-                  >
-                    Verwijder / Log uit
-                  </button>
+          {botWarning && (
+            <div className="m-4 p-4 bg-red-50 border border-red-200 rounded-xl flex items-start gap-3">
+              <div className="w-8 h-8 bg-red-100 text-red-600 rounded-full flex items-center justify-center flex-shrink-0">
+                <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 18h.01M8 21h8a2 2 0 002-2V5a2 2 0 00-2-2H8a2 2 0 00-2 2v14a2 2 0 002 2z" />
+                </svg>
+              </div>
+              <div>
+                <h3 className="text-sm font-bold text-red-800">Call Me Bot Alert</h3>
+                <p className="text-xs text-red-700 mt-1">Automatisch uitgeklokt om 18:15.</p>
+              </div>
+            </div>
+          )}
+
+          {activeTab === 'home' && (
+            <div className="p-6">
+              <div className="bg-white rounded-2xl p-6 shadow-sm border border-gray-100 text-center mb-6">
+                <h2 className="text-lg font-bold text-gray-800 mb-2">Welkom {selectedEmployee !== 'Niet geselecteerd' ? selectedEmployee : 'bij Hello Base'}</h2>
+                <p className="text-sm text-gray-500">Je bent momenteel {shiftState.toLowerCase()}.</p>
+              </div>
+              <div className="grid grid-cols-2 gap-4">
+                <div onClick={() => setActiveTab('urenregistratie')} className="bg-white p-4 rounded-2xl shadow-sm border border-gray-100 flex flex-col items-center justify-center cursor-pointer hover:bg-gray-50">
+                  <Clock className="text-blue-500 mb-2" size={24} />
+                  <span className="text-sm font-bold">Klokken</span>
                 </div>
-                <div className="flex items-center gap-3">
-                  <div className="w-10 h-10 rounded-full bg-blue-100 text-blue-600 flex items-center justify-center font-bold text-lg">
-                    {selectedEmployee.charAt(0)}
-                  </div>
-                  <div>
-                    <p className="font-bold text-gray-900">{selectedEmployee}</p>
-                    <p className="text-xs text-gray-500">ID: HTV-{(selectedEmployee.length * 921) || 10293}</p>
-                  </div>
+                <div onClick={() => setActiveTab('afwezigheid')} className="bg-white p-4 rounded-2xl shadow-sm border border-gray-100 flex flex-col items-center justify-center cursor-pointer hover:bg-gray-50">
+                  <Briefcase className="text-[#1D6F42] mb-2" size={24} />
+                  <span className="text-sm font-bold">Vakantie</span>
                 </div>
               </div>
             </div>
-          </div>
+          )}
 
-          {/* Tijdklok Widget */}
-          <div className="col-span-1 md:col-span-2">
-            <div className="bg-white rounded-2xl shadow-lg border border-gray-100 p-8 text-center relative overflow-hidden">
-              {/* Dynamic Background based on state */}
-              <div className={`absolute inset-0 opacity-10 transition-colors duration-500 ${
-                shiftState === 'INGEKLOKT' ? 'bg-green-500' :
-                shiftState === 'PAUZE' ? 'bg-[#FDCB2C]' : 'bg-gray-400'
-              }`} />
-              
-              <div className="relative z-10">
-                <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full text-sm font-bold tracking-widest mb-6 uppercase" style={{
-                  backgroundColor: shiftState === 'INGEKLOKT' ? '#dcfce7' : shiftState === 'PAUZE' ? '#fef3c7' : '#f3f4f6',
-                  color: shiftState === 'INGEKLOKT' ? '#166534' : shiftState === 'PAUZE' ? '#92400e' : '#4b5563'
-                }}>
-                  {shiftState === 'INGEKLOKT' && <div className="w-2 h-2 rounded-full bg-green-500 animate-pulse" />}
-                  {shiftState === 'PAUZE' && <Coffee size={14} />}
-                  {shiftState === 'UITGEKLOKT' && <Square size={14} />}
-                  STATUS: {shiftState}
-                </div>
-
-                <div className="font-mono text-7xl md:text-8xl font-black text-gray-900 tracking-tighter mb-8">
-                  {formatTime(currentTime)}
-                </div>
-
-                {clockInTime && (
-                  <p className="text-gray-500 font-medium mb-8">
-                    Ingeklokt sinds: {formatTime(clockInTime)}
-                  </p>
-                )}
-
-                <div className="flex flex-col md:flex-row justify-center gap-4 w-full">
-                  {shiftState === 'UITGEKLOKT' ? (
-                    <button
-                      onClick={handleClockIn}
-                      className="w-full md:w-auto px-8 py-4 bg-[#1D6F42] text-white rounded-xl font-black text-xl flex items-center justify-center gap-2 hover:bg-green-700 hover:scale-105 transition-all shadow-lg hover:shadow-green-500/30"
-                    >
-                      <Play fill="currentColor" />
-                      INKLOKKEN
+          {activeTab === 'urenregistratie' && (
+            <div className="p-6 space-y-6">
+              {/* Login Block if not logged in */}
+              {selectedEmployee === 'Niet geselecteerd' ? (
+                <div className="bg-white rounded-2xl shadow-sm border border-gray-100 p-6">
+                  <h2 className="text-md font-bold text-gray-800 mb-4 flex items-center gap-2">
+                    <Search className="text-blue-500" size={18} />
+                    Login met Code
+                  </h2>
+                  <form onSubmit={handleCodeSubmit}>
+                    <input
+                      type="text"
+                      placeholder="Code (bijv. 921)"
+                      value={medewerkerCode}
+                      onChange={(e) => setMedewerkerCode(e.target.value)}
+                      maxLength={4}
+                      className="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-xl focus:ring-2 focus:ring-[#FDCB2C] outline-none font-bold text-gray-800 text-center text-lg tracking-widest mb-3"
+                    />
+                    <button type="submit" className="w-full py-3 bg-blue-600 text-white rounded-xl font-bold hover:bg-blue-700">
+                      Inloggen
                     </button>
-                  ) : (
-                    <>
-                      <button
-                        onClick={handlePause}
-                        className={`w-full md:w-auto px-8 py-4 rounded-xl font-black text-xl flex items-center justify-center gap-2 transition-all shadow-lg hover:scale-105 ${
-                          shiftState === 'PAUZE' 
-                            ? 'bg-blue-600 text-white hover:bg-blue-700 hover:shadow-blue-500/30' 
-                            : 'bg-[#FDCB2C] text-black hover:bg-yellow-400 hover:shadow-yellow-500/30'
-                        }`}
-                      >
-                        <Coffee />
-                        {shiftState === 'PAUZE' ? 'HERVATTEN' : 'PAUZE'}
-                      </button>
-                      <button
-                        onClick={handleClockOut}
-                        className="w-full md:w-auto px-8 py-4 bg-red-600 text-white rounded-xl font-black text-xl flex items-center justify-center gap-2 hover:bg-red-700 hover:scale-105 transition-all shadow-lg hover:shadow-red-500/30"
-                      >
-                        <Square fill="currentColor" />
-                        UITKLOKKEN
-                      </button>
-                    </>
-                  )}
-                </div>
-              </div>
-            </div>
-
-            <div className="mt-6 bg-white rounded-2xl shadow-sm border border-gray-100 p-6">
-              <h3 className="text-lg font-bold text-gray-800 mb-4 flex items-center gap-2">
-                <Calendar className="text-blue-500" size={20} />
-                Rooster & Historie Vandaag
-              </h3>
-              {shiftState === 'UITGEKLOKT' && !clockInTime ? (
-                <div className="text-center py-8 text-gray-500">
-                  <CheckCircle size={40} className="mx-auto text-gray-300 mb-2" />
-                  <p>Nog geen uren geregistreerd voor vandaag.</p>
+                  </form>
                 </div>
               ) : (
-                <div className="space-y-3">
-                  <div className="flex justify-between items-center p-4 bg-gray-50 rounded-xl border border-gray-100">
-                    <div>
-                      <p className="font-bold text-gray-900">Reguliere Dienst</p>
-                      <p className="text-sm text-gray-500">{clockInTime ? formatTime(clockInTime) : '00:00:00'} - Heden</p>
+                <div className="bg-white rounded-2xl shadow-lg border border-gray-100 p-6 text-center relative overflow-hidden">
+                  <div className="flex justify-between items-center mb-6 relative z-10">
+                    <p className="text-xs text-gray-500 font-bold">{selectedEmployee}</p>
+                    <button 
+                      onClick={() => {
+                        setSelectedEmployee('Niet geselecteerd');
+                        setMedewerkerCode('');
+                        setShiftState('UITGEKLOKT');
+                        setClockInTime(null);
+                      }}
+                      className="text-[10px] font-bold text-red-500 hover:underline"
+                    >
+                      Uitloggen
+                    </button>
+                  </div>
+
+                  <div className={`absolute inset-0 opacity-10 transition-colors duration-500 ${
+                    shiftState === 'INGEKLOKT' ? 'bg-green-500' :
+                    shiftState === 'PAUZE' ? 'bg-[#FDCB2C]' : 'bg-gray-400'
+                  }`} />
+                  
+                  <div className="relative z-10">
+                    <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full text-[10px] font-bold tracking-widest mb-4 uppercase" style={{
+                      backgroundColor: shiftState === 'INGEKLOKT' ? '#dcfce7' : shiftState === 'PAUZE' ? '#fef3c7' : '#f3f4f6',
+                      color: shiftState === 'INGEKLOKT' ? '#166534' : shiftState === 'PAUZE' ? '#92400e' : '#4b5563'
+                    }}>
+                      {shiftState === 'INGEKLOKT' && <div className="w-1.5 h-1.5 rounded-full bg-green-500 animate-pulse" />}
+                      STATUS: {shiftState}
                     </div>
-                    <div className="text-right">
-                      <p className="font-bold text-green-600">Lopend...</p>
-                      <p className="text-xs text-gray-400">Filiaal Breda</p>
+
+                    <div className="font-mono text-5xl font-black text-gray-900 tracking-tighter mb-6">
+                      {formatTime(currentTime)}
+                    </div>
+
+                    <div className="flex flex-col gap-3 w-full">
+                      {shiftState === 'UITGEKLOKT' ? (
+                        <button onClick={handleClockIn} className="w-full py-3 bg-[#1D6F42] text-white rounded-xl font-black text-sm flex items-center justify-center gap-2 shadow-lg">
+                          <Play size={16} fill="currentColor" /> INKLOKKEN
+                        </button>
+                      ) : (
+                        <>
+                          <button onClick={handlePause} className={`w-full py-3 rounded-xl font-black text-sm flex items-center justify-center gap-2 shadow-md ${shiftState === 'PAUZE' ? 'bg-blue-600 text-white' : 'bg-[#FDCB2C] text-black'}`}>
+                            <Coffee size={16} /> {shiftState === 'PAUZE' ? 'HERVATTEN' : 'PAUZE'}
+                          </button>
+                          <button onClick={handleClockOut} className="w-full py-3 bg-red-600 text-white rounded-xl font-black text-sm flex items-center justify-center gap-2 shadow-md">
+                            <Square size={16} fill="currentColor" /> UITKLOKKEN
+                          </button>
+                        </>
+                      )}
                     </div>
                   </div>
                 </div>
               )}
-            </div>
-            
-            {/* Developer Trigger */}
-            <div className="mt-4 flex justify-between items-center">
-              <div className="opacity-50 hover:opacity-100 transition-opacity">
-                <HelloTVLogo className="h-6" theme="light" />
+
+              {/* Developer Trigger */}
+              <div className="flex justify-between items-center opacity-50 px-2">
+                <HelloTVLogo className="h-4" theme="light" />
+                <button onClick={simulateAutoClockOut} className="text-[10px] text-gray-500 underline">Simuleer 18:15</button>
               </div>
-              <button 
-                onClick={simulateAutoClockOut}
-                disabled={shiftState === 'UITGEKLOKT'}
-                className="text-xs text-gray-400 hover:text-red-500 underline disabled:opacity-30 disabled:hover:text-gray-400"
-              >
-                [Simuleer: Het is 18:15 en medewerker vergeet uit te klokken]
-              </button>
             </div>
-          </div>
+          )}
+
+          {activeTab === 'afwezigheid' && (
+            <div className="p-6">
+              <div className="bg-white rounded-2xl shadow-sm border border-gray-100 p-6">
+                <h2 className="text-md font-bold text-gray-800 mb-4">Nieuwe Aanvraag</h2>
+                
+                {vakantieSuccess ? (
+                  <div className="text-center py-6">
+                    <CheckCircle className="mx-auto text-green-500 mb-2" size={32} />
+                    <p className="font-bold text-gray-900">Aanvraag Verzonden!</p>
+                    <p className="text-xs text-gray-500 mt-1">Je hoort z.s.m. van HR.</p>
+                    <button onClick={() => setVakantieSuccess(false)} className="mt-4 px-4 py-2 bg-gray-100 rounded-lg text-sm font-bold">Nieuwe aanvraag</button>
+                  </div>
+                ) : (
+                  <form className="space-y-4" onSubmit={(e) => { e.preventDefault(); setVakantieSuccess(true); }}>
+                    <div>
+                      <label className="block text-xs font-bold text-gray-600 mb-1">Type</label>
+                      <select value={vakantieType} onChange={(e) => setVakantieType(e.target.value)} className="w-full bg-gray-50 border border-gray-200 rounded-xl p-3 text-sm outline-none focus:ring-2 focus:ring-blue-500">
+                        <option>Vakantie</option>
+                        <option>Ziekte</option>
+                        <option>Bijzonder Verlof</option>
+                        <option>Zorgverlof</option>
+                      </select>
+                    </div>
+                    <div className="grid grid-cols-2 gap-3">
+                      <div>
+                        <label className="block text-xs font-bold text-gray-600 mb-1">Van</label>
+                        <input type="date" className="w-full bg-gray-50 border border-gray-200 rounded-xl p-3 text-sm outline-none" required />
+                      </div>
+                      <div>
+                        <label className="block text-xs font-bold text-gray-600 mb-1">Tot</label>
+                        <input type="date" className="w-full bg-gray-50 border border-gray-200 rounded-xl p-3 text-sm outline-none" required />
+                      </div>
+                    </div>
+                    <div>
+                      <label className="block text-xs font-bold text-gray-600 mb-1">Opmerking</label>
+                      <textarea className="w-full bg-gray-50 border border-gray-200 rounded-xl p-3 text-sm outline-none h-20" placeholder="Optioneel..."></textarea>
+                    </div>
+                    <button type="submit" className="w-full py-3 bg-blue-600 text-white rounded-xl font-bold text-sm hover:bg-blue-700">
+                      Aanvraag Indienen
+                    </button>
+                  </form>
+                )}
+              </div>
+            </div>
+          )}
+
+          {activeTab === 'meer' && (
+            <div className="p-0">
+              {/* Profile Card (from screenshot) */}
+              <div className="bg-white rounded-xl shadow-md mx-6 -mt-4 relative z-20 p-4 flex items-center gap-4 border border-gray-100">
+                <img src="https://ui-avatars.com/api/?name=Tom+van+Biene&background=random" alt="Profile" className="w-16 h-16 rounded-full shadow-sm" />
+                <div>
+                  <h2 className="font-bold text-lg text-gray-900">{selectedEmployee !== 'Niet geselecteerd' ? selectedEmployee : 'Tom van Biene'}</h2>
+                  <p className="text-xs text-gray-500">tomvanbiene@gmail.com</p>
+                </div>
+                <div className="ml-auto text-gray-400">
+                  <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" /></svg>
+                </div>
+              </div>
+
+              {/* Menu List */}
+              <div className="bg-white mt-6 border-y border-gray-100">
+                {[
+                  { icon: <svg className="w-5 h-5 text-blue-400" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M11 5.882V19.24a1.76 1.76 0 01-3.417.592l-2.147-6.15M18 13a3 3 0 100-6M5.436 13.683A4.001 4.001 0 017 6h1.832c4.1 0 7.625-1.234 9.168-3v14c-1.543-1.766-5.067-3-9.168-3H7a3.988 3.988 0 01-1.564-.317z" /></svg>, label: 'Feedback geven' },
+                  { icon: <UserIcon className="w-5 h-5 text-blue-400" />, label: 'Beschikbaarheid' },
+                  { icon: <Calendar className="w-5 h-5 text-blue-400" />, label: 'Plus min uren' },
+                  { icon: <FileText className="w-5 h-5 text-blue-400" />, label: 'Nieuws' },
+                  { icon: <FileText className="w-5 h-5 text-blue-400" />, label: 'Bestanden' },
+                  { icon: <Key className="w-5 h-5 text-blue-400" />, label: 'Kioskcode' },
+                ].map((item, idx) => (
+                  <div key={idx} className="flex items-center gap-4 p-4 border-b border-gray-50 active:bg-gray-50 cursor-pointer">
+                    <div className="w-8 h-8 rounded-full bg-blue-50 flex items-center justify-center">
+                      {item.icon}
+                    </div>
+                    <span className="font-semibold text-gray-800 text-sm">{item.label}</span>
+                    <div className="ml-auto text-gray-300">
+                      <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" /></svg>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+          )}
 
         </div>
+
+        {/* Bottom Navigation */}
+        <div className="absolute bottom-0 w-full bg-white border-t border-gray-100 flex justify-between items-center px-6 py-4 pb-8 z-20">
+          <div onClick={() => setActiveTab('home')} className={`flex flex-col items-center gap-1 cursor-pointer transition-colors ${activeTab === 'home' ? 'text-blue-500' : 'text-gray-400'}`}>
+            <Home size={20} />
+            <span className="text-[10px] font-bold">Home</span>
+          </div>
+          <div onClick={() => setActiveTab('rooster')} className={`flex flex-col items-center gap-1 cursor-pointer transition-colors ${activeTab === 'rooster' ? 'text-blue-500' : 'text-gray-400'}`}>
+            <Calendar size={20} />
+            <span className="text-[10px] font-bold">Rooster</span>
+          </div>
+          <div onClick={() => setActiveTab('urenregistratie')} className={`flex flex-col items-center gap-1 cursor-pointer transition-colors ${activeTab === 'urenregistratie' ? 'text-blue-500' : 'text-gray-400'}`}>
+            <Clock size={20} />
+            <span className="text-[10px] font-bold">Urenregistr...</span>
+          </div>
+          <div onClick={() => setActiveTab('afwezigheid')} className={`flex flex-col items-center gap-1 cursor-pointer transition-colors ${activeTab === 'afwezigheid' ? 'text-blue-500' : 'text-gray-400'}`}>
+            <Briefcase size={20} />
+            <span className="text-[10px] font-bold">Afwezigheid</span>
+          </div>
+          <div onClick={() => setActiveTab('meer')} className={`flex flex-col items-center gap-1 cursor-pointer transition-colors ${activeTab === 'meer' ? 'text-blue-500' : 'text-gray-400'}`}>
+            <div className="flex gap-[2px]">
+              <div className="w-1.5 h-1.5 rounded-full bg-current"></div>
+              <div className="w-1.5 h-1.5 rounded-full bg-current"></div>
+              <div className="w-1.5 h-1.5 rounded-full bg-current"></div>
+            </div>
+            <span className="text-[10px] font-bold mt-1">Meer</span>
+          </div>
+        </div>
+
       </div>
     </div>
   );

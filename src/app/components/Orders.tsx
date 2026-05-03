@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { Eye, Search, Filter, Download, Plus } from 'lucide-react';
 import { mockOrders } from '../../utils/mockOrders';
+import { getMedewerkerByCode } from '../../utils/employees';
 import { OrderDetailView } from './OrderDetail';
 
 export function Orders() {
@@ -12,13 +13,6 @@ export function Orders() {
   const [medewerkerCode, setMedewerkerCode] = useState('');
   const [actieveMedewerker, setActieveMedewerker] = useState<string | null>(null);
 
-  const getMedewerkerByCode = (code: string) => {
-    if (code === '921') return 'Tom van Bienen';
-    if (code === '811') return 'Joep Morsink';
-    if (code === '711') return 'Maick';
-    if (code.length >= 3) return 'Onbekende Medewerker';
-    return null;
-  };
 
   const handleCodeChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const val = e.target.value;
