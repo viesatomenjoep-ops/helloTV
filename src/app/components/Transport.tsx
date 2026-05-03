@@ -86,11 +86,15 @@ export function Transport() {
   };
 
   const handleSendPaymentLink = (order: any, method: string) => {
-    alert(`Betaallink (${method}) verzonden naar ${order.customer} (Order: ${order.id}) via SMS/WhatsApp.`);
+    if (window.confirm(`Weet je zeker dat je een ${method} betaallink wilt sturen naar ${order.customer}?`)) {
+      alert(`Betaallink (${method}) verzonden naar ${order.customer} (Order: ${order.id}) via SMS/WhatsApp.`);
+    }
   };
 
   const handlePushToStore = (order: any) => {
-    alert(`Order ${order.id} is geautomatiseerd doorgezet naar filiaal ${order.filiaal}. Voorraad wordt nu direct gereserveerd!`);
+    if (window.confirm(`Weet je zeker dat je deze order direct wilt doorzetten naar filiaal ${order.filiaal}? De voorraad wordt direct gereserveerd!`)) {
+      alert(`Order ${order.id} is geautomatiseerd doorgezet naar filiaal ${order.filiaal}. Voorraad is succesvol gereserveerd!`);
+    }
   };
 
   const toggleCheckItem = (orderId: string, sku: string) => {
@@ -125,8 +129,8 @@ export function Transport() {
             </h1>
             <p className="text-gray-800 font-medium">Beheer filialen, live tracking en installateurs check-out</p>
           </div>
-          <div className="flex gap-2">
-            {['admin', 'installateur', 'filiaal'].map(tab => (
+          <div className="flex flex-wrap gap-2">
+            {['admin', 'installateur', 'filiaal', 'paklijsten'].map(tab => (
               <button
                 key={tab}
                 onClick={() => setActiveTab(tab as any)}
@@ -134,7 +138,7 @@ export function Transport() {
                   activeTab === tab ? 'bg-black text-[#FDCB2C] scale-105' : 'bg-black/70 text-white/90 hover:bg-black/80 hover:text-white'
                 }`}
               >
-                {tab === 'admin' ? 'Master Admin' : tab === 'filiaal' ? 'Filiaal Overzicht' : 'Installateurs App'}
+                {tab === 'admin' ? 'Master Admin' : tab === 'filiaal' ? 'Filiaal Overzicht' : tab === 'paklijsten' ? 'Inter-Filiaal Paklijsten' : 'Installateurs App'}
               </button>
             ))}
           </div>
@@ -158,8 +162,42 @@ export function Transport() {
                 </div>
               </div>
               <div className="flex items-center gap-2 text-sm font-bold text-green-600 bg-green-50 px-3 py-1.5 rounded-lg border border-green-200">
-                <span className="w-2 h-2 rounded-full bg-green-500 animate-pulse"></span>
-                SYNC ACTIEF
+                <CheckCircle size={16} /> Vendit Gekoppeld
+              </div>
+            </div>
+
+            {/* LIVE TRACKER HEEL NEDERLAND */}
+            <div className="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden">
+              <div className="p-4 border-b border-gray-100 bg-gray-50 flex justify-between items-center">
+                <h3 className="font-black text-gray-800 flex items-center gap-2">
+                  <Map className="text-blue-600" /> Live GPS Tracking Heel Nederland
+                </h3>
+                <span className="flex items-center gap-2 text-xs font-bold text-green-600 bg-green-100 px-2 py-1 rounded">
+                  <span className="w-2 h-2 rounded-full bg-green-600 animate-pulse"></span> LIVE
+                </span>
+              </div>
+              <div className="h-64 sm:h-80 bg-gray-200 relative overflow-hidden flex items-center justify-center" style={{ backgroundImage: 'url("https://www.transparenttextures.com/patterns/cubes.png")' }}>
+                <div className="absolute inset-0 bg-blue-50/50"></div>
+                {MOCK_VANS.map((van, idx) => (
+                  <div key={van.id} className="absolute flex flex-col items-center transition-all duration-1000 ease-in-out" style={{ 
+                    left: `${25 + idx * 25}%`, 
+                    top: `${30 + idx * 15}%` 
+                  }}>
+                    <div className="bg-[#1D6F42] text-white p-3 rounded-full shadow-xl relative group cursor-pointer hover:bg-[#FDCB2C] hover:text-black hover:scale-110 transition-transform">
+                      <Truck size={20} />
+                      {/* Tooltip */}
+                      <div className="absolute bottom-full left-1/2 -translate-x-1/2 mb-2 w-48 bg-gray-900 text-white text-xs p-3 rounded-xl opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none z-10 shadow-2xl">
+                        <p className="font-black text-[#FDCB2C] mb-1">{van.id} - {van.driver}</p>
+                        <p className="mb-1"><MapPin size={10} className="inline mr-1"/>{van.locatie}</p>
+                        <p className="text-green-400 font-bold"><Clock size={10} className="inline mr-1"/>{van.eta}</p>
+                      </div>
+                    </div>
+                  </div>
+                ))}
+                <div className="absolute bottom-4 left-4 bg-white p-3 rounded-xl shadow-lg border border-gray-100">
+                  <p className="text-xs font-bold text-gray-500 uppercase tracking-wider">Actieve bussen op de weg</p>
+                  <p className="text-2xl font-black text-[#1D6F42]">{MOCK_VANS.length}</p>
+                </div>
               </div>
             </div>
 
@@ -395,6 +433,82 @@ export function Transport() {
                     ))}
                   </tbody>
                 </table>
+              </div>
+            </div>
+          <div className="animate-in fade-in slide-in-from-bottom-4">
+            <div className="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden mb-6">
+              <div className="p-6 border-b border-gray-100 bg-gray-50">
+                <h3 className="font-black text-gray-800 flex items-center gap-2 text-xl mb-2">
+                  <Box className="text-[#1D6F42]" size={24} /> 
+                  Paklijst Inter-Filiaal (Voorraad Verplaatsingen)
+                </h3>
+                <p className="text-sm text-gray-500 font-bold">Van: Filiaal Breda ➔ Naar: Logistiek Duiven (DC)</p>
+              </div>
+              <div className="p-0">
+                <table className="w-full text-left border-collapse">
+                  <thead>
+                    <tr className="bg-gray-100 border-b-2 border-gray-200">
+                      <th className="p-4 font-bold text-gray-600">Product & SKU</th>
+                      <th className="p-4 font-bold text-gray-600 text-center">Aantal</th>
+                      <th className="p-4 font-bold text-gray-600 text-center">Type Retour</th>
+                      <th className="p-4 font-bold text-gray-600 text-center">Status</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr className="border-b border-gray-100 hover:bg-gray-50 transition-colors">
+                      <td className="p-4">
+                        <p className="font-bold text-gray-900">Samsung 65" QD-OLED</p>
+                        <p className="text-xs text-gray-500">SKU: QE65S95D</p>
+                      </td>
+                      <td className="p-4 text-center font-black text-lg">1</td>
+                      <td className="p-4 text-center">
+                        <span className="px-3 py-1 bg-red-100 text-red-800 font-bold rounded-lg text-xs">DOA</span>
+                      </td>
+                      <td className="p-4 text-center">
+                        <button className="px-3 py-1 bg-gray-200 text-gray-700 font-bold rounded hover:bg-gray-300 text-xs transition-colors">Wacht op pick</button>
+                      </td>
+                    </tr>
+                    <tr className="border-b border-gray-100 hover:bg-gray-50 transition-colors">
+                      <td className="p-4">
+                        <p className="font-bold text-gray-900">LG 55" OLED evo</p>
+                        <p className="text-xs text-gray-500">SKU: OLED55G5</p>
+                      </td>
+                      <td className="p-4 text-center font-black text-lg">1</td>
+                      <td className="p-4 text-center">
+                        <span className="px-3 py-1 bg-yellow-100 text-yellow-800 font-bold rounded-lg text-xs">Reparatie</span>
+                      </td>
+                      <td className="p-4 text-center">
+                        <button className="px-3 py-1 bg-[#1D6F42] text-white font-bold rounded hover:bg-green-800 text-xs transition-colors">Geladen in BUS-2</button>
+                      </td>
+                    </tr>
+                    <tr className="border-b border-gray-100 hover:bg-gray-50 transition-colors">
+                      <td className="p-4">
+                        <p className="font-bold text-gray-900">Vogel's Muurbeugel Thin</p>
+                        <p className="text-xs text-gray-500">SKU: VOG-THIN545</p>
+                      </td>
+                      <td className="p-4 text-center font-black text-lg">3</td>
+                      <td className="p-4 text-center">
+                        <span className="px-3 py-1 bg-purple-100 text-purple-800 font-bold rounded-lg text-xs">ODM (Overschot)</span>
+                      </td>
+                      <td className="p-4 text-center">
+                        <button className="px-3 py-1 bg-gray-200 text-gray-700 font-bold rounded hover:bg-gray-300 text-xs transition-colors">Wacht op pick</button>
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+              <div className="p-4 bg-gray-50 border-t border-gray-100 flex justify-end gap-3">
+                <button className="px-6 py-2 border-2 border-gray-300 text-gray-700 font-bold rounded-xl hover:bg-gray-100 transition-colors">Paklijst Printen</button>
+                <button 
+                  onClick={() => {
+                    if (window.confirm("Weet je zeker dat je deze paklijst wilt accorderen voor transport?")) {
+                      alert("Paklijst geaccordeerd. Status geüpdatet naar 'Wacht op transport'.");
+                    }
+                  }}
+                  className="px-6 py-2 bg-[#1D6F42] text-white font-bold rounded-xl hover:bg-green-800 transition-colors shadow-lg"
+                >
+                  Accordeer & Bevestig
+                </button>
               </div>
             </div>
           </div>

@@ -81,6 +81,7 @@ export function Inventory() {
 
   const handleInkoopSubmit = (e: React.FormEvent) => {
     e.preventDefault();
+    if (!window.confirm(`Weet je zeker dat je deze inkooporder wilt plaatsen bij ${inkoopFormData.leverancier}?`)) return;
     setIsInkopping(true);
     setTimeout(() => {
       setIsInkopping(false);
@@ -94,6 +95,7 @@ export function Inventory() {
 
   const handleAllocationSubmit = (e: React.FormEvent) => {
     e.preventDefault();
+    if (!window.confirm(`Weet je zeker dat je ${allocationForm.aantal} stuks van ${allocationForm.product} wilt reserveren voor filiaal/DC?`)) return;
     setAllocationSuccess(true);
     setTimeout(() => {
       setAllocationSuccess(false);

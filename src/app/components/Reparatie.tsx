@@ -89,6 +89,10 @@ export function Reparatie() {
     setTickets(tickets.map(t => t.id === id ? { ...t, afgerond: !t.afgerond, status: !t.afgerond ? 'Afgerond' : 'In behandeling' } : t));
   };
 
+  const handleStatusChange = (id: string, newStatus: string) => {
+    setTickets(tickets.map(t => t.id === id ? { ...t, status: newStatus } : t));
+  };
+
   const handleSubmitForm = (e: React.FormEvent) => {
     e.preventDefault();
     const newTicket = {
@@ -162,8 +166,18 @@ export function Reparatie() {
                   <p className="font-bold text-lg">{ticket.klant}</p>
                 </div>
                 <div className="bg-gray-50 p-4 rounded-xl border border-gray-100">
-                  <p className="text-xs text-gray-400 uppercase font-bold mb-1">Status</p>
-                  <p className="font-bold text-lg">{ticket.status}</p>
+                  <p className="text-xs text-gray-400 uppercase font-bold mb-1">Status (Bewerkbaar)</p>
+                  <select 
+                    value={ticket.status}
+                    onChange={(e) => handleStatusChange(ticket.id, e.target.value)}
+                    className="font-bold text-lg bg-transparent border-b-2 border-dashed border-gray-300 focus:outline-none focus:border-blue-500 pb-1 cursor-pointer w-full text-gray-900"
+                  >
+                    <option value="In behandeling">In behandeling</option>
+                    <option value="Aangemeld bij CE Repair">Aangemeld bij CE Repair</option>
+                    <option value="Wacht op pick-up">Wacht op pick-up</option>
+                    <option value="Wacht op onderdeel">Wacht op onderdeel</option>
+                    <option value="Afgerond">Afgerond</option>
+                  </select>
                 </div>
               </div>
 
