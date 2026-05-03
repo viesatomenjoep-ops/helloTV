@@ -106,14 +106,14 @@ export default function App() {
               onClick={() => handleNavClick(item.id)}
               className={`w-full flex items-center gap-3 px-4 py-3 rounded-xl transition-all duration-200 group font-medium ${
                 currentView === item.id 
-                  ? 'bg-gradient-to-r from-[#E52421]/20 to-transparent text-white shadow-lg border-l-4 border-[#E52421]' 
+                  ? 'bg-gradient-to-r from-[#FDCB2C]/20 to-transparent text-[#FDCB2C] shadow-lg border-l-4 border-[#FDCB2C]' 
                   : 'hover:bg-gray-800 hover:text-white'
               }`}
             >
               <item.icon 
                 size={20} 
                 className={`transition-colors duration-200 ${
-                  currentView === item.id ? 'text-[#E52421]' : 'text-gray-500 group-hover:text-white'
+                  currentView === item.id ? 'text-[#FDCB2C]' : 'text-gray-500 group-hover:text-white'
                 }`}
               />
               <span className="truncate">{item.label}</span>
@@ -125,7 +125,7 @@ export default function App() {
         <nav className="border-t border-gray-800 p-4 bg-gray-950 shrink-0">
           <div className="flex items-center justify-between p-3 rounded-xl bg-gray-800/50 backdrop-blur-sm border border-gray-700 hover:bg-gray-800 transition-colors cursor-pointer">
             <div className="flex items-center gap-3">
-              <UserCircle size={24} className="text-[#E52421]" />
+              <UserCircle size={24} className="text-[#FDCB2C]" />
               <div className="text-xs leading-tight">
                 <span className="font-bold text-white">Beheerder</span><br/>
                 <span className="text-gray-400">admin@heleutievier.nl</span>
