@@ -108,20 +108,20 @@ export function Dashboard({ onNavigate }: { onNavigate?: (view: string) => void 
       
       <div className="max-w-7xl mx-auto p-8 relative z-10">
         <div className="mb-8">
-          <div className="flex items-center justify-between">
-            <div className="flex items-center gap-4">
-              <HelloTVLogo className="h-12" />
+          <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
+            <div className="flex items-center gap-3 md:gap-4">
+              <HelloTVLogo className="h-10 md:h-12" />
               <div>
-                <h1 className="text-3xl font-bold text-gray-800 mb-1">
+                <h1 className="text-2xl md:text-3xl font-bold text-gray-800 mb-1">
                   Dashboard
                 </h1>
-                <p className="text-gray-500">Welkom terug! Hier is je overzicht van vandaag.</p>
+                <p className="text-xs md:text-sm text-gray-500">Welkom terug! Hier is je overzicht van vandaag.</p>
               </div>
             </div>
-            <div className="flex items-center gap-4">
-              <div className="text-right">
-                <div className="text-sm text-gray-500">Laatste update</div>
-                <div className="font-medium">{new Date().toLocaleTimeString('nl-NL')}</div>
+            <div className="flex items-center gap-4 w-full md:w-auto justify-end">
+              <div className="text-right bg-white px-4 py-2 rounded-lg shadow-sm border border-gray-100">
+                <div className="text-[10px] md:text-xs text-gray-500 uppercase tracking-wider font-bold">Laatste update</div>
+                <div className="font-black text-gray-800">{new Date().toLocaleTimeString('nl-NL')}</div>
               </div>
             </div>
           </div>
