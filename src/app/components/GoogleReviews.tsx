@@ -64,7 +64,7 @@ export function GoogleReviews() {
               Google Maps & Trustpilot Live Reviews
             </h1>
             <p className="text-gray-600">
-              Live SQL koppeling met Google & Trustpilot API: Reviews gekoppeld aan transacties.
+              Live data koppeling met Google & Trustpilot API: Reviews gekoppeld aan transacties.
             </p>
           </div>
           <button
@@ -117,7 +117,7 @@ export function GoogleReviews() {
               <div className="p-3 bg-green-100 text-green-600 rounded-xl">
                 <Database size={24} />
               </div>
-              <span className="text-green-500 font-bold text-sm">Live SQL</span>
+              <span className="text-green-500 font-bold text-sm">Live Sync</span>
             </div>
             <h3 className="text-3xl font-black text-gray-800">5.4%</h3>
             <p className="text-gray-500 font-medium mt-1">Conversie (Review / Transactie)</p>
@@ -177,7 +177,7 @@ export function GoogleReviews() {
         <div className="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden">
           <div className="p-6 border-b border-gray-100 bg-gray-50 flex justify-between items-center">
             <h2 className="text-xl font-bold text-gray-800 flex items-center gap-2">
-              <Database className="text-gray-500" /> SQL Transactie Splitsing per Kanaal
+              <Database className="text-gray-500" /> Transactie Splitsing per Kanaal
             </h2>
             <div className="relative">
               <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" size={16} />

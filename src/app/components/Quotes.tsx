@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Eye, Search, Filter, FileText, CheckCircle } from 'lucide-react';
+import { Eye, Search, Filter, FileText, CheckCircle, Plus } from 'lucide-react';
 import { mockQuotes } from '../../utils/mockQuotes';
 import { mockOrders } from '../../utils/mockOrders';
 import { QuoteDetailView } from './QuoteDetail';
@@ -124,24 +124,34 @@ export function Quotes() {
           <p className="text-gray-500 text-sm mt-1">Beheer en zet offertes om naar orders</p>
         </div>
         
-        <div className="bg-white px-4 py-2 rounded-xl shadow-sm border border-gray-200 flex items-center gap-3">
-          <div className="w-8 h-8 bg-gray-100 rounded-full flex items-center justify-center">
-            <svg className="w-4 h-4 text-gray-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
-            </svg>
-          </div>
-          <div>
-            <input 
-              type="text" 
-              placeholder="Jouw code (bijv. 921)"
-              value={medewerkerCode}
-              onChange={handleCodeChange}
-              className="text-sm font-bold text-gray-800 outline-none w-32 bg-transparent"
-              maxLength={4}
-            />
-            {actieveMedewerker && (
-              <p className="text-xs text-green-600 font-bold">{actieveMedewerker} ingelogd</p>
-            )}
+        <div className="flex flex-col sm:flex-row gap-4 items-start sm:items-center w-full md:w-auto">
+          <button 
+            className="flex items-center justify-center gap-2 px-6 py-3 bg-[#FDCB2C] hover:bg-yellow-500 text-black font-bold rounded-xl shadow-sm transition-all"
+            onClick={() => alert('Nieuwe Offerte maken is momenteel in ontwikkeling.')}
+          >
+            <Plus size={20} />
+            Maak Offerte
+          </button>
+
+          <div className="bg-white px-4 py-2 rounded-xl shadow-sm border border-gray-200 flex items-center gap-3">
+            <div className="w-8 h-8 bg-gray-100 rounded-full flex items-center justify-center">
+              <svg className="w-4 h-4 text-gray-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
+              </svg>
+            </div>
+            <div>
+              <input 
+                type="text" 
+                placeholder="Jouw code (bijv. 921)"
+                value={medewerkerCode}
+                onChange={handleCodeChange}
+                className="text-sm font-bold text-gray-800 outline-none w-32 bg-transparent"
+                maxLength={4}
+              />
+              {actieveMedewerker && (
+                <p className="text-xs text-green-600 font-bold">{actieveMedewerker} ingelogd</p>
+              )}
+            </div>
           </div>
         </div>
       </div>

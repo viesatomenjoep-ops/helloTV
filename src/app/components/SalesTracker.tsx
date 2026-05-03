@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useMemo } from 'react';
-import { TrendingUp, Award, Target, Euro, Trophy, Tv, Cable, Store, Filter, Download, ChevronDown, ChevronUp, Calendar, Mail, CheckCircle, RefreshCw, Maximize2, Minimize2 } from 'lucide-react';
+import { TrendingUp, Award, Target, Euro, Trophy, Tv, Cable, Store, Filter, Download, ChevronDown, ChevronUp, Calendar, Mail, CheckCircle, RefreshCw, Maximize2, Minimize2, Smartphone, Users } from 'lucide-react';
 import { api } from '../../utils/api';
 
 const STORES = [
@@ -29,6 +29,9 @@ export function SalesTracker() {
   const [emailSuccess, setEmailSuccess] = useState(false);
   const [isEmailing, setIsEmailing] = useState(false);
   const [tvMode, setTvMode] = useState(false);
+
+  const [whatsappSuccessId, setWhatsappSuccessId] = useState<string | null>(null);
+  const [trainerSuccessId, setTrainerSuccessId] = useState<string | null>(null);
 
   // Generate mock specific sales data for a seller
   const generateRecentSales = (salesCount: number) => {
@@ -185,6 +188,18 @@ export function SalesTracker() {
       setEmailSuccess(true);
       setTimeout(() => setEmailSuccess(false), 4000);
     }, 1500);
+  };
+
+  const handleSendToWhatsapp = (person: any, e: React.MouseEvent) => {
+    e.stopPropagation();
+    setWhatsappSuccessId(person.id);
+    setTimeout(() => setWhatsappSuccessId(null), 3000);
+  };
+
+  const handleSendToTrainer = (person: any, e: React.MouseEvent) => {
+    e.stopPropagation();
+    setTrainerSuccessId(person.id);
+    setTimeout(() => setTrainerSuccessId(null), 3000);
   };
 
   const topPerformer = filteredPerformance[0];
@@ -444,6 +459,20 @@ export function SalesTracker() {
                                   className="text-xs font-bold text-gray-700 bg-gray-100 hover:bg-gray-200 px-3 py-1.5 rounded-lg flex items-center gap-1 transition-colors"
                                 >
                                   <Download size={12} /> Exporteer {person.name.split(' ')[0]}
+                                </button>
+                                <button 
+                                  onClick={(e) => handleSendToWhatsapp(person, e)}
+                                  className={`text-xs font-bold text-white px-3 py-1.5 rounded-lg flex items-center gap-1 transition-colors ${whatsappSuccessId === person.id ? 'bg-green-600' : 'bg-[#25D366] hover:bg-green-600'}`}
+                                >
+                                  {whatsappSuccessId === person.id ? <CheckCircle size={12} /> : <Smartphone size={12} />}
+                                  App Verkoper
+                                </button>
+                                <button 
+                                  onClick={(e) => handleSendToTrainer(person, e)}
+                                  className={`text-xs font-bold text-white px-3 py-1.5 rounded-lg flex items-center gap-1 transition-colors ${trainerSuccessId === person.id ? 'bg-indigo-500' : 'bg-indigo-600 hover:bg-indigo-700'}`}
+                                >
+                                  {trainerSuccessId === person.id ? <CheckCircle size={12} /> : <Users size={12} />}
+                                  Stuur Trainer
                                 </button>
                               </div>
                             </div>

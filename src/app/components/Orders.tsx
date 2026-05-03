@@ -74,6 +74,7 @@ export function Orders() {
   const [upsellYearFilter, setUpsellYearFilter] = useState('Alle Jaren');
   const [selectedProduct, setSelectedProduct] = useState<any>(null);
   const [upsellModelId, setUpsellModelId] = useState('');
+  const [upsellOrderId, setUpsellOrderId] = useState('');
   const [bijbetaling, setBijbetaling] = useState(50);
   const [idealLink, setIdealLink] = useState('');
   const [isProcessing, setIsProcessing] = useState(false);
@@ -139,10 +140,11 @@ export function Orders() {
       setIdealLink(link);
       
       const upsellProduct = MOCK_PRODUCTS.find(p => p.id === upsellModelId);
+      const baseOrder = ordersList.find(o => o.id === upsellOrderId);
       
       const newOrder = {
         id: `UPS-${Math.floor(1000 + Math.random() * 9000)}`,
-        klant_id: 'CUST-' + Math.floor(10000 + Math.random() * 90000),
+        klant_id: baseOrder?.klant_id || 'CUST-' + Math.floor(10000 + Math.random() * 90000),
         status: 'In behandeling (Betaling verwacht)',
         aanschaf_datum: new Date(),
         producten: [
@@ -169,6 +171,7 @@ export function Orders() {
       
       setOrdersList([newOrder, ...ordersList]);
       alert('Upsell succesvol! Order is aangemaakt in het systeem.');
+      setUpsellOrderId('');
     }, 1500);
   };
 
@@ -428,6 +431,24 @@ export function Orders() {
 
               {selectedProduct ? (
                 <form onSubmit={handleCreateUpsell} className="space-y-6">
+                  
+                  <div>
+                    <label className="block text-sm font-bold text-gray-700 mb-2">Koppel aan Bestaande Order (Backend Sync)</label>
+                    <select 
+                      required
+                      value={upsellOrderId}
+                      onChange={(e) => setUpsellOrderId(e.target.value)}
+                      className="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none font-medium"
+                    >
+                      <option value="">-- Selecteer Bestaande Order --</option>
+                      {ordersList.slice(0, 10).map(o => (
+                        <option key={o.id} value={o.id}>
+                          {o.id} - Klant: {o.klant_id} (Huidig bedrag: €{o.order_totaal})
+                        </option>
+                      ))}
+                    </select>
+                  </div>
+
                   <div className="p-4 bg-gray-50 rounded-xl border border-gray-200">
                     <p className="text-xs text-gray-500 font-bold uppercase mb-1">Huidig Model (Klant bestelling)</p>
                     <p className="font-bold text-gray-900">{selectedProduct.model}</p>

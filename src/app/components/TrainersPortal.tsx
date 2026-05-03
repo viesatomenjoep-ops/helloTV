@@ -181,9 +181,18 @@ export function TrainersPortal() {
     }, 500);
   };
 
-  const TABS = ['OLED', 'Cleaners', 'Kabels', 'TV Beugels', 'SP TV'];
+  const TABS = ['OLED', 'Cleaners', 'Kabels', 'TV Beugels', 'SP TV', 'Trainers Database'];
   const currentData = getChartData();
   const currentTarget = getChartTarget();
+
+  const TRAINERS_DB = [
+    { filiaal: 'Amsterdam', trainers: ['Kevin de Ruijter', 'Bram Smeets'] },
+    { filiaal: 'Breda', trainers: ['Sander Visser'] },
+    { filiaal: 'Eindhoven', trainers: ['Lotte Jansen', 'Tim Hendriks'] },
+    { filiaal: 'Rotterdam', trainers: ['Maikel de Groot'] },
+    { filiaal: 'Utrecht', trainers: ['Lisa van Dijk', 'Tom Peters'] },
+    { filiaal: 'Den Bosch', trainers: ['Johan Bakker'] }
+  ];
 
   return (
     <div className="min-h-screen bg-[#2D2D2D] p-8 text-white overflow-y-auto">
@@ -269,13 +278,50 @@ export function TrainersPortal() {
                 activeTab === tab ? 'bg-[#FDCB2C] text-[#2D2D2D]' : 'bg-[#3D3D3D] text-gray-400 hover:text-white hover:bg-gray-700'
               }`}
             >
-              <Activity size={16} /> {tab} Overzicht
+              {tab === 'Trainers Database' ? <Users size={16} /> : <Activity size={16} />} {tab} {tab !== 'Trainers Database' && 'Overzicht'}
             </button>
           ))}
         </div>
 
-        {/* The Scraped Charts */}
-        <div className="bg-[#333333] rounded-xl shadow-2xl p-6 border border-gray-700 mb-8">
+        {activeTab === 'Trainers Database' ? (
+          <div className="bg-[#333333] rounded-xl shadow-2xl p-6 border border-gray-700 mb-8">
+            <h2 className="text-2xl font-bold text-white mb-6 flex items-center gap-2">
+              <Users className="text-[#FDCB2C]" /> Database: Salestrainers per Filiaal
+            </h2>
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+              {TRAINERS_DB.map(store => (
+                <div key={store.filiaal} className="bg-[#2D2D2D] p-6 rounded-xl border border-gray-600">
+                  <h3 className="text-xl font-bold text-white mb-4 flex items-center gap-2">
+                    <Monitor size={20} className="text-blue-400" /> Filiaal {store.filiaal}
+                  </h3>
+                  <div className="space-y-3">
+                    {store.trainers.map(trainer => (
+                      <div key={trainer} className="bg-[#3D3D3D] p-3 rounded-lg flex justify-between items-center border border-gray-600">
+                        <span className="font-bold text-gray-200">{trainer}</span>
+                        <div className="flex gap-2">
+                          <button className="text-[#25D366] hover:text-green-400 transition-colors" title="Stuur WhatsApp">
+                            <Activity size={18} />
+                          </button>
+                          <button className="text-blue-400 hover:text-blue-300 transition-colors" title="Stuur Mail">
+                            <Download size={18} />
+                          </button>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              ))}
+            </div>
+            <div className="mt-6 pt-6 border-t border-gray-700 flex justify-end">
+              <button className="px-6 py-3 bg-[#1D6F42] hover:bg-green-700 text-white font-bold rounded-xl transition-colors">
+                + Nieuwe Trainer Toevoegen
+              </button>
+            </div>
+          </div>
+        ) : (
+          <>
+            {/* The Scraped Charts */}
+            <div className="bg-[#333333] rounded-xl shadow-2xl p-6 border border-gray-700 mb-8">
           <div className="flex flex-col md:flex-row justify-between items-start md:items-center mb-8 gap-4">
             <h2 className="text-2xl font-bold text-white">
               {activeTab === 'OLED' ? `Week 14/15 Target is ${globalTarget}% OLED Aandeel` : `Resultaten voor ${activeTab}`}
@@ -427,7 +473,8 @@ export function TrainersPortal() {
             </table>
           </div>
         </div>
-        
+        </>
+        )}
       </div>
     </div>
   );
