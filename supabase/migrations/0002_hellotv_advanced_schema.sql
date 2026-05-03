@@ -92,3 +92,13 @@ CREATE TABLE IF NOT EXISTS Nieuwsberichten (
     categorie VARCHAR(50), -- bijv. 'TV-Markt' of 'Intern'
     created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW()
 );
+
+-- 10. TARGETS (Toegevoegd o.b.v. eerdere specificaties)
+CREATE TABLE IF NOT EXISTS Filiaal_Targets (
+    id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+    filiaal_naam VARCHAR(50) NOT NULL,
+    maand INT NOT NULL,
+    jaar INT NOT NULL,
+    target_omzet DECIMAL(10,2),
+    target_marge DECIMAL(10,2)
+);
