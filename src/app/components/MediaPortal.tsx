@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { Upload, Youtube, Instagram, Video, Image as ImageIcon, Link as LinkIcon, Plus, Save, Cloud, Server, Database, MonitorPlay, Activity } from 'lucide-react';
 
 export function MediaPortal() {
-  const [activeTab, setActiveTab] = useState<'upload' | 'bibliotheek' | 'cloud_media'>('upload');
+  const [activeTab, setActiveTab] = useState<'upload' | 'bibliotheek' | 'loud_media'>('upload');
   const [mediaItems, setMediaItems] = useState([
     { id: 1, type: 'youtube', title: 'HelloTV Zomer Campagne', platform: 'YouTube', url: 'https://youtube.com/watch?v=123', date: '04-05-2026' },
     { id: 2, type: 'instagram', title: 'OLED 2026 Sneak Peek', platform: 'Instagram', url: 'https://instagram.com/p/123', date: '03-05-2026' },
@@ -61,11 +61,11 @@ export function MediaPortal() {
               Nieuwe Media
             </button>
             <button
-              onClick={() => setActiveTab('cloud_media')}
-              className={`px-6 py-3 font-bold rounded-xl transition-all flex items-center gap-2 ${activeTab === 'cloud_media' ? 'bg-indigo-600 text-white shadow-lg' : 'bg-white text-gray-600 hover:bg-gray-100'}`}
+              onClick={() => setActiveTab('loud_media')}
+              className={`px-6 py-3 font-bold rounded-xl transition-all flex items-center gap-2 ${activeTab === 'loud_media' ? 'bg-indigo-600 text-white shadow-lg' : 'bg-white text-gray-600 hover:bg-gray-100'}`}
             >
               <MonitorPlay size={18} />
-              Cloud Media (Prijskaarten)
+              Loud Media (LAUD API)
             </button>
             <button
               onClick={() => setActiveTab('bibliotheek')}
@@ -179,65 +179,80 @@ export function MediaPortal() {
           </div>
         )}
 
-        {activeTab === 'cloud_media' && (
+        {activeTab === 'loud_media' && (
           <div className="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden animate-in fade-in slide-in-from-top-4 p-8">
             <div className="flex flex-col md:flex-row justify-between items-start md:items-center mb-8 gap-4 border-b border-gray-100 pb-8">
               <div>
                 <h2 className="text-2xl font-black text-indigo-900 flex items-center gap-2 mb-2">
-                  <MonitorPlay className="text-indigo-600" /> Cloud Media API Integratie
+                  <MonitorPlay className="text-indigo-600" /> Loud Media (LAUD API) Integratie
                 </h2>
                 <p className="text-gray-600 max-w-2xl">
-                  Beheer direct de digitale prijskaarten en instore schermen via de Cloud Media API. Upload 4K videobestanden en productinformatie die realtime worden doorgestuurd naar alle 18 filialen.
+                  Beheer direct de digitale prijskaarten, website content en instore schermen via de LAUD API. Upload 4K videobestanden en bijbehorende teksten die realtime worden doorgestuurd naar alle 18 filialen én de live website.
                 </p>
               </div>
               <div className="bg-green-50 text-green-700 px-4 py-2 rounded-xl flex items-center gap-2 font-bold text-sm border border-green-200">
-                <Activity size={16} /> API Verbonden (Live)
+                <Activity size={16} /> LAUD API Verbonden (Live)
               </div>
             </div>
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
               <div className="bg-indigo-50 border border-indigo-100 rounded-2xl p-6">
                 <h3 className="text-lg font-bold text-indigo-900 mb-4 flex items-center gap-2">
-                  <Upload /> Cloud Media Upload 4K-filmpjes
+                  <Upload /> LAUD Upload: 4K Video & Tekst
                 </h3>
-                <div className="border-2 border-dashed border-indigo-300 rounded-xl p-10 text-center bg-white hover:bg-indigo-50/50 cursor-pointer transition-colors mb-4">
-                  <Video size={48} className="mx-auto text-indigo-400 mb-4" />
-                  <p className="font-bold text-indigo-900 mb-1">Sleep je 4K MP4/MOV bestand hierheen</p>
-                  <p className="text-sm text-gray-500 mb-4">Bestandsgrootte max 5GB per video</p>
-                  <button className="px-6 py-2 bg-indigo-600 hover:bg-indigo-700 text-white font-bold rounded-lg transition-colors">
+                
+                <div className="border-2 border-dashed border-indigo-300 rounded-xl p-6 text-center bg-white hover:bg-indigo-50/50 cursor-pointer transition-colors mb-4">
+                  <Video size={36} className="mx-auto text-indigo-400 mb-2" />
+                  <p className="font-bold text-indigo-900 mb-1 text-sm">Sleep 4K MP4/MOV bestand hierheen</p>
+                  <p className="text-xs text-gray-500 mb-2">Max 5GB per video (Automatisch compressie voor web)</p>
+                  <button className="px-4 py-1.5 bg-indigo-600 hover:bg-indigo-700 text-white font-bold text-sm rounded-lg transition-colors">
                     Bestand Selecteren
                   </button>
                 </div>
-                <div className="bg-white p-4 rounded-xl border border-indigo-100 text-sm">
-                  <p className="font-bold text-gray-800 mb-2">API Target (Endpoint):</p>
-                  <code className="text-xs bg-gray-100 p-2 rounded block text-indigo-700">POST https://api.cloudmedia.com/v1/content/upload</code>
+
+                <div className="mb-4">
+                  <label className="block text-sm font-bold text-indigo-900 mb-2">Website Tekst / Prijskaart Info</label>
+                  <textarea
+                    rows={3}
+                    placeholder="Voer hier de actietekst in die op de website én in de winkel moet verschijnen..."
+                    className="w-full px-4 py-3 bg-white border border-indigo-200 rounded-lg focus:ring-2 focus:ring-indigo-500 outline-none resize-none text-sm"
+                  />
+                </div>
+
+                <button className="w-full py-3 bg-indigo-600 hover:bg-indigo-700 text-white font-bold rounded-xl flex items-center justify-center gap-2 transition-colors shadow-md">
+                  <Save size={18} /> Implementeer Direct op Website & Schermen
+                </button>
+
+                <div className="bg-white p-4 rounded-xl border border-indigo-100 text-sm mt-4">
+                  <p className="font-bold text-gray-800 mb-2">LAUD API Target (Endpoint):</p>
+                  <code className="text-xs bg-gray-100 p-2 rounded block text-indigo-700">POST https://api.loudmedia.com/v1/laud/sync</code>
                 </div>
               </div>
 
               <div className="space-y-6">
                 <div className="bg-white border border-gray-200 p-6 rounded-2xl shadow-sm">
                   <h3 className="text-lg font-bold text-gray-800 mb-4 flex items-center gap-2">
-                    <Database className="text-blue-500" /> Prijskaarten Sync
+                    <Database className="text-blue-500" /> Web & Store Sync
                   </h3>
                   <p className="text-sm text-gray-600 mb-4">
-                    Synchroniseer het HelloTV productassortiment (prijzen & specificaties) direct met de Cloud Media prijskaarten.
+                    Synchroniseer het HelloTV assortiment inclusief geüploade 4K video's realtime met de website en de Loud Media prijskaarten.
                   </p>
                   <button className="w-full py-3 bg-gray-900 hover:bg-black text-white font-bold rounded-xl flex items-center justify-center gap-2 transition-colors">
-                    <Server size={18} /> Push Prijzen via API
+                    <Server size={18} /> Push Prijzen & Content via LAUD API
                   </button>
                 </div>
                 
                 <div className="bg-yellow-50 border border-yellow-200 p-6 rounded-2xl">
-                  <h3 className="text-lg font-bold text-yellow-900 mb-2">Actieve Uitzendingen</h3>
-                  <p className="text-sm text-yellow-800 mb-4">Er draaien momenteel 23 video's op het netwerk. Laatste sync was 5 minuten geleden.</p>
+                  <h3 className="text-lg font-bold text-yellow-900 mb-2">Actieve Uitzendingen (Loud Media)</h3>
+                  <p className="text-sm text-yellow-800 mb-4">Er draaien momenteel 23 video's in de filialen en op de website. Laatste sync was 5 minuten geleden.</p>
                   <div className="space-y-2">
                     <div className="bg-white p-3 rounded-lg border border-yellow-100 flex justify-between items-center text-sm">
-                      <span className="font-bold text-gray-800">Zomer_Sale_4K.mp4</span>
-                      <span className="text-green-600 font-bold">Zichtbaar (18 filialen)</span>
+                      <span className="font-bold text-gray-800 truncate max-w-[200px]">Zomer_Sale_4K.mp4</span>
+                      <span className="text-green-600 font-bold">Live (Web + 18 Stores)</span>
                     </div>
                     <div className="bg-white p-3 rounded-lg border border-yellow-100 flex justify-between items-center text-sm">
-                      <span className="font-bold text-gray-800">OLED_Promo_2026.mp4</span>
-                      <span className="text-green-600 font-bold">Zichtbaar (18 filialen)</span>
+                      <span className="font-bold text-gray-800 truncate max-w-[200px]">OLED_Promo_2026.mp4</span>
+                      <span className="text-green-600 font-bold">Live (Web + 18 Stores)</span>
                     </div>
                   </div>
                 </div>
