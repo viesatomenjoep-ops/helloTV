@@ -11,7 +11,11 @@ import {
   FileText, 
   Clock,
   Layers,
-  UserCircle
+  UserCircle,
+  Search,
+  Star,
+  Link as LinkIcon,
+  Wrench as Tool
 } from 'lucide-react';
 import { Dashboard } from './components/Dashboard';
 import { CRM } from './components/CRM';
@@ -29,10 +33,12 @@ import { Vendit } from './components/Vendit';
 import { GoogleReviews } from './components/GoogleReviews';
 import { ProductDashboard } from './components/ProductDashboard';
 import { HelloTVWebsite } from './components/HelloTVWebsite';
+import { Reparatie } from './components/Reparatie';
+import { MagicLinks } from './components/MagicLinks';
 import { HelloTVLogo } from './components/ui/HelloTVLogo';
 import { initDemoData } from '../utils/initDemoData';
 
-type View = 'dashboard' | 'crm' | 'sales' | 'inventory' | 'quotes' | 'orders' | 'showcase' | 'hr' | 'shiftbase' | 'trainers' | 'transport' | 'media' | 'vendit' | 'reviews' | 'products' | 'website';
+type View = 'dashboard' | 'crm' | 'sales' | 'inventory' | 'quotes' | 'orders' | 'showcase' | 'hr' | 'shiftbase' | 'trainers' | 'transport' | 'media' | 'vendit' | 'reviews' | 'products' | 'website' | 'reparatie' | 'magiclinks';
 
 export default function App() {
   const [currentView, setCurrentView] = useState<View>('dashboard');
@@ -56,6 +62,8 @@ export default function App() {
     { id: 'sales', label: 'Sales Tracker', icon: TrendingUp },
     { id: 'inventory', label: 'Voorraad & Inkoop', icon: Package },
     { id: 'transport', label: 'Transport (Bessy)', icon: Clock },
+    { id: 'reparatie', label: 'Reparatie & Service', icon: Tool },
+    { id: 'magiclinks', label: 'AI & Magic Links', icon: LinkIcon },
     { id: 'media', label: 'Media & Cloudinary', icon: Layers },
     { id: 'trainers', label: 'Sales Trainers', icon: Users },
     { id: 'shiftbase', label: 'Hello Base (Uren)', icon: Clock },
@@ -154,9 +162,11 @@ export default function App() {
         {currentView === 'trainers' && <TrainersPortal />}
         { currentView === 'inventory' && <Inventory /> }
         { currentView === 'shiftbase' && <Shiftbase /> }
-        { currentView === 'hr' && <HR /> }
-        { currentView === 'transport' && <Transport /> }
-        { currentView === 'media' && <MediaPortal /> }
+        {currentView === 'hr' && <HR />}
+        {currentView === 'transport' && <Transport />}
+        {currentView === 'reparatie' && <Reparatie />}
+        {currentView === 'magiclinks' && <MagicLinks />}
+        {currentView === 'media' && <MediaPortal />}
         { currentView === 'vendit' && <Vendit /> }
       </div>
     </div>
