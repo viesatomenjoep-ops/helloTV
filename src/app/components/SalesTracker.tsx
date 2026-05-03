@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useMemo } from 'react';
-import { TrendingUp, Award, Target, DollarSign, Trophy, Tv, Cable, Store, Filter } from 'lucide-react';
+import { TrendingUp, Award, Target, Euro, Trophy, Tv, Cable, Store, Filter } from 'lucide-react';
 import { api } from '../../utils/api';
 
 const STORES = [
@@ -133,7 +133,7 @@ export function SalesTracker() {
         <div className="grid grid-cols-1 md:grid-cols-4 gap-6 mb-8">
           <div className="bg-gradient-to-br from-green-500 to-green-600 text-white rounded-2xl shadow-lg p-6">
             <div className="flex items-center gap-3 mb-3">
-              <DollarSign size={24} />
+              <Euro size={24} />
               <span className="text-sm opacity-90">Totale Omzet ({selectedStore})</span>
             </div>
             <div className="text-3xl font-bold">

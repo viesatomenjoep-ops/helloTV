@@ -1,6 +1,8 @@
+import React from "react";
+
 import { useState, useEffect } from 'react';
 import { AreaChart, Area, BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, LineChart, Line } from 'recharts';
-import { TrendingUp, Users, FileText, ShoppingCart, Package, DollarSign, AlertTriangle, Bell } from 'lucide-react';
+import { TrendingUp, Users, FileText, ShoppingCart, Package, Euro, AlertTriangle, Bell } from 'lucide-react';
 import { api } from '../../utils/api';
 import { HelloTVLogo } from './ui/HelloTVLogo';
 import { BrandElements } from './BrandElements';
@@ -41,7 +43,7 @@ export function Dashboard({ onNavigate }: { onNavigate?: (view: string) => void 
     {
       title: 'Totale Omzet',
       value: `€${(stats?.totalRevenue || 0).toLocaleString('nl-NL', { minimumFractionDigits: 2 })}`,
-      icon: DollarSign,
+      icon: Euro,
       color: 'bg-gradient-to-br from-green-500 to-green-600',
       change: '+12.5%',
     },
