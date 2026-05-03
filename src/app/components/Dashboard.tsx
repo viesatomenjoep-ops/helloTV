@@ -3,6 +3,7 @@ import { AreaChart, Area, BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, R
 import { TrendingUp, Users, FileText, ShoppingCart, Package, DollarSign, AlertTriangle, Bell } from 'lucide-react';
 import { api } from '../../utils/api';
 import { HelloTVLogo } from './ui/HelloTVLogo';
+import { BrandElements } from './BrandElements';
 
 export function Dashboard() {
   const [stats, setStats] = useState<any>(null);
@@ -221,6 +222,9 @@ export function Dashboard() {
             <div className="text-6xl">🚀</div>
           </div>
         </div>
+
+        {/* Brand Elements Section */}
+        <BrandElements />
       </div>
     </div>
   );
