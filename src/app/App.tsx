@@ -87,7 +87,7 @@ export default function App() {
   };
 
   return (
-    <div className="flex h-[100dvh] w-full max-w-[100vw] overflow-hidden bg-[#F5F5F5] font-sans">
+    <div className="flex h-[100dvh] w-full max-w-[100vw] overflow-x-hidden bg-[#F5F5F5] font-sans">
       {/* Mobile menu button */}
       <button 
         className="md:hidden fixed top-4 right-4 z-50 p-2 bg-gray-900 text-white rounded-lg"
@@ -98,13 +98,13 @@ export default function App() {
 
       {/* Sidebar */}
       <div className={`
-        fixed inset-y-0 left-0 z-40 w-64 bg-white text-gray-900 transform transition-transform duration-300 ease-in-out flex flex-col shadow-2xl border-r border-gray-200
+        fixed inset-y-0 left-0 z-40 w-64 bg-gray-900 text-white transform transition-transform duration-300 ease-in-out flex flex-col shadow-2xl border-r border-gray-800
         ${mobileMenuOpen ? 'translate-x-0' : '-translate-x-full'}
         md:relative md:translate-x-0
       `}>
-        <div className="flex flex-col items-center justify-center py-6 h-44 border-b border-gray-200 bg-white px-6 shrink-0 text-center w-full">
-          <HelloTVLogo className="h-24 w-auto object-contain mx-auto block" />
-          <span className="text-black font-black text-sm uppercase tracking-widest mt-3 opacity-90 block w-full text-center">Master Management</span>
+        <div className="flex flex-col items-center justify-center py-6 h-44 border-b border-gray-800 bg-gray-900 px-6 shrink-0 text-center w-full">
+          <HelloTVLogo className="h-24 w-auto object-contain mx-auto block brightness-0 invert opacity-50" />
+          <span className="text-white font-black text-sm uppercase tracking-widest mt-3 opacity-90 block w-full text-center">Master Management</span>
         </div>
         
         <nav className="flex-1 px-4 py-6 space-y-1 overflow-y-auto custom-scrollbar">
@@ -115,7 +115,7 @@ export default function App() {
               className={`w-full flex items-center gap-3 px-4 py-3 rounded-xl transition-all duration-200 group font-medium ${
                 currentView === item.id 
                   ? 'bg-gradient-to-r from-[#FDCB2C]/20 to-transparent text-[#FDCB2C] shadow-sm border-l-4 border-[#FDCB2C]' 
-                  : 'text-gray-700 hover:bg-gray-50 hover:text-[#FDCB2C]'
+                  : 'text-gray-400 hover:bg-gray-800 hover:text-[#FDCB2C]'
               }`}
             >
               <item.icon 

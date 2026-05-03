@@ -74,6 +74,15 @@ export function Transport() {
   const [selectedStore, setSelectedStore] = useState('Alle Filialen');
   const [orders, setOrders] = useState(MOCK_ORDERS);
   const [installateurDriver, setInstallateurDriver] = useState('Sander (BUS-1)');
+  const [isPrintingPaklijst, setIsPrintingPaklijst] = useState(false);
+
+  const handlePrintPaklijst = () => {
+    setIsPrintingPaklijst(true);
+    setTimeout(() => {
+      window.print();
+      setIsPrintingPaklijst(false);
+    }, 100);
+  };
 
   const getStatusColor = (status: string) => {
     switch (status) {
@@ -498,7 +507,12 @@ export function Transport() {
                 </table>
               </div>
               <div className="p-4 bg-gray-50 border-t border-gray-100 flex justify-end gap-3">
-                <button className="px-6 py-2 border-2 border-gray-300 text-gray-700 font-bold rounded-xl hover:bg-gray-100 transition-colors">Paklijst Printen</button>
+                <button 
+                  onClick={handlePrintPaklijst}
+                  className="px-6 py-2 border-2 border-gray-300 text-gray-700 font-bold rounded-xl hover:bg-gray-100 transition-colors print:hidden"
+                >
+                  Paklijst Printen
+                </button>
                 <button 
                   onClick={() => {
                     if (window.confirm("Weet je zeker dat je deze paklijst wilt accorderen voor transport?")) {
@@ -512,8 +526,83 @@ export function Transport() {
               </div>
             </div>
           </div>
+          </div>
         )}
-      </div>
+
+      {/* Print Only Layout (Real PDF Look) */}
+      {isPrintingPaklijst && (
+        <div className="hidden print:block fixed inset-0 bg-white z-[9999] p-12 text-black text-left">
+          <div className="flex justify-between items-start border-b-4 border-[#FDCB2C] pb-6 mb-8">
+            <div>
+              <img src="/HelloTV.png" alt="HelloTV Logo" className="h-16 mb-4 filter brightness-0" />
+              <h1 className="text-3xl font-black uppercase tracking-widest text-gray-900">Officiële Retour/Inter-Filiaal Paklijst</h1>
+            </div>
+            <div className="text-right">
+              <p className="text-sm font-bold text-gray-500">Filiaal: Breda</p>
+              <p className="text-sm font-bold text-gray-500">Datum: {new Date().toLocaleDateString('nl-NL')}</p>
+              <p className="text-xl font-black mt-2">TR-RET-8842</p>
+            </div>
+          </div>
+
+          <div className="mb-12">
+            <h2 className="text-lg font-bold bg-gray-100 px-4 py-2 uppercase tracking-widest mb-4">Verzendgegevens</h2>
+            <div className="px-4 text-sm font-medium space-y-1">
+              <p>Van: Filiaal Breda</p>
+              <p>Transport via Hessey Logistics</p>
+              <p>Bestemming: Logistiek Centrum Duiven (DC)</p>
+            </div>
+          </div>
+
+          <table className="w-full text-left mb-12">
+            <thead className="bg-gray-100 border-y-2 border-gray-900">
+              <tr>
+                <th className="py-3 px-4 font-bold uppercase text-sm">Aantal</th>
+                <th className="py-3 px-4 font-bold uppercase text-sm">Omschrijving & SKU</th>
+                <th className="py-3 px-4 font-bold uppercase text-sm">Type Retour</th>
+                <th className="py-3 px-4 font-bold uppercase text-sm text-right">Controle</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr className="border-b border-gray-200">
+                <td className="py-4 px-4 font-black text-lg">1x</td>
+                <td className="py-4 px-4 font-bold">Samsung 65" QD-OLED <span className="text-gray-500 block text-xs">SKU: QE65S95D</span></td>
+                <td className="py-4 px-4">DOA</td>
+                <td className="py-4 px-4 text-right">
+                  <div className="inline-block w-6 h-6 border-2 border-gray-900 rounded-sm"></div>
+                </td>
+              </tr>
+              <tr className="border-b border-gray-200">
+                <td className="py-4 px-4 font-black text-lg">1x</td>
+                <td className="py-4 px-4 font-bold">LG 55" OLED evo <span className="text-gray-500 block text-xs">SKU: OLED55G5</span></td>
+                <td className="py-4 px-4">Reparatie</td>
+                <td className="py-4 px-4 text-right">
+                  <div className="inline-block w-6 h-6 border-2 border-gray-900 rounded-sm"></div>
+                </td>
+              </tr>
+              <tr className="border-b border-gray-200">
+                <td className="py-4 px-4 font-black text-lg">3x</td>
+                <td className="py-4 px-4 font-bold">Vogel's Muurbeugel Thin <span className="text-gray-500 block text-xs">SKU: VOG-THIN545</span></td>
+                <td className="py-4 px-4">ODM</td>
+                <td className="py-4 px-4 text-right">
+                  <div className="inline-block w-6 h-6 border-2 border-gray-900 rounded-sm"></div>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+
+          <div className="mt-24 flex justify-between border-t-2 border-gray-200 pt-8">
+            <div className="text-center w-64">
+              <div className="border-b-2 border-gray-400 h-12 mb-2"></div>
+              <p className="text-sm font-bold text-gray-500">Handtekening Chauffeur (Hessey)</p>
+            </div>
+            <div className="text-center w-64">
+              <div className="border-b-2 border-gray-400 h-12 mb-2"></div>
+              <p className="text-sm font-bold text-gray-500">Handtekening Filiaal (Breda)</p>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
+  </div>
   );
 }

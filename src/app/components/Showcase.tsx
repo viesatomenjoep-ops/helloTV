@@ -19,7 +19,7 @@ export function Showcase() {
     <div className="bg-[#0A0A0A] text-white selection:bg-[#FDCB2C] selection:text-black">
       
       {/* Slide 1: Hero / Magie van 11-11 */}
-      <section className="min-h-screen relative flex items-center justify-center overflow-hidden pt-20 pb-16">
+      <section className="min-h-[100dvh] relative flex items-center justify-center overflow-hidden pt-20 pb-16">
         <div className="absolute inset-0 z-0">
           <div className="absolute top-1/4 left-1/4 w-[600px] h-[600px] bg-blue-600/30 rounded-full mix-blend-screen filter blur-[150px] animate-pulse"></div>
           <div className="absolute bottom-1/4 right-1/4 w-[500px] h-[500px] bg-[#FDCB2C]/20 rounded-full mix-blend-screen filter blur-[150px] animate-pulse" style={{ animationDelay: '2s' }}></div>
@@ -55,7 +55,7 @@ export function Showcase() {
       </section>
 
       {/* Slide 2: De Geschiedenis van Platte TV */}
-      <section className="min-h-screen relative flex items-center py-24 bg-[#111]">
+      <section className="min-h-[100dvh] relative flex items-center py-24 bg-[#111]">
         <div className="max-w-7xl mx-auto px-6">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
             <div className="space-y-8 relative z-10">
@@ -106,7 +106,7 @@ export function Showcase() {
       </section>
 
       {/* Slide 3: Van 1 naar 18 Filialen */}
-      <section className="min-h-screen relative flex flex-col justify-center py-24 bg-[#0A0A0A]">
+      <section className="min-h-[100dvh] relative flex flex-col justify-center py-24 bg-[#0A0A0A]">
         <div className="absolute inset-0 bg-[url('https://images.unsplash.com/photo-1497366216548-37526070297c?ixlib=rb-4.0.3&auto=format&fit=crop&w=2000&q=80')] bg-cover bg-center opacity-5 filter grayscale"></div>
         <div className="absolute inset-0 bg-gradient-to-t from-[#0A0A0A] via-[#0A0A0A]/90 to-[#0A0A0A]"></div>
         
@@ -147,7 +147,7 @@ export function Showcase() {
       </section>
 
       {/* Slide 4: Ziel & Zaligheid & De Wereld Veroveren */}
-      <section className="min-h-screen relative flex items-center py-24 bg-[#111]">
+      <section className="min-h-[100dvh] relative flex items-center py-24 bg-[#111]">
         <div className="absolute inset-0 z-0">
           <div className="absolute inset-0 bg-gradient-to-r from-[#0A0A0A] via-[#1A1A1A] to-[#0A0A0A]"></div>
         </div>

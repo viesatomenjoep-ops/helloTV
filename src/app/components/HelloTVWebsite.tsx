@@ -146,6 +146,20 @@ export function HelloTVWebsite() {
         </div>
       </nav>
 
+      {/* Figma Redesign Prototype Preview */}
+      <section className="bg-[#1A1A1A] p-4 text-center border-b-4 border-[#FDCB2C]">
+        <h2 className="text-[#FDCB2C] font-black text-xl mb-2 flex items-center justify-center gap-2">
+          <Tool size={20} /> Nieuwste Figma Redesign Preview
+        </h2>
+        <div className="w-full max-w-7xl mx-auto h-[600px] rounded-xl overflow-hidden shadow-2xl border border-gray-800">
+          <iframe 
+            src="https://www.figma.com/embed?embed_host=share&url=https%3A%2F%2Fwww.figma.com%2Fmake%2F7bmdwlvGRYgQwQvzw0Ng1e%2FWebsite-Redesign-and-Scraping%3Ffullscreen%3D1%26t%3DBdAEEukuz3maPC9o-1"
+            className="w-full h-full"
+            allowFullScreen
+          ></iframe>
+        </div>
+      </section>
+
       {/* Hero Section */}
       <section className="relative bg-[#0A0A0A] overflow-hidden">
         <div className="absolute inset-0">

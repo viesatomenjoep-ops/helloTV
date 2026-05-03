@@ -257,19 +257,19 @@ export function SalesTracker() {
               </select>
             </div>
 
-            {/* Excel Export Menu */}
+            {/* Export Menu */}
             <div className="relative">
               <button 
                 onClick={() => setShowExportMenu(!showExportMenu)}
                 className="px-6 py-3 bg-[#1D6F42] text-white font-bold rounded-xl shadow-sm hover:shadow-md transition-all flex items-center gap-2"
               >
                 <Download size={18} />
-                Export naar Excel
+                Exporteer (Excel & PDF)
               </button>
               {showExportMenu && (
-                <div className="absolute right-0 mt-2 w-48 bg-white border border-gray-200 rounded-xl shadow-xl overflow-hidden z-50">
+                <div className="absolute right-0 mt-2 w-64 bg-white border border-gray-200 rounded-xl shadow-xl overflow-hidden z-50">
                   <div className="px-4 py-2 text-xs font-bold text-gray-400 uppercase tracking-wider bg-gray-50 border-b border-gray-100">
-                    Selecteer Periode
+                    Exporteer Data (Excel)
                   </div>
                   {['Dag', 'Week', 'Maand', 'Jaar'].map((period) => (
                     <button
@@ -277,9 +277,31 @@ export function SalesTracker() {
                       onClick={() => handleExportToExcel(period)}
                       className="w-full text-left px-4 py-3 text-sm font-semibold text-gray-700 hover:bg-[#1D6F42] hover:text-white transition-colors flex items-center gap-2"
                     >
-                      <Calendar size={14} /> Per {period}
+                      <FileText size={14} /> Per {period}
                     </button>
                   ))}
+                  
+                  <div className="px-4 py-2 text-xs font-bold text-gray-400 uppercase tracking-wider bg-gray-50 border-y border-gray-100">
+                    Live Dagoverzicht (PDF)
+                  </div>
+                  <button
+                    onClick={() => {
+                      setShowExportMenu(false);
+                      setTimeout(() => window.print(), 100);
+                    }}
+                    className="w-full text-left px-4 py-3 text-sm font-semibold text-gray-700 hover:bg-red-600 hover:text-white transition-colors flex items-center gap-2"
+                  >
+                    <Download size={14} /> Download PDF
+                  </button>
+                  <button
+                    onClick={() => {
+                      setShowExportMenu(false);
+                      handleEmailReport();
+                    }}
+                    className="w-full text-left px-4 py-3 text-sm font-semibold text-gray-700 hover:bg-blue-600 hover:text-white transition-colors flex items-center gap-2 border-t border-gray-100"
+                  >
+                    <Mail size={14} /> Stuur PDF via Mail
+                  </button>
                 </div>
               )}
             </div>
@@ -314,29 +336,42 @@ export function SalesTracker() {
           </div>
         </div>
 
-        {/* Live Bonus Widget */}
+        {/* Live Bonus & HelloTV-Punten Widget */}
         <div className="bg-gradient-to-r from-gray-900 to-gray-800 rounded-2xl shadow-lg p-6 mb-8 text-white border-l-4 border-[#FDCB2C]">
-          <div className="flex justify-between items-center mb-4">
+          <div className="flex justify-between items-center mb-6">
             <h2 className="text-xl font-bold flex items-center gap-2">
-              <Trophy className="text-[#FDCB2C]" /> Actueel Bonus Overzicht (Persoonlijk)
+              <Trophy className="text-[#FDCB2C]" /> Actueel Bonus & Punten Overzicht (Persoonlijk)
             </h2>
             <div className="text-sm px-3 py-1 bg-[#FDCB2C] text-black font-bold rounded-full animate-pulse">
               LIVE BEREKENING
             </div>
           </div>
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-            <div className="bg-white/10 p-4 rounded-xl border border-white/5">
-              <p className="text-gray-400 text-sm mb-1">Jouw behaalde marge</p>
+          
+          <div className="grid grid-cols-1 lg:grid-cols-4 gap-6">
+            {/* Punten Sectie (Boven/Voorop gesteld) */}
+            <div className="lg:col-span-2 bg-gradient-to-br from-indigo-600 to-blue-800 p-5 rounded-xl border border-indigo-500/50 shadow-inner flex items-center justify-between">
+              <div>
+                <p className="text-indigo-200 text-sm font-bold uppercase tracking-wider mb-1">Jouw Eindejaars HelloTV-Punten</p>
+                <p className="text-5xl font-black text-white drop-shadow-md">4.250 <span className="text-xl font-normal opacity-80">pts</span></p>
+                <p className="text-xs text-indigo-200 mt-2 font-medium">Gebaseerd op sales & behaalde KPI's</p>
+              </div>
+              <div className="hidden sm:block">
+                <Star size={64} className="text-[#FDCB2C] opacity-50 drop-shadow-2xl" fill="#FDCB2C" />
+              </div>
+            </div>
+
+            {/* Marge Sectie */}
+            <div className="bg-white/10 p-5 rounded-xl border border-white/5 flex flex-col justify-center">
+              <p className="text-gray-400 text-sm mb-1 font-medium">Jouw behaalde marge</p>
               <p className="text-3xl font-black text-white">€18.200</p>
+              <div className="mt-2 text-xs text-gray-500">Drempel: €15.000</div>
             </div>
-            <div className="bg-white/10 p-4 rounded-xl border border-white/5">
-              <p className="text-gray-400 text-sm mb-1">Bonus drempel (Fulltime)</p>
-              <p className="text-3xl font-black text-white">€15.000</p>
-            </div>
-            <div className="bg-gradient-to-br from-[#FDCB2C] to-yellow-500 p-4 rounded-xl text-black shadow-inner">
+
+            {/* Bonus Schatting Sectie */}
+            <div className="bg-gradient-to-br from-[#FDCB2C] to-yellow-600 p-5 rounded-xl text-black shadow-inner flex flex-col justify-center relative overflow-hidden">
               <p className="text-sm font-bold opacity-80 mb-1">Huidige Bonusschatting</p>
-              <p className="text-4xl font-black">€150,- <span className="text-sm font-normal opacity-80">bruto</span></p>
-              <p className="text-xs font-bold mt-1 opacity-80">(3 x €50 staffel bereikt)</p>
+              <p className="text-4xl font-black">€150,- <span className="text-base font-bold opacity-80">bruto</span></p>
+              <p className="text-xs font-bold mt-2 opacity-80 bg-white/20 inline-block px-2 py-1 rounded w-max">(3 x €50 staffel bereikt)</p>
             </div>
           </div>
         </div>

@@ -76,7 +76,7 @@ export function CRM() {
   const MODULES = ['SalesTrackers', 'Offertes', 'Orders', 'Voorraad', 'SalesTrainers', 'Reparatie', 'Hello Base', 'CRM'];
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-gray-50 to-gray-100 p-8 pb-24">
+    <div className="h-full bg-gradient-to-br from-gray-50 to-gray-100 p-8 pb-24">
       <div className="max-w-7xl mx-auto">
         <div className="flex flex-col md:flex-row md:items-center justify-between mb-8 gap-4">
           <div>

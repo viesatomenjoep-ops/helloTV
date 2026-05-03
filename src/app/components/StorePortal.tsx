@@ -7,20 +7,49 @@ const STORES = [
   'Leeuwarden', 'Naarden', 'Nijmegen', 'Rotterdam', 'Tilburg', 'Zoeterwoude'
 ];
 
+const MOCK_STAFF: Record<string, {name: string, role: string, photo: string}[]> = {
+  'Amsterdam': [
+    { name: 'Sander Visser', role: 'Store Manager', photo: 'https://images.unsplash.com/photo-1560250097-0b93528c311a?w=400&h=400&fit=crop' },
+    { name: 'Lisa van Dijk', role: 'Senior Adviseur', photo: 'https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?w=400&h=400&fit=crop' },
+    { name: 'Tom de Boer', role: 'Verkoper', photo: 'https://images.unsplash.com/photo-1519085360753-af0119f7cbe7?w=400&h=400&fit=crop' },
+    { name: 'Emma Jansen', role: 'Klantenservice', photo: 'https://images.unsplash.com/photo-1580489944761-15a19d654956?w=400&h=400&fit=crop' },
+  ],
+  'Breda': [
+    { name: 'Martijn Hendriks', role: 'Store Manager', photo: 'https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=400&h=400&fit=crop' },
+    { name: 'Sophie de Groot', role: 'Audio Specialist', photo: 'https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=400&h=400&fit=crop' },
+    { name: 'Daan Meijer', role: 'Verkoper', photo: 'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=400&h=400&fit=crop' },
+  ],
+  // Fallback for others
+  'default': [
+    { name: 'Maick Admin', role: 'Store Manager', photo: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=400&h=400&fit=crop' },
+    { name: 'Lotte Veenstra', role: 'Verkoper', photo: 'https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=400&h=400&fit=crop' }
+  ]
+};
+
 export function StorePortal() {
   const [selectedStore, setSelectedStore] = useState('Amsterdam');
+  const [printingOrder, setPrintingOrder] = useState<any>(null);
+  const currentStaff = MOCK_STAFF[selectedStore] || MOCK_STAFF['default'];
+
+  const handlePrint = (orderInfo: any) => {
+    setPrintingOrder(orderInfo);
+    setTimeout(() => {
+      window.print();
+      setPrintingOrder(null);
+    }, 100);
+  };
 
   return (
     <div className="min-h-screen bg-gray-50 pb-24">
       {/* Header */}
-      <div className="bg-[#1D6F42] text-white p-8 shadow-md">
+      <div className="bg-[#FDCB2C] text-black p-8 shadow-md">
         <div className="max-w-7xl mx-auto flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
           <div>
             <h1 className="text-4xl font-black mb-2 flex items-center gap-3">
-              <Store size={36} className="text-[#FDCB2C]" />
-              Filiaal Mini-Portaal
+              <Store size={36} className="text-black" />
+              Mini-Filiaal Portol
             </h1>
-            <p className="text-green-100 font-medium">Lokaal management voor bestellingen, voorraad en targets</p>
+            <p className="text-gray-800 font-medium">Lokaal management voor bestellingen, voorraad en targets</p>
           </div>
           <div className="flex items-center gap-2">
             <span className="font-bold">Huidig Filiaal:</span>
@@ -94,7 +123,10 @@ export function StorePortal() {
                     <p className="font-bold text-gray-900">Order TR-100{item + 44}</p>
                     <p className="text-sm text-gray-500">1x Samsung 65" QD-OLED, 1x Beugel</p>
                   </div>
-                  <button className="px-4 py-2 bg-[#1D6F42] hover:bg-green-800 text-white font-bold rounded-lg text-sm transition-colors">
+                  <button 
+                    onClick={() => handlePrint({ id: `TR-100${item + 44}`, details: '1x Samsung 65" QD-OLED, 1x Beugel' })}
+                    className="px-4 py-2 bg-[#1D6F42] hover:bg-green-800 text-white font-bold rounded-lg text-sm transition-colors print:hidden"
+                  >
                     Paklijst Printen
                   </button>
                 </div>
@@ -119,7 +151,90 @@ export function StorePortal() {
             </div>
           </div>
         </div>
+
+        {/* Personeel overzicht */}
+        <div className="mt-8 bg-white rounded-2xl shadow-sm border border-gray-100 p-6">
+          <h2 className="text-xl font-bold text-gray-800 flex items-center gap-2 mb-6">
+            <Users className="text-purple-600" /> Personeel & Medewerkers ({selectedStore})
+          </h2>
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
+            {currentStaff.map((staff, idx) => (
+              <div key={idx} className="bg-gray-50 rounded-xl overflow-hidden border border-gray-200 text-center hover:shadow-md transition-shadow group">
+                <div className="h-48 overflow-hidden relative">
+                  <img src={staff.photo} alt={staff.name} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
+                </div>
+                <div className="p-4">
+                  <p className="font-bold text-gray-900">{staff.name}</p>
+                  <p className="text-xs text-gray-500 mt-1 uppercase tracking-wider font-semibold">{staff.role}</p>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
       </div>
+
+      {/* Print Only Layout (Real PDF Look) */}
+      {printingOrder && (
+        <div className="hidden print:block fixed inset-0 bg-white z-[9999] p-12 text-black text-left">
+          <div className="flex justify-between items-start border-b-4 border-[#FDCB2C] pb-6 mb-8">
+            <div>
+              <img src="/HelloTV.png" alt="HelloTV Logo" className="h-16 mb-4 filter brightness-0" />
+              <h1 className="text-3xl font-black uppercase tracking-widest text-gray-900">Officiële Paklijst</h1>
+            </div>
+            <div className="text-right">
+              <p className="text-sm font-bold text-gray-500">Filiaal: {selectedStore}</p>
+              <p className="text-sm font-bold text-gray-500">Datum: {new Date().toLocaleDateString('nl-NL')}</p>
+              <p className="text-xl font-black mt-2">{printingOrder.id}</p>
+            </div>
+          </div>
+
+          <div className="mb-12">
+            <h2 className="text-lg font-bold bg-gray-100 px-4 py-2 uppercase tracking-widest mb-4">Verzendgegevens</h2>
+            <div className="px-4 text-sm font-medium space-y-1">
+              <p>HelloTV Logistiek Centrum</p>
+              <p>Transport via Hessey Logistics</p>
+              <p>Bestemming: Magazijn {selectedStore}</p>
+            </div>
+          </div>
+
+          <table className="w-full text-left mb-12">
+            <thead className="bg-gray-100 border-y-2 border-gray-900">
+              <tr>
+                <th className="py-3 px-4 font-bold uppercase text-sm">Aantal</th>
+                <th className="py-3 px-4 font-bold uppercase text-sm">Omschrijving</th>
+                <th className="py-3 px-4 font-bold uppercase text-sm text-right">Controle</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr className="border-b border-gray-200">
+                <td className="py-4 px-4 font-black text-lg">1x</td>
+                <td className="py-4 px-4 font-bold">Samsung 65" QD-OLED</td>
+                <td className="py-4 px-4 text-right">
+                  <div className="inline-block w-6 h-6 border-2 border-gray-900 rounded-sm"></div>
+                </td>
+              </tr>
+              <tr className="border-b border-gray-200">
+                <td className="py-4 px-4 font-black text-lg">1x</td>
+                <td className="py-4 px-4 font-bold">Muurbeugel Vogel's (Thin)</td>
+                <td className="py-4 px-4 text-right">
+                  <div className="inline-block w-6 h-6 border-2 border-gray-900 rounded-sm"></div>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+
+          <div className="mt-24 flex justify-between border-t-2 border-gray-200 pt-8">
+            <div className="text-center w-64">
+              <div className="border-b-2 border-gray-400 h-12 mb-2"></div>
+              <p className="text-sm font-bold text-gray-500">Handtekening Chauffeur (Hessey)</p>
+            </div>
+            <div className="text-center w-64">
+              <div className="border-b-2 border-gray-400 h-12 mb-2"></div>
+              <p className="text-sm font-bold text-gray-500">Handtekening Filiaal ({selectedStore})</p>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 }

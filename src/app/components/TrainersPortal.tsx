@@ -234,7 +234,7 @@ export function TrainersPortal() {
   ];
 
   return (
-    <div className="min-h-screen bg-[#2D2D2D] p-8 text-white overflow-y-auto">
+    <div className="h-full bg-[#2D2D2D] p-8 text-white overflow-y-auto">
       <div className="max-w-7xl mx-auto pb-24">
         <div className="mb-8 border-b border-gray-700 pb-6 flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
           <div>

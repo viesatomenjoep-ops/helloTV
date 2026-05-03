@@ -68,12 +68,12 @@ export function Shiftbase() {
   };
 
   return (
-    <div className="flex justify-center bg-gray-100 min-h-screen pt-8 pb-24">
-      {/* Mobile App Container Simulation */}
-      <div className="w-full max-w-[400px] bg-gray-50 h-[800px] shadow-2xl rounded-[3rem] border-[8px] border-gray-900 relative overflow-hidden flex flex-col">
+    <div className="flex justify-center md:bg-gray-100 min-h-[100dvh] md:pt-8 md:pb-24 bg-gray-50">
+      {/* Mobile App Container Simulation (Native on mobile, Mockup on desktop) */}
+      <div className="w-full md:max-w-[400px] bg-gray-50 h-[100dvh] md:h-[800px] md:shadow-2xl md:rounded-[3rem] md:border-[8px] md:border-gray-900 relative overflow-hidden flex flex-col">
         
-        {/* Status Bar Mock */}
-        <div className="h-7 w-full bg-blue-500 flex justify-between items-center px-6 text-white text-[10px] font-bold z-20">
+        {/* Status Bar Mock (Hidden on real mobile) */}
+        <div className="hidden md:flex h-7 w-full bg-blue-500 justify-between items-center px-6 text-white text-[10px] font-bold z-20 shrink-0">
           <span>{formatTime(currentTime).substring(0,5)}</span>
           <div className="flex gap-1 items-center">
             <div className="w-4 h-3 bg-white rounded-sm"></div>

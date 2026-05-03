@@ -108,20 +108,25 @@ export function Dashboard({ onNavigate }: { onNavigate?: (view: string) => void 
       
       <div className="max-w-7xl mx-auto p-8 relative z-10">
         <div className="mb-8">
-          <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
-            <div className="flex items-center gap-3 md:gap-4">
-              <HelloTVLogo className="h-10 md:h-12" />
+          <div className="flex flex-col md:flex-row md:items-start justify-between gap-4">
+            <div className="flex items-start gap-3 md:gap-4">
+              <HelloTVLogo className="h-10 md:h-12 mt-1" />
               <div>
-                <h1 className="text-2xl md:text-3xl font-bold text-gray-800 mb-1">
-                  Dashboard
-                </h1>
+                <div className="flex items-center gap-3">
+                  <h1 className="text-2xl md:text-3xl font-bold text-gray-800 mb-1">
+                    Dashboard
+                  </h1>
+                  <span className="text-[10px] text-gray-400 bg-gray-200/50 px-2 py-0.5 rounded-full mt-1 border border-gray-200">
+                    Laatste update: {new Date().toLocaleTimeString('nl-NL')}
+                  </span>
+                </div>
                 <p className="text-xs md:text-sm text-gray-500">Welkom terug! Hier is je overzicht van vandaag.</p>
               </div>
             </div>
             <div className="flex items-center gap-4 w-full md:w-auto justify-end">
-              <div className="text-right bg-white px-4 py-2 rounded-lg shadow-sm border border-gray-100">
-                <div className="text-[10px] md:text-xs text-gray-500 uppercase tracking-wider font-bold">Laatste update</div>
-                <div className="font-black text-gray-800">{new Date().toLocaleTimeString('nl-NL')}</div>
+              <div className="text-right bg-gradient-to-r from-green-500 to-green-600 px-6 py-3 rounded-2xl shadow-lg border border-green-400">
+                <div className="text-[11px] md:text-xs text-green-100 uppercase tracking-wider font-bold mb-1">Totale Omzet Nederland Vandaag</div>
+                <div className="font-black text-white text-2xl md:text-3xl">€ 222.222</div>
               </div>
             </div>
           </div>
@@ -129,9 +134,9 @@ export function Dashboard({ onNavigate }: { onNavigate?: (view: string) => void 
 
         {/* Hero Section: #1 Verkoper & Totale Omzet */}
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-8">
-          {/* Hero: Totale Omzet */}
-          <div className="bg-gradient-to-br from-green-500 to-green-700 rounded-2xl shadow-xl p-8 text-white lg:col-span-1 flex flex-col justify-center">
-            <h2 className="text-green-100 font-bold mb-2 flex items-center gap-2 text-xl"><Euro size={24}/> Totale Omzet (Nederland)</h2>
+          {/* Hero: Totale Omzet Maand */}
+          <div className="bg-gradient-to-br from-blue-600 to-blue-800 rounded-2xl shadow-xl p-8 text-white lg:col-span-1 flex flex-col justify-center">
+            <h2 className="text-blue-200 font-bold mb-2 flex items-center gap-2 text-xl"><Euro size={24}/> Totale Omzet (Deze Maand)</h2>
             <div className="text-5xl font-black mb-3">€{(stats?.totalRevenue || 0).toLocaleString('nl-NL', { minimumFractionDigits: 2 })}</div>
             <div className="text-white font-bold bg-white/20 px-3 py-1 rounded-full inline-block self-start">+12.5% vs Vorige Maand</div>
           </div>
@@ -238,6 +243,60 @@ export function Dashboard({ onNavigate }: { onNavigate?: (view: string) => void 
                 </defs>
               </BarChart>
             </ResponsiveContainer>
+          </div>
+        </div>
+
+        {/* Cashback Acties Overview */}
+        <div className="mt-8 bg-white rounded-2xl shadow-lg border border-gray-100 overflow-hidden">
+          <div className="p-6 border-b border-gray-100 bg-gradient-to-r from-gray-50 to-white flex justify-between items-center">
+            <div>
+              <h2 className="text-xl font-bold text-gray-800 flex items-center gap-2">
+                <span className="w-3 h-3 rounded-full bg-green-500 animate-pulse"></span>
+                Lopende Cashback Acties (LG, Sony, Philips, TCL)
+              </h2>
+              <p className="text-sm text-gray-500 mt-1">Stuur actievoorwaarden als PDF via filiaal WhatsApp naar de klant.</p>
+            </div>
+          </div>
+          <div className="overflow-x-auto">
+            <table className="w-full text-left border-collapse">
+              <thead>
+                <tr className="bg-gray-50 border-b border-gray-200">
+                  <th className="p-4 font-bold text-gray-600">Merk & Actie</th>
+                  <th className="p-4 font-bold text-gray-600">Geldig tot</th>
+                  <th className="p-4 font-bold text-gray-600">Cashback Bedrag</th>
+                  <th className="p-4 font-bold text-gray-600 text-right">Actie</th>
+                </tr>
+              </thead>
+              <tbody>
+                {[
+                  { merk: 'LG', actie: 'OLED evo Cashback Weken', datum: '31 Mei 2026', bedrag: 'Tot €500' },
+                  { merk: 'Sony', actie: 'Bravia XR Inruilbonus', datum: '15 Juni 2026', bedrag: 'Tot €400' },
+                  { merk: 'Philips', actie: 'Ambilight WK Promotie', datum: '30 Juni 2026', bedrag: 'Tot €300' },
+                  { merk: 'TCL', actie: 'QD-Mini LED Introductie', datum: '30 Mei 2026', bedrag: 'Tot €250' }
+                ].map((actie, idx) => (
+                  <tr key={idx} className="border-b border-gray-100 hover:bg-gray-50 transition-colors">
+                    <td className="p-4">
+                      <p className="font-bold text-gray-900">{actie.merk}</p>
+                      <p className="text-xs text-gray-500">{actie.actie}</p>
+                    </td>
+                    <td className="p-4 font-medium text-gray-600">{actie.datum}</td>
+                    <td className="p-4 font-black text-green-600">{actie.bedrag}</td>
+                    <td className="p-4 text-right">
+                      <button 
+                        onClick={() => {
+                          if(window.confirm(`PDF Genereren en WhatsApp openen voor ${actie.merk} actie?`)) {
+                            alert(`PDF voor ${actie.merk} succesvol gegenereerd. WhatsApp link geopend.`);
+                          }
+                        }}
+                        className="px-4 py-2 bg-black text-[#FDCB2C] font-bold rounded-lg hover:bg-gray-900 transition-colors text-sm shadow-md"
+                      >
+                        PDF & WhatsApp
+                      </button>
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
           </div>
         </div>
 
