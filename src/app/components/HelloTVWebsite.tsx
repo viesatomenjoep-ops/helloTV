@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { ShieldCheck, Tv, Headphones, PenTool as Tool, Search, User, ShoppingCart, CheckCircle, ChevronRight, Star, Plus, Upload, X } from 'lucide-react';
+import { ShieldCheck, Tv, Headphones, PenTool as Tool, Search, User, ShoppingCart, CheckCircle, ChevronRight, Star, Plus, Upload, X, Menu } from 'lucide-react';
 
 export function HelloTVWebsite() {
   const [isAdminMode, setIsAdminMode] = useState(false);
@@ -26,7 +26,7 @@ export function HelloTVWebsite() {
     <div className="min-h-screen bg-white font-sans text-gray-900 overflow-y-auto">
       
       {/* CMS Admin Toggle */}
-      <div className="bg-gray-900 text-white p-4 sticky top-0 z-[60] flex justify-between items-center">
+      <div className="bg-gray-900 text-white p-4 sticky top-0 z-[60] flex flex-col sm:flex-row justify-between items-center gap-4">
         <div className="font-bold">Website Beheeromgeving (CMS)</div>
         <button 
           onClick={() => setIsAdminMode(!isAdminMode)}
@@ -63,7 +63,7 @@ export function HelloTVWebsite() {
                   required
                 />
               </div>
-              <button type="submit" className="px-6 py-2 bg-blue-600 hover:bg-blue-700 text-white font-bold rounded-lg flex items-center gap-2 h-[42px]">
+              <button type="submit" className="w-full md:w-auto px-6 py-2 bg-blue-600 hover:bg-blue-700 text-white font-bold rounded-lg flex items-center justify-center gap-2 md:h-[42px]">
                 <Upload size={18} /> Toevoegen
               </button>
             </form>
@@ -101,9 +101,12 @@ export function HelloTVWebsite() {
 
       {/* Navbar */}
       <nav className="bg-white border-b border-gray-100 sticky top-0 z-50 shadow-sm">
-        <div className="max-w-7xl mx-auto px-4 md:px-8 py-4 flex items-center justify-between gap-8">
-          <div className="flex items-center gap-2">
-            <span className="font-black text-3xl tracking-tighter">Hello<span className="text-[#FDCB2C]">TV</span></span>
+        <div className="max-w-7xl mx-auto px-4 md:px-8 py-4 flex items-center justify-between gap-4 md:gap-8">
+          <div className="flex items-center gap-4">
+            <button className="md:hidden text-gray-700 hover:text-black transition-colors">
+              <Menu size={24} />
+            </button>
+            <span className="font-black text-2xl md:text-3xl tracking-tighter">Hello<span className="text-[#FDCB2C]">TV</span></span>
           </div>
           
           <div className="hidden md:flex flex-1 max-w-2xl relative">
@@ -116,14 +119,17 @@ export function HelloTVWebsite() {
           </div>
 
           <div className="flex items-center gap-6">
+            <div className="md:hidden cursor-pointer hover:text-[#FDCB2C] transition-colors">
+              <Search size={24} />
+            </div>
             <div className="hidden md:flex flex-col items-center cursor-pointer hover:text-[#FDCB2C] transition-colors">
               <User size={24} />
               <span className="text-xs font-bold mt-1">Inloggen</span>
             </div>
             <div className="flex flex-col items-center cursor-pointer hover:text-[#FDCB2C] transition-colors relative">
               <ShoppingCart size={24} />
-              <span className="text-xs font-bold mt-1">Winkelwagen</span>
-              <span className="absolute -top-2 -right-2 bg-[#FDCB2C] text-black text-xs font-black w-5 h-5 rounded-full flex items-center justify-center">0</span>
+              <span className="hidden md:block text-xs font-bold mt-1">Winkelwagen</span>
+              <span className="absolute -top-1 -right-2 md:-top-2 md:-right-2 bg-[#FDCB2C] text-black text-xs font-black w-5 h-5 rounded-full flex items-center justify-center">0</span>
             </div>
           </div>
         </div>
@@ -161,11 +167,11 @@ export function HelloTVWebsite() {
             <p className="text-xl text-gray-300 mb-10 font-light leading-relaxed">
               Als dé erkende specialist van Nederland bieden wij je niet alleen de beste prijzen, maar bovenal het allerbeste advies voor jouw ultieme thuisbioscoop.
             </p>
-            <div className="flex gap-4">
-              <button className="px-8 py-4 bg-[#FDCB2C] hover:bg-yellow-400 text-black font-bold rounded-xl transition-all">
+            <div className="flex flex-col sm:flex-row gap-4">
+              <button className="w-full sm:w-auto px-8 py-4 bg-[#FDCB2C] hover:bg-yellow-400 text-black font-bold rounded-xl transition-all">
                 Bekijk alle OLED TV's
               </button>
-              <button className="px-8 py-4 bg-white/10 hover:bg-white/20 text-white font-bold rounded-xl backdrop-blur-md transition-all">
+              <button className="w-full sm:w-auto px-8 py-4 bg-white/10 hover:bg-white/20 text-white font-bold rounded-xl backdrop-blur-md transition-all">
                 Vind een winkel
               </button>
             </div>
@@ -234,12 +240,12 @@ export function HelloTVWebsite() {
       {/* Actuele Aanbiedingen */}
       <section className="py-20 bg-gray-100">
         <div className="max-w-7xl mx-auto px-8">
-          <div className="flex justify-between items-end mb-10">
+          <div className="flex flex-col md:flex-row md:justify-between items-start md:items-end mb-10 gap-4">
             <div>
               <h2 className="text-3xl font-black mb-2">Actuele Aanbiedingen</h2>
               <p className="text-gray-600">De beste prijzen voor televisies en audioaccessoires.</p>
             </div>
-            <button className="hidden md:block font-bold text-black border-b-2 border-[#FDCB2C] pb-1 hover:text-[#FDCB2C] transition-colors">
+            <button className="font-bold text-black border-b-2 border-[#FDCB2C] pb-1 hover:text-[#FDCB2C] transition-colors w-max">
               Bekijk alle aanbiedingen
             </button>
           </div>
@@ -280,13 +286,13 @@ export function HelloTVWebsite() {
             </p>
           </div>
           
-          <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-4 text-center">
+          <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-4 text-center">
             {[
               'Alkmaar', 'Amsterdam', 'Apeldoorn', 'Arnhem', 'Bergen op Zoom', 'Breda',
               'Cruquius', 'Den Bosch', 'Doetinchem', 'Duiven', 'Eindhoven', 'Groningen',
               'Leeuwarden', 'Naarden', 'Nijmegen', 'Rotterdam', 'Tilburg', 'Zoeterwoude'
             ].map(stad => (
-              <div key={stad} className="p-4 rounded-xl border border-gray-100 bg-gray-50 hover:bg-[#FDCB2C] hover:border-[#FDCB2C] transition-colors cursor-pointer group">
+              <div key={stad} className="p-4 rounded-xl border border-gray-100 bg-gray-50 hover:bg-[#FDCB2C] hover:border-[#FDCB2C] transition-colors cursor-pointer group flex items-center justify-center">
                 <span className="font-bold text-gray-700 group-hover:text-black">{stad}</span>
               </div>
             ))}
@@ -358,9 +364,9 @@ export function HelloTVWebsite() {
 
       {/* Footer */}
       <footer className="bg-gray-100 py-12 border-t border-gray-200">
-        <div className="max-w-7xl mx-auto px-8 flex flex-col md:flex-row justify-between items-center gap-6 text-sm text-gray-500 font-medium">
-          <div>© {new Date().getFullYear()} HelloTV. Alle rechten voorbehouden.</div>
-          <div className="flex gap-6">
+        <div className="max-w-7xl mx-auto px-8 flex flex-col lg:flex-row justify-between items-center gap-6 text-sm text-gray-500 font-medium">
+          <div className="text-center lg:text-left">© {new Date().getFullYear()} HelloTV. Alle rechten voorbehouden.</div>
+          <div className="flex flex-col sm:flex-row gap-4 sm:gap-6 text-center">
             <a href="#" className="hover:text-[#FDCB2C]">Klantenservice</a>
             <a href="#" className="hover:text-[#FDCB2C]">Algemene Voorwaarden</a>
             <a href="#" className="hover:text-[#FDCB2C]">Privacy Policy</a>
