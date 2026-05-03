@@ -19,6 +19,12 @@ const TV_MODELS = [
 const FIRST_NAMES = ['Sander', 'Lisa', 'Mark', 'Tom', 'Daan', 'Kevin', 'Lotte', 'Maikel', 'Johan', 'Peter', 'Anne', 'Tim', 'Max', 'Ruben', 'Jeroen', 'Martijn', 'Jasper', 'Bas', 'Dennis', 'Niels', 'Rik', 'Luuk', 'Bram', 'Joris', 'Thijs', 'Stan', 'Milan', 'Sem', 'Lars', 'Jesper'];
 const LAST_NAMES = ['de Vries', 'Jansen', 'Peters', 'Bakker', 'Visser', 'Smit', 'Meijer', 'de Boer', 'Mulder', 'de Groot', 'Bos', 'Vos', 'van Dijk', 'van der Berg', 'Dekker', 'Hendriks', 'van Dongen', 'Kuipers', 'Veenstra', 'Jonker', 'Hoekstra', 'Dijkstra', 'Scholten', 'Timmermans', 'Kramer'];
 
+const getMarginColor = (pct: number) => {
+  if (pct < 22) return 'text-red-700 bg-red-100 border border-red-200';
+  if (pct <= 24) return 'text-orange-700 bg-orange-100 border border-orange-200';
+  return 'text-green-700 bg-green-100 border border-green-200';
+};
+
 export function SalesTracker() {
   const [performance, setPerformance] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
@@ -81,6 +87,9 @@ export function SalesTracker() {
       const todaySalesCount = Math.floor(Math.random() * 5);
       const todayRevenue = todaySalesCount * 1500;
 
+      const tvMarginPct = Math.floor(Math.random() * 20) + 18; // 18% to 37%
+      const bbqMarginPct = Math.floor(Math.random() * 15) + 18; // 18% to 32%
+
       data.push({
         id: `EMP-${i}`,
         name: `${firstName} ${lastName}`,
@@ -93,6 +102,8 @@ export function SalesTracker() {
         tvMargin,
         bbqSold,
         bbqMargin,
+        tvMarginPct,
+        bbqMarginPct,
         accessoriesSold,
         accessoriesMargin,
         points: Math.floor(totalRevenue / 100) + Math.floor(accessoriesSold * 2), // Eindejaarsbonus points
@@ -204,6 +215,7 @@ export function SalesTracker() {
   const handleSendToTrainer = (person: any, e: React.MouseEvent) => {
     e.stopPropagation();
     setTrainerSuccessId(person.id);
+    alert(`Resultaten van ${person.name} succesvol doorgezet naar Master Trainers (Wendy & Johan). Zij zullen dit toebedelen aan de winkeltrainers.`);
     setTimeout(() => setTrainerSuccessId(null), 3000);
   };
 
@@ -415,6 +427,7 @@ export function SalesTracker() {
                   <th className="px-6 py-4 text-left text-xs font-black text-gray-500 uppercase tracking-wider">Filiaal</th>
                   <th className="px-6 py-4 text-left text-xs font-black text-gray-500 uppercase tracking-wider">Omzet</th>
                   <th className="px-6 py-4 text-left text-xs font-black text-gray-500 uppercase tracking-wider">TV's (Marge)</th>
+                  <th className="px-6 py-4 text-left text-xs font-black text-gray-500 uppercase tracking-wider">Marge % (Gem. Maand)</th>
                   <th className="px-6 py-4 text-left text-xs font-black text-gray-500 uppercase tracking-wider">Punten (Eindejaarsbonus)</th>
                   <th className="px-6 py-4 text-left text-xs font-black text-gray-500 uppercase tracking-wider">Acties</th>
                 </tr>
@@ -460,6 +473,15 @@ export function SalesTracker() {
                         <div className="font-bold text-gray-800">{person.tvSold} stuks</div>
                         <div className="text-xs text-green-600 font-bold">
                           + €{person.tvMargin.toLocaleString('nl-NL')} marge
+                        </div>
+                      </td>
+                      <td className="px-6 py-4">
+                        <div className={`text-xs font-bold px-2 py-1 rounded inline-block mb-1 w-20 text-center ${getMarginColor(person.tvMarginPct)}`}>
+                          TV: {person.tvMarginPct}%
+                        </div>
+                        <br/>
+                        <div className={`text-xs font-bold px-2 py-1 rounded inline-block w-20 text-center ${getMarginColor(person.bbqMarginPct)}`}>
+                          BBQ: {person.bbqMarginPct}%
                         </div>
                       </td>
                       <td className="px-6 py-4">
@@ -522,7 +544,7 @@ export function SalesTracker() {
                                   className={`text-xs font-bold text-white px-3 py-1.5 rounded-lg flex items-center gap-1 transition-colors ${trainerSuccessId === person.id ? 'bg-indigo-500' : 'bg-indigo-600 hover:bg-indigo-700'}`}
                                 >
                                   {trainerSuccessId === person.id ? <CheckCircle size={12} /> : <Users size={12} />}
-                                  Stuur Trainer
+                                  Stuur naar Wendy & Johan
                                 </button>
                               </div>
                             </div>

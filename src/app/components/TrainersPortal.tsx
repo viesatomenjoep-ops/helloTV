@@ -220,7 +220,7 @@ export function TrainersPortal() {
     }, 500);
   };
 
-  const TABS = ['OLED', 'Cleaners', 'Kabels', 'TV Beugels', 'SP TV', 'Inkoop & Voorraad', 'Trainers Database', 'AI Coaching & Tips'];
+  const TABS = ['OLED', 'Cleaners', 'Kabels', 'TV Beugels', 'SP TV', 'Inkoop & Voorraad', 'Trainers Database', 'AI Coaching & Tips', 'Winkeltrainers Toebedeling'];
   const currentData = getChartData();
   const currentTarget = getChartTarget();
 
@@ -422,6 +422,95 @@ export function TrainersPortal() {
                   </tr>
                 </tbody>
               </table>
+            </div>
+          </div>
+        ) : activeTab === 'Winkeltrainers Toebedeling' ? (
+          <div className="bg-[#333333] rounded-xl shadow-2xl p-6 border border-gray-700 mb-8 animate-in fade-in slide-in-from-top-4">
+            <div className="mb-6 border-b border-gray-600 pb-4">
+              <h2 className="text-2xl font-bold text-white flex items-center gap-2">
+                <Target className="text-[#FDCB2C]" /> Master Trainers Portaal (Wendy & Johan)
+              </h2>
+              <p className="text-gray-400 mt-2">Bedeel de top 100 verkoper-resultaten en VMS data direct toe aan de regionale winkeltrainers voor coaching.</p>
+            </div>
+
+            <div className="grid grid-cols-1 md:grid-cols-4 gap-4 mb-8">
+              {['Joep Morsink', 'Massi Amin', 'Danny', 'Michael Duits'].map((trainer) => (
+                <div key={trainer} className="bg-[#2D2D2D] rounded-xl p-4 border border-blue-500/30 hover:border-blue-500 cursor-pointer transition-all shadow-md">
+                  <div className="flex justify-between items-start mb-2">
+                    <Users size={20} className="text-blue-400" />
+                    <span className="text-xs bg-blue-900/50 text-blue-300 px-2 py-0.5 rounded font-bold">Winkeltrainer</span>
+                  </div>
+                  <h3 className="font-bold text-white text-lg">{trainer}</h3>
+                  <p className="text-xs text-gray-400 mt-1">Regio: {trainer === 'Joep Morsink' ? 'Noord/Oost' : trainer === 'Massi Amin' ? 'Zuid' : trainer === 'Danny' ? 'Randstad' : 'Midden'}</p>
+                </div>
+              ))}
+            </div>
+
+            <h3 className="text-xl font-bold text-white mb-4">Nieuwe Resultaten (Binnengekomen via Sales Tracker)</h3>
+            <div className="overflow-x-auto">
+              <table className="w-full text-left text-sm text-gray-300">
+                <thead className="text-gray-400 uppercase text-xs border-b border-gray-700">
+                  <tr>
+                    <th className="pb-3">Top Verkoper</th>
+                    <th className="pb-3">Filiaal</th>
+                    <th className="pb-3">Aandachtsgebied</th>
+                    <th className="pb-3">Huidige Prestatie</th>
+                    <th className="pb-3 text-right">Toebedelen Aan</th>
+                  </tr>
+                </thead>
+                <tbody className="divide-y divide-gray-700">
+                  <tr className="hover:bg-[#3D3D3D] transition-colors">
+                    <td className="py-4 font-bold text-white">Lizzy Wams</td>
+                    <td className="py-4">Tilburg</td>
+                    <td className="py-4 text-orange-400 font-bold">SP TV Upgrade (Marge)</td>
+                    <td className="py-4 text-gray-400">Target 80% (Nu 65%)</td>
+                    <td className="py-4 text-right">
+                      <select className="bg-[#1A1A1A] border border-gray-600 rounded px-3 py-1.5 text-white focus:border-[#FDCB2C] outline-none text-sm font-bold">
+                        <option>Kies Trainer...</option>
+                        <option value="Joep Morsink">Joep Morsink</option>
+                        <option value="Massi Amin">Massi Amin</option>
+                        <option value="Danny">Danny</option>
+                        <option value="Michael Duits">Michael Duits</option>
+                      </select>
+                    </td>
+                  </tr>
+                  <tr className="hover:bg-[#3D3D3D] transition-colors">
+                    <td className="py-4 font-bold text-white">Farshid A</td>
+                    <td className="py-4">Tilburg</td>
+                    <td className="py-4 text-blue-400 font-bold">Cleaners (HaloTec)</td>
+                    <td className="py-4 text-gray-400">Target 35% (Nu 15%)</td>
+                    <td className="py-4 text-right">
+                      <select className="bg-[#1A1A1A] border border-gray-600 rounded px-3 py-1.5 text-white focus:border-[#FDCB2C] outline-none text-sm font-bold">
+                        <option>Kies Trainer...</option>
+                        <option value="Joep Morsink">Joep Morsink</option>
+                        <option value="Massi Amin">Massi Amin</option>
+                        <option value="Danny">Danny</option>
+                        <option value="Michael Duits">Michael Duits</option>
+                      </select>
+                    </td>
+                  </tr>
+                  <tr className="hover:bg-[#3D3D3D] transition-colors">
+                    <td className="py-4 font-bold text-white">Tom Peters</td>
+                    <td className="py-4">Utrecht</td>
+                    <td className="py-4 text-purple-400 font-bold">Beugels (Vogel's)</td>
+                    <td className="py-4 text-gray-400">Target 36% (Nu 20%)</td>
+                    <td className="py-4 text-right">
+                      <select className="bg-[#1A1A1A] border border-gray-600 rounded px-3 py-1.5 text-white focus:border-[#FDCB2C] outline-none text-sm font-bold">
+                        <option>Kies Trainer...</option>
+                        <option value="Joep Morsink">Joep Morsink</option>
+                        <option value="Massi Amin">Massi Amin</option>
+                        <option value="Danny">Danny</option>
+                        <option value="Michael Duits">Michael Duits</option>
+                      </select>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+            <div className="mt-6 pt-4 border-t border-gray-700 flex justify-end">
+              <button className="px-6 py-3 bg-[#1D6F42] hover:bg-green-700 text-white font-bold rounded-xl transition-colors flex items-center gap-2">
+                <CheckCircle size={18} /> Bevestig Toebedeling aan Winkeltrainers
+              </button>
             </div>
           </div>
         ) : (

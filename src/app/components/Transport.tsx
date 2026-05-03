@@ -9,9 +9,9 @@ const STORES = [
 ];
 
 const MOCK_VANS = [
-  { id: 'BUS-1', driver: 'Sander', locatie: 'Amsterdam Centrum', status: 'Rijdend', coords: '52.3702, 4.8952' },
-  { id: 'BUS-2', driver: 'Kees', locatie: 'A2 richting Utrecht', status: 'In de file', coords: '52.15, 5.0' },
-  { id: 'BUS-3', driver: 'Mohammed', locatie: 'Rotterdam Zuid', status: 'Aan het lossen', coords: '51.92, 4.48' },
+  { id: 'BUS-1', driver: 'Sander', locatie: 'Amsterdam Centrum', status: 'Rijdend', coords: '52.3702, 4.8952', eta: '10:15 (Aankomst bij Klant)' },
+  { id: 'BUS-2', driver: 'Kees', locatie: 'A2 richting Utrecht', status: 'In de file', coords: '52.15, 5.0', eta: 'Vertraging (+15m) - ETA 11:30' },
+  { id: 'BUS-3', driver: 'Mohammed', locatie: 'Rotterdam Zuid', status: 'Aan het lossen', coords: '51.92, 4.48', eta: '14:00 (Lossen klaar)' },
 ];
 
 const MOCK_ORDERS = [
@@ -89,6 +89,10 @@ export function Transport() {
     alert(`Betaallink (${method}) verzonden naar ${order.customer} (Order: ${order.id}) via SMS/WhatsApp.`);
   };
 
+  const handlePushToStore = (order: any) => {
+    alert(`Order ${order.id} is geautomatiseerd doorgezet naar filiaal ${order.filiaal}. Voorraad wordt nu direct gereserveerd!`);
+  };
+
   const toggleCheckItem = (orderId: string, sku: string) => {
     setOrders(prev => prev.map(o => {
       if (o.id === orderId) {
@@ -117,7 +121,7 @@ export function Transport() {
           <div>
             <h1 className="text-4xl font-black mb-2 flex items-center gap-3">
               <Truck size={36} className="text-[#FDCB2C]" />
-              Hessie Transport & Logistiek
+              Hessey Transport & Logistiek
             </h1>
             <p className="text-green-100 font-medium">Beheer filialen, live tracking en installateurs check-out</p>
           </div>
@@ -183,6 +187,10 @@ export function Transport() {
                           <span className="text-gray-400">Status</span>
                           <span className={`font-bold ${van.status === 'In de file' ? 'text-orange-500' : 'text-green-500'}`}>{van.status}</span>
                         </div>
+                        <div className="flex justify-between border-b border-gray-50 pb-1">
+                          <span className="text-gray-400">Tijd (ETA)</span>
+                          <span className={`font-bold ${van.status === 'In de file' ? 'text-orange-500' : 'text-blue-500'}`}>{van.eta}</span>
+                        </div>
                       </div>
                     </div>
                   ))}
@@ -206,7 +214,12 @@ export function Transport() {
                           {order.paymentStatus}
                         </span>
                       </div>
-                      <div className="grid grid-cols-3 gap-2 mt-3">
+                      <div className="grid grid-cols-1 gap-2 mt-3">
+                        <button onClick={() => handlePushToStore(order)} className="text-xs py-2 bg-[#1D6F42] text-white font-bold rounded shadow-sm hover:opacity-90 flex justify-center items-center gap-2">
+                          <Box size={14} /> Bestel & Reserveer direct bij Filiaal {order.filiaal}
+                        </button>
+                      </div>
+                      <div className="grid grid-cols-3 gap-2 mt-2">
                         <button onClick={() => handleSendPaymentLink(order, 'iDEAL')} className="text-xs py-1.5 bg-[#CC0066] text-white font-bold rounded shadow-sm hover:opacity-90">iDEAL</button>
                         <button onClick={() => handleSendPaymentLink(order, 'Bancontact')} className="text-xs py-1.5 bg-[#FFCC00] text-blue-900 font-bold rounded shadow-sm hover:opacity-90">Bancontact</button>
                         <button onClick={() => handleSendPaymentLink(order, 'Creditcard')} className="text-xs py-1.5 bg-gray-800 text-white font-bold rounded shadow-sm hover:opacity-90">Creditcard</button>

@@ -37,6 +37,7 @@ import { Transport } from './components/Transport';
 import { MediaPortal } from './components/MediaPortal';
 import { Vendit } from './components/Vendit';
 import { GoogleReviews } from './components/GoogleReviews';
+import { StorePortal } from './components/StorePortal';
 import { HelloTVWebsite } from './components/HelloTVWebsite';
 import { Reparatie } from './components/Reparatie';
 import { MagicLinks } from './components/MagicLinks';
@@ -44,7 +45,7 @@ import { HelloTVLogo } from './components/ui/HelloTVLogo';
 import { MaickPortal } from './components/MaickPortal';
 import { initDemoData } from '../utils/initDemoData';
 
-type View = 'dashboard' | 'maick' | 'crm' | 'sales' | 'inventory' | 'quotes' | 'orders' | 'showcase' | 'hr' | 'shiftbase' | 'trainers' | 'transport' | 'media' | 'vendit' | 'reviews' | 'website' | 'reparatie' | 'magiclinks';
+type View = 'dashboard' | 'maick' | 'crm' | 'sales' | 'inventory' | 'quotes' | 'orders' | 'showcase' | 'hr' | 'shiftbase' | 'trainers' | 'transport' | 'media' | 'vendit' | 'reviews' | 'website' | 'reparatie' | 'magiclinks' | 'storeportal';
 
 export default function App() {
   const [currentView, setCurrentView] = useState<View>('dashboard');
@@ -67,7 +68,8 @@ export default function App() {
     { id: 'crm', label: 'CRM', icon: Users },
     { id: 'sales', label: 'Sales Tracker', icon: TrendingUp },
     { id: 'inventory', label: 'Voorraad & Inkoop', icon: Box },
-    { id: 'transport', label: 'Transport (Hessie)', icon: Truck },
+    { id: 'transport', label: 'Transport (Hessey)', icon: Truck },
+    { id: 'storeportal', label: '18 Filialen (Winkels)', icon: Store },
     { id: 'reparatie', label: 'Reparatie & Service', icon: Wrench },
     { id: 'magiclinks', label: 'AI & Magic Links', icon: LinkIcon },
     { id: 'media', label: 'Media Portaal', icon: Film },
@@ -154,6 +156,7 @@ export default function App() {
         { currentView === 'shiftbase' && <Shiftbase /> }
         {currentView === 'hr' && <HR />}
         {currentView === 'transport' && <Transport />}
+        {currentView === 'storeportal' && <StorePortal />}
         {currentView === 'reparatie' && <Reparatie />}
         {currentView === 'magiclinks' && <MagicLinks />}
         {currentView === 'media' && <MediaPortal />}
