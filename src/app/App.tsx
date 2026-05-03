@@ -116,7 +116,7 @@ export default function App() {
     { id: 'showcase', label: 'Case Study', icon: Layers },
     { id: 'crm', label: 'CRM', icon: Users },
     { id: 'sales', label: 'Sales Tracker', icon: TrendingUp },
-    { id: 'inventory', label: 'Voorraad', icon: Package },
+    { id: 'inventory', label: 'Voorraad & Inkoop', icon: Package },
     { id: 'trainers', label: 'Sales Trainers', icon: Users },
     { id: 'shiftbase', label: 'Shiftbase (Uren)', icon: Clock },
     { id: 'hr', label: 'HR & Reiskosten', icon: Users },
