@@ -1,156 +1,178 @@
-import React from "react";
-
 import React from 'react';
 import { HelloTVLogo } from './ui/HelloTVLogo';
-import { MessageSquare, Zap, Layers, Server } from 'lucide-react';
+import { Rocket, Target, Globe, Cpu, ChevronRight, PlayCircle, Star, Zap } from 'lucide-react';
 
 export function Showcase() {
   return (
-    <div className="min-h-screen bg-gray-50 pb-20">
-      {/* Hero Section with Laptop Mockup */}
-      <div className="bg-gradient-to-b from-gray-900 to-gray-800 pt-20 pb-32 px-8">
-        <div className="max-w-6xl mx-auto">
-          <div className="flex flex-col lg:flex-row items-center gap-16">
-            <div className="flex-1 text-white">
-              <HelloTVLogo theme="dark" className="h-16 mb-8" />
-              <h1 className="text-4xl lg:text-5xl font-bold mb-6 leading-tight">
-                HelloTV Backend System
-                <span className="block text-blue-400 mt-2">Management Showcase</span>
-              </h1>
-              <p className="text-xl text-gray-300 leading-relaxed max-w-2xl">
-                Het oude systeem was uit zijn jasje gegroeid. Met de naamsverandering naar HelloTV was het tijd voor een grondige technische facelift van de achterkant. Na de afronding van de nieuwe merkstrategie was het tijd om te bouwen: een pijlsnel, nieuw CMS.
+    <div className="bg-[#0A0A0A] min-h-screen text-white overflow-hidden font-sans">
+      
+      {/* 1. HERO SECTION */}
+      <div className="relative min-h-[90vh] flex flex-col items-center justify-center text-center px-4 overflow-hidden">
+        {/* Background Effects */}
+        <div className="absolute inset-0 z-0">
+          <div className="absolute top-1/4 left-1/4 w-[500px] h-[500px] bg-blue-600/20 rounded-full blur-[120px] mix-blend-screen"></div>
+          <div className="absolute bottom-1/4 right-1/4 w-[600px] h-[600px] bg-yellow-500/10 rounded-full blur-[150px] mix-blend-screen"></div>
+        </div>
+
+        <div className="relative z-10 animate-in fade-in slide-in-from-bottom-8 duration-1000">
+          <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white/5 border border-white/10 mb-8 backdrop-blur-sm">
+            <span className="flex h-2 w-2 rounded-full bg-[#FDCB2C] animate-pulse"></span>
+            <span className="text-sm font-medium tracking-wide uppercase text-gray-300">Viesa Automations x HelloTV</span>
+          </div>
+          
+          <h1 className="text-5xl md:text-7xl lg:text-8xl font-black tracking-tight mb-6 leading-tight">
+            De Weg Naar <br/>
+            <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#FDCB2C] via-yellow-200 to-[#FDCB2C]">
+              Nummer Één
+            </span>
+          </h1>
+          
+          <p className="mt-6 text-xl md:text-2xl text-gray-400 max-w-3xl mx-auto font-light leading-relaxed mb-12">
+            Een exclusieve blik op de visie, strategie en de technologische revolutie die HelloTV de onbetwiste marktleider van Nederland maakt.
+          </p>
+
+          <button className="px-8 py-4 bg-white text-black rounded-full font-bold text-lg hover:scale-105 transition-transform flex items-center gap-3 mx-auto shadow-[0_0_40px_rgba(253,203,44,0.3)]">
+            <PlayCircle size={24} /> Start Presentatie
+          </button>
+        </div>
+
+        {/* Floating UI Elements Mockup */}
+        <div className="relative w-full max-w-5xl mx-auto mt-20 z-10 animate-in fade-in slide-in-from-bottom-12 duration-1000 delay-300">
+          <div className="relative rounded-2xl overflow-hidden shadow-2xl border border-white/10 bg-gray-900/50 backdrop-blur-xl aspect-video">
+            <img 
+              src="https://images.unsplash.com/photo-1593640408182-31c70c8268f5?auto=format&fit=crop&q=80&w=2000" 
+              alt="Dashboard Preview" 
+              className="w-full h-full object-cover opacity-60 mix-blend-overlay"
+            />
+            <div className="absolute inset-0 bg-gradient-to-t from-[#0A0A0A] to-transparent"></div>
+            <div className="absolute bottom-8 left-8 right-8">
+              <HelloTVLogo theme="dark" className="h-12 mb-4" />
+              <h2 className="text-3xl font-bold">HelloTV OS (Intergravity)</h2>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      {/* 2. VISIE & STRATEGIE */}
+      <div className="py-32 relative z-10 px-4">
+        <div className="max-w-7xl mx-auto">
+          <div className="text-center mb-20">
+            <h2 className="text-4xl md:text-5xl font-bold mb-6">Onze Visie & Strategie</h2>
+            <div className="h-1 w-24 bg-[#FDCB2C] mx-auto rounded-full"></div>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+            <div className="bg-white/5 border border-white/10 rounded-3xl p-8 hover:bg-white/10 transition-colors group">
+              <div className="w-16 h-16 rounded-2xl bg-blue-500/20 flex items-center justify-center mb-6 group-hover:scale-110 transition-transform">
+                <Target className="text-blue-400" size={32} />
+              </div>
+              <h3 className="text-2xl font-bold mb-4">Ultieme Klantreis</h3>
+              <p className="text-gray-400 leading-relaxed">
+                We verkopen geen TV's, we verkopen kijkervaringen. Door alle online en offline touchpoints naadloos samen te smelten, creëren we een retail-ervaring die niemand in Nederland kan evenaren.
               </p>
             </div>
-            
-            {/* CSS Laptop Mockup showing the backend */}
-            <div className="flex-1 w-full max-w-2xl relative">
-              <div className="relative mx-auto border-gray-800 dark:border-gray-800 bg-gray-800 border-[8px] rounded-t-xl h-[236px] max-w-[400px] md:h-[354px] md:max-w-[600px] shadow-2xl">
-                <div className="rounded-lg overflow-hidden h-[220px] md:h-[338px] bg-gray-100 flex items-center justify-center relative">
-                   {/* Fake Dashboard UI inside laptop */}
-                   <div className="absolute top-0 left-0 w-1/4 h-full bg-gray-900 border-r border-gray-800 flex flex-col p-4">
-                      <div className="h-4 w-16 bg-gray-700 rounded mb-6"></div>
-                      <div className="h-3 w-full bg-blue-600 rounded mb-3"></div>
-                      <div className="h-3 w-3/4 bg-gray-800 rounded mb-3"></div>
-                      <div className="h-3 w-5/6 bg-gray-800 rounded mb-3"></div>
-                   </div>
-                   <div className="absolute top-0 right-0 w-3/4 h-full bg-gray-100 p-6">
-                      <div className="h-6 w-48 bg-gray-300 rounded mb-8"></div>
-                      <div className="grid grid-cols-3 gap-4 mb-6">
-                        <div className="h-16 bg-white rounded shadow-sm border border-gray-200"></div>
-                        <div className="h-16 bg-white rounded shadow-sm border border-gray-200"></div>
-                        <div className="h-16 bg-white rounded shadow-sm border border-gray-200"></div>
-                      </div>
-                      <div className="h-32 bg-white rounded shadow-sm border border-gray-200"></div>
-                   </div>
-                </div>
+
+            <div className="bg-white/5 border border-white/10 rounded-3xl p-8 hover:bg-white/10 transition-colors group">
+              <div className="w-16 h-16 rounded-2xl bg-[#FDCB2C]/20 flex items-center justify-center mb-6 group-hover:scale-110 transition-transform">
+                <Star className="text-[#FDCB2C]" size={32} />
               </div>
-              <div className="relative mx-auto bg-gray-900 dark:bg-gray-700 rounded-b-xl rounded-t-sm h-[17px] max-w-[480px] md:h-[21px] md:max-w-[720px]">
-                <div className="absolute left-1/2 top-0 -translate-x-1/2 rounded-b-xl w-[56px] h-[5px] md:w-[96px] md:h-[8px] bg-gray-800"></div>
+              <h3 className="text-2xl font-bold mb-4">Focus op Marge & OLED</h3>
+              <p className="text-gray-400 leading-relaxed">
+                Volume is belangrijk, marge is cruciaal. Door gerichte sturing op OLED (1 op de 2 TV's) en krachtige cross-selling via de Sales Trainers, bouwen we aan een onverslaanbaar en gezond businessmodel.
+              </p>
+            </div>
+
+            <div className="bg-white/5 border border-white/10 rounded-3xl p-8 hover:bg-white/10 transition-colors group">
+              <div className="w-16 h-16 rounded-2xl bg-purple-500/20 flex items-center justify-center mb-6 group-hover:scale-110 transition-transform">
+                <Globe className="text-purple-400" size={32} />
               </div>
+              <h3 className="text-2xl font-bold mb-4">Digitaal Fundament</h3>
+              <p className="text-gray-400 leading-relaxed">
+                Een verouderde backend houdt groei tegen. Met het nieuwe HelloTV OS (Intergravity) hebben we een onverwoestbaar fundament gelegd voor de 18 filialen en het hoofdkantoor.
+              </p>
             </div>
           </div>
         </div>
       </div>
 
-      {/* Content Section based on scraped data */}
-      <div className="max-w-4xl mx-auto px-8 -mt-16 relative z-10">
-        <div className="bg-white rounded-2xl shadow-xl p-8 lg:p-12 border border-gray-100">
-          <h2 className="text-2xl font-bold text-gray-900 mb-8">
-            Op basis van de briefing hebben we 3 belangrijke technische doelen gedestilleerd voor een succesvol CMS:
-          </h2>
-          
-          <div className="space-y-12">
-            {/* Point 1 */}
-            <div className="flex gap-6">
-              <div className="flex-shrink-0">
-                <div className="w-12 h-12 rounded-full bg-blue-100 flex items-center justify-center">
-                  <MessageSquare className="text-blue-600" size={24} />
-                </div>
-              </div>
-              <div>
-                <h3 className="text-xl font-bold text-gray-900 mb-3">1. Communicatie (Conversation)</h3>
-                <p className="text-gray-600 leading-relaxed">
-                  Echte gesprekken vinden plaats op vele touchpoints in de klantreis. Dit is altijd de belangrijkste USP van HelloTV geweest. Om dit te ondersteunen moet het nieuwe systeem direct inzicht geven in klantgeschiedenis, live status van bestellingen (ingeladen vanuit Magento) en interne memo's, zodat elke medewerker de conversatie perfect kan voortzetten.
-                </p>
-              </div>
-            </div>
-
-            {/* Point 2 */}
-            <div className="flex gap-6">
-              <div className="flex-shrink-0">
-                <div className="w-12 h-12 rounded-full bg-yellow-100 flex items-center justify-center">
-                  <Zap className="text-yellow-600" size={24} />
-                </div>
-              </div>
-              <div>
-                <h3 className="text-xl font-bold text-gray-900 mb-3">2. Snelle herkenning (Quick recognition)</h3>
-                <p className="text-gray-600 leading-relaxed">
-                  Om overzicht te houden in de grote stroom van orders en offertes, is het belangrijk om een dashboard te ontwikkelen dat snelle herkenbaarheid biedt. Dit is vertaald naar duidelijke KPI-kaarten, kleurgecodeerde ordestatussen en logische filtering. Geen onnodige clicks, maar direct overzicht.
-                </p>
-              </div>
-            </div>
-
-            {/* Point 3 */}
-            <div className="flex gap-6">
-              <div className="flex-shrink-0">
-                <div className="w-12 h-12 rounded-full bg-purple-100 flex items-center justify-center">
-                  <Layers className="text-purple-600" size={24} />
-                </div>
-              </div>
-              <div>
-                <h3 className="text-xl font-bold text-gray-900 mb-3">3. Flexibel (Flexible)</h3>
-                <p className="text-gray-600 leading-relaxed">
-                  Omdat het bedrijf snel groeit en processen veranderen, moet de achterkant net zo flexibel zijn als de voorkant. Daarom is gekozen voor een modulaire architectuur met React en Supabase. Het CMS kan eenvoudig worden uitgebreid met nieuwe modules (zoals een nieuwe Logistiek module of Fraud Checks) zonder dat het fundament wankelt.
-                </p>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      {/* Technical Implementation Section */}
-      <div className="max-w-6xl mx-auto px-8 mt-24">
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-16 items-center">
+      {/* 3. WAT WE IN PETTO HEBBEN (FUTURE ROADMAP) */}
+      <div className="py-32 bg-white/5 relative z-10 px-4 border-y border-white/10">
+        <div className="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
           <div>
-            <h2 className="text-3xl font-bold text-gray-900 mb-6">Implementatie van het CMS</h2>
-            <p className="text-gray-600 leading-relaxed mb-6">
-              De implementatie van de rebranding aan de achterkant wordt in 2 fases uitgevoerd, net als de frontend.
+            <h2 className="text-4xl md:text-5xl font-bold mb-6">Wat we in petto hebben</h2>
+            <p className="text-xl text-gray-400 mb-12 leading-relaxed">
+              Het huidige dashboard is slechts het begin. Om de concurrentie definitief achter ons te laten, rollen we in de komende fases grensverleggende technologie uit.
             </p>
-            <ul className="space-y-4 text-gray-600">
-              <li className="flex items-start gap-3">
-                <div className="mt-1"><Server size={18} className="text-blue-500" /></div>
-                <span><strong>Fase 1:</strong> Migratie van de bestaande database structuren, het opzetten van Supabase en het bouwen van de nieuwe React Dashboard interface.</span>
-              </li>
-              <li className="flex items-start gap-3">
-                <div className="mt-1"><Server size={18} className="text-green-500" /></div>
-                <span><strong>Fase 2:</strong> Koppelingen met externe systemen zoals Magento API's, automatische Fraud Checks en naadloze logistieke integratie (Ingenico & DC updates).</span>
-              </li>
-            </ul>
+
+            <div className="space-y-8">
+              <div className="flex gap-4">
+                <div className="mt-1 bg-gradient-to-br from-[#FDCB2C] to-orange-500 w-8 h-8 rounded-full flex items-center justify-center shrink-0">
+                  <span className="text-black font-bold text-sm">1</span>
+                </div>
+                <div>
+                  <h4 className="text-xl font-bold mb-2">VMS & Magento API Sync</h4>
+                  <p className="text-gray-400">Volledige real-time synchronisatie van winkelvoorraad (VMS) met e-commerce (Magento) zonder handmatige interventie.</p>
+                </div>
+              </div>
+
+              <div className="flex gap-4">
+                <div className="mt-1 bg-gradient-to-br from-[#FDCB2C] to-orange-500 w-8 h-8 rounded-full flex items-center justify-center shrink-0">
+                  <span className="text-black font-bold text-sm">2</span>
+                </div>
+                <div>
+                  <h4 className="text-xl font-bold mb-2">AI-Gedreven Dagstart</h4>
+                  <p className="text-gray-400">Elke ochtend een automatisch gegenereerde video of briefing van de filiaalmanager via AI, gebaseerd op de live target-data van gisteren.</p>
+                </div>
+              </div>
+
+              <div className="flex gap-4">
+                <div className="mt-1 bg-gradient-to-br from-[#FDCB2C] to-orange-500 w-8 h-8 rounded-full flex items-center justify-center shrink-0">
+                  <span className="text-black font-bold text-sm">3</span>
+                </div>
+                <div>
+                  <h4 className="text-xl font-bold mb-2">WhatsApp Ticket Systeem</h4>
+                  <p className="text-gray-400">Directe klantcommunicatie via WhatsApp, naadloos geïntegreerd in het CRM voor support, offertes en cross-sell campagnes.</p>
+                </div>
+              </div>
+            </div>
           </div>
-          
-          <div className="bg-white p-8 rounded-2xl shadow-lg border border-gray-100">
-            <h3 className="text-xl font-bold text-gray-900 mb-6">Systeemarchitectuur</h3>
-            <div className="space-y-4">
-              <div className="flex justify-between items-center p-4 bg-gray-50 rounded-lg">
-                <span className="font-medium text-gray-700">Frontend</span>
-                <span className="text-blue-600 bg-blue-50 px-3 py-1 rounded-full text-sm">React + Vite</span>
+
+          <div className="relative">
+            <div className="absolute -inset-4 bg-gradient-to-r from-blue-500 to-purple-500 opacity-30 blur-2xl rounded-[3rem]"></div>
+            <img 
+              src="https://images.unsplash.com/photo-1551288049-bebda4e38f71?auto=format&fit=crop&q=80&w=1200" 
+              alt="Data Analysis" 
+              className="relative rounded-[2rem] border border-white/20 shadow-2xl"
+            />
+            
+            {/* Overlay floating badge */}
+            <div className="absolute -bottom-8 -left-8 bg-gray-900 border border-white/10 p-6 rounded-2xl shadow-2xl flex items-center gap-4">
+              <div className="w-12 h-12 rounded-full bg-green-500/20 flex items-center justify-center">
+                <Cpu className="text-green-400" />
               </div>
-              <div className="flex justify-between items-center p-4 bg-gray-50 rounded-lg">
-                <span className="font-medium text-gray-700">Styling</span>
-                <span className="text-purple-600 bg-purple-50 px-3 py-1 rounded-full text-sm">Tailwind CSS</span>
-              </div>
-              <div className="flex justify-between items-center p-4 bg-gray-50 rounded-lg">
-                <span className="font-medium text-gray-700">Database & Auth</span>
-                <span className="text-green-600 bg-green-50 px-3 py-1 rounded-full text-sm">Supabase (PostgreSQL)</span>
-              </div>
-              <div className="flex justify-between items-center p-4 bg-gray-50 rounded-lg">
-                <span className="font-medium text-gray-700">Deployment</span>
-                <span className="text-gray-900 bg-gray-200 px-3 py-1 rounded-full text-sm">Vercel & Docker</span>
+              <div>
+                <p className="text-sm text-gray-400 font-bold uppercase">Systeem Status</p>
+                <p className="text-xl font-black text-white">Klaar voor schaalbaarheid</p>
               </div>
             </div>
           </div>
         </div>
       </div>
+
+      {/* 4. FOOTER CTA */}
+      <div className="py-32 text-center px-4 relative z-10">
+        <h2 className="text-4xl md:text-6xl font-black mb-8">
+          Klaar om de markt <br/> te domineren?
+        </h2>
+        <button className="px-10 py-5 bg-[#FDCB2C] text-black rounded-full font-black text-xl hover:bg-yellow-400 transition-colors shadow-[0_0_50px_rgba(253,203,44,0.4)]">
+          Lanceer HelloTV OS
+        </button>
+        
+        <p className="mt-16 text-gray-500 text-sm flex items-center justify-center gap-2">
+          Designed & Developed by <span className="text-white font-bold tracking-wider">VIESA AUTOMATIONS</span> <Zap size={14} className="text-[#FDCB2C]"/>
+        </p>
+      </div>
+
     </div>
   );
 }
