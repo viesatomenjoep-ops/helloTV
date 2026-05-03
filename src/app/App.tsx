@@ -87,7 +87,7 @@ export default function App() {
   };
 
   return (
-    <div className="flex h-screen bg-[#F5F5F5] font-sans">
+    <div className="flex h-[100dvh] w-full max-w-[100vw] overflow-hidden bg-[#F5F5F5] font-sans">
       {/* Mobile menu button */}
       <button 
         className="md:hidden fixed top-4 right-4 z-50 p-2 bg-gray-900 text-white rounded-lg"

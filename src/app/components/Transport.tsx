@@ -116,14 +116,14 @@ export function Transport() {
   return (
     <div className="min-h-screen bg-gray-50 pb-24">
       {/* Header */}
-      <div className="bg-[#1D6F42] text-white p-8 shadow-md relative overflow-hidden">
+      <div className="bg-[#FDCB2C] text-gray-900 p-8 shadow-md relative overflow-hidden">
         <div className="max-w-7xl mx-auto relative z-10 flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
           <div>
             <h1 className="text-4xl font-black mb-2 flex items-center gap-3">
-              <Truck size={36} className="text-[#FDCB2C]" />
+              <Truck size={36} className="text-gray-900" />
               Hessey Transport & Logistiek
             </h1>
-            <p className="text-green-100 font-medium">Beheer filialen, live tracking en installateurs check-out</p>
+            <p className="text-gray-800 font-medium">Beheer filialen, live tracking en installateurs check-out</p>
           </div>
           <div className="flex gap-2">
             {['admin', 'installateur', 'filiaal'].map(tab => (
@@ -131,7 +131,7 @@ export function Transport() {
                 key={tab}
                 onClick={() => setActiveTab(tab as any)}
                 className={`px-4 py-2 font-bold rounded-lg transition-colors capitalize ${
-                  activeTab === tab ? 'bg-[#FDCB2C] text-[#1D6F42]' : 'bg-green-800 text-green-100 hover:bg-green-700'
+                  activeTab === tab ? 'bg-black text-[#FDCB2C]' : 'bg-black/10 text-gray-900 hover:bg-black/20'
                 }`}
               >
                 {tab === 'admin' ? 'Master Admin' : tab === 'filiaal' ? 'Filiaal Overzicht' : 'Installateurs App'}
@@ -140,7 +140,7 @@ export function Transport() {
           </div>
         </div>
         {/* Background graphic */}
-        <Truck className="absolute -right-10 -bottom-10 text-white/5" size={300} />
+        <img src="/HelloTV.png" className="absolute -right-10 top-1/2 -translate-y-1/2 h-48 md:h-64 object-contain opacity-30 mix-blend-multiply pointer-events-none" alt="" />
       </div>
 
       <div className="max-w-7xl mx-auto p-8">

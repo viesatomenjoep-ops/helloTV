@@ -116,16 +116,6 @@ export function Dashboard({ onNavigate }: { onNavigate?: (view: string) => void 
               </div>
             </div>
             <div className="flex items-center gap-4">
-              <button
-                onClick={() => {
-                  const text = encodeURIComponent('Hallo, dit is het HelloTVLogo dashboard.');
-                  window.open(`https://wa.me/31651641886?text=${text}`, '_blank');
-                }}
-                className="flex items-center gap-2 px-4 py-2 bg-white rounded-lg shadow-md hover:shadow-lg transition-shadow"
-              >
-                <Bell size={18} />
-                <span>Test WhatsApp</span>
-              </button>
               <div className="text-right">
                 <div className="text-sm text-gray-500">Laatste update</div>
                 <div className="font-medium">{new Date().toLocaleTimeString('nl-NL')}</div>
