@@ -61,7 +61,7 @@ export default function App() {
 
   const menuItems = [
     { id: 'dashboard', label: 'Dashboard', icon: Home },
-    { id: 'maick', label: 'MAICK Portaal (Admin)', icon: ShieldAlert },
+    { id: 'maick', label: 'Maick Portal', icon: ShieldAlert },
     { id: 'website', label: 'HelloTV.nl (Live)', icon: Search },
     { id: 'reviews', label: 'Google Maps Reviews', icon: Star },
     { id: 'orders', label: 'Orders & Upsell', icon: ShoppingCart },

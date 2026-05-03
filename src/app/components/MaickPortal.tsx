@@ -40,7 +40,7 @@ export function MaickPortal() {
           <div>
             <h1 className="text-4xl font-black text-[#FDCB2C] flex items-center gap-3">
               <ShieldAlert size={40} />
-              MAICK Administrator Portaal
+              Maick Administrator Portal
             </h1>
             <p className="text-gray-400 mt-2">Master Control: Eén opslag monitoren van HR, Transport, Reparaties en Voorraad</p>
           </div>
