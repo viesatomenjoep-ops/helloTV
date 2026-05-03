@@ -9,10 +9,11 @@ import { Inventory } from './components/Inventory';
 import { Quotes } from './components/Quotes';
 import { Orders } from './components/Orders';
 import { Showcase } from './components/Showcase';
+import { HR } from './components/HR';
 import { HelloTVLogo } from './components/ui/HelloTVLogo';
 import { initDemoData } from '../utils/initDemoData';
 
-type View = 'dashboard' | 'crm' | 'sales' | 'inventory' | 'quotes' | 'orders' | 'showcase';
+type View = 'dashboard' | 'crm' | 'sales' | 'inventory' | 'quotes' | 'orders' | 'showcase' | 'hr';
 
 export default function App() {
   const [currentView, setCurrentView] = useState<View>('dashboard');
@@ -114,6 +115,7 @@ export default function App() {
     { id: 'quotes', label: 'Offertes', icon: FileText },
     { id: 'sales', label: 'Sales Tracker', icon: TrendingUp },
     { id: 'inventory', label: 'Voorraad', icon: Package },
+    { id: 'hr', label: 'HR & Reiskosten', icon: Users },
   ];
 
   return (
@@ -172,6 +174,7 @@ export default function App() {
         {currentView === 'quotes' && <Quotes />}
         {currentView === 'sales' && <SalesTracker />}
         {currentView === 'inventory' && <Inventory />}
+        {currentView === 'hr' && <HR />}
       </div>
     </div>
   );

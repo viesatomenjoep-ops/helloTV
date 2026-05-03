@@ -239,6 +239,33 @@ export function SalesTracker() {
           </div>
         </div>
 
+        {/* Live Bonus Widget */}
+        <div className="bg-gradient-to-r from-gray-900 to-gray-800 rounded-2xl shadow-lg p-6 mb-8 text-white border-l-4 border-[#FDCB2C]">
+          <div className="flex justify-between items-center mb-4">
+            <h2 className="text-xl font-bold flex items-center gap-2">
+              <Trophy className="text-[#FDCB2C]" /> Actueel Bonus Overzicht (Persoonlijk)
+            </h2>
+            <div className="text-sm px-3 py-1 bg-[#FDCB2C] text-black font-bold rounded-full animate-pulse">
+              LIVE BEREKENING
+            </div>
+          </div>
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+            <div className="bg-white/10 p-4 rounded-xl border border-white/5">
+              <p className="text-gray-400 text-sm mb-1">Jouw behaalde marge</p>
+              <p className="text-3xl font-black text-white">€18.200</p>
+            </div>
+            <div className="bg-white/10 p-4 rounded-xl border border-white/5">
+              <p className="text-gray-400 text-sm mb-1">Bonus drempel (Fulltime)</p>
+              <p className="text-3xl font-black text-white">€15.000</p>
+            </div>
+            <div className="bg-gradient-to-br from-[#FDCB2C] to-yellow-500 p-4 rounded-xl text-black shadow-inner">
+              <p className="text-sm font-bold opacity-80 mb-1">Huidige Bonusschatting</p>
+              <p className="text-4xl font-black">€150,- <span className="text-sm font-normal opacity-80">bruto</span></p>
+              <p className="text-xs font-bold mt-1 opacity-80">(3 x €50 staffel bereikt)</p>
+            </div>
+          </div>
+        </div>
+
         {/* Global Stats */}
         <div className="grid grid-cols-1 md:grid-cols-4 gap-6 mb-8">
           <div className="bg-gradient-to-br from-green-500 to-green-600 text-white rounded-2xl shadow-lg p-6">
