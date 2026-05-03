@@ -134,6 +134,46 @@ export function SalesTracker() {
     document.body.removeChild(link);
   };
 
+  const handleExportSpecific = (type: 'all' | 'single' | 'top3', person?: any) => {
+    let targetData = filteredPerformance;
+    let filename = 'HelloTV_Sales_Export_Totaal';
+
+    if (type === 'single' && person) {
+      targetData = [person];
+      filename = `HelloTV_Sales_${person.name.replace(' ', '_')}`;
+    } else if (type === 'top3') {
+      targetData = filteredPerformance.slice(0, 3);
+      filename = 'HelloTV_Sales_Top3';
+    }
+
+    let csvContent = "data:text/csv;charset=utf-8,";
+    csvContent += `Verkoper,Filiaal,Periode,Verkocht Product,Klant,Datum,Prijs (Euro),Marge (Euro)\n`;
+
+    targetData.forEach(p => {
+      p.recentSales.forEach((sale: any) => {
+        const row = [
+          `"${p.name}"`,
+          `"${p.store}"`,
+          `"Huidig"`,
+          `"${sale.product}"`,
+          `"${sale.customer}"`,
+          `"${sale.date.toLocaleDateString('nl-NL')}"`,
+          `"${sale.price}"`,
+          `"${sale.margin}"`
+        ];
+        csvContent += row.join(",") + "\n";
+      });
+    });
+
+    const encodedUri = encodeURI(csvContent);
+    const link = document.createElement("a");
+    link.setAttribute("href", encodedUri);
+    link.setAttribute("download", `${filename}.csv`);
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+  };
+
   const topPerformer = filteredPerformance[0];
   const totalRevenue = filteredPerformance.reduce((sum, p) => sum + (p.totalRevenue || 0), 0);
   const totalSales = filteredPerformance.reduce((sum, p) => sum + (p.salesCount || 0), 0);
@@ -316,8 +356,25 @@ export function SalesTracker() {
                                 <TrendingUp size={20} className="text-blue-600" />
                                 Laatste verkopen van {person.name}
                               </h3>
-                              <div className="text-sm font-semibold text-gray-500 bg-gray-100 px-3 py-1 rounded-full">
-                                Exporteert mee in Excel
+                              <div className="flex gap-2">
+                                <button 
+                                  onClick={(e) => { e.stopPropagation(); handleExportSpecific('all'); }}
+                                  className="text-xs font-bold text-white bg-green-600 hover:bg-green-700 px-3 py-1.5 rounded-lg flex items-center gap-1 transition-colors"
+                                >
+                                  <Download size={12} /> Exporteer Totaal
+                                </button>
+                                <button 
+                                  onClick={(e) => { e.stopPropagation(); handleExportSpecific('top3'); }}
+                                  className="text-xs font-bold text-white bg-blue-600 hover:bg-blue-700 px-3 py-1.5 rounded-lg flex items-center gap-1 transition-colors"
+                                >
+                                  <Download size={12} /> Exporteer Top 3
+                                </button>
+                                <button 
+                                  onClick={(e) => { e.stopPropagation(); handleExportSpecific('single', person); }}
+                                  className="text-xs font-bold text-gray-700 bg-gray-100 hover:bg-gray-200 px-3 py-1.5 rounded-lg flex items-center gap-1 transition-colors"
+                                >
+                                  <Download size={12} /> Exporteer {person.name.split(' ')[0]}
+                                </button>
                               </div>
                             </div>
                             
