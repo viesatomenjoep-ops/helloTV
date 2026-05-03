@@ -16,6 +16,7 @@ export function Inventory() {
     lowStockThreshold: 10,
     price: 0,
     category: '',
+    voorraadType: 'Standaard',
     depot: 'Logistiek Duiven',
   });
 
@@ -70,7 +71,7 @@ export function Inventory() {
     e.preventDefault();
     try {
       await api.createInventoryItem(formData);
-      setFormData({ name: '', sku: '', quantity: 0, lowStockThreshold: 10, price: 0, category: '', depot: 'Logistiek Duiven' });
+      setFormData({ name: '', sku: '', quantity: 0, lowStockThreshold: 10, price: 0, category: '', voorraadType: 'Standaard', depot: 'Logistiek Duiven' });
       setShowForm(false);
       loadInventory();
     } catch (error) {
@@ -249,6 +250,19 @@ export function Inventory() {
                     />
                   </div>
                   <div>
+                    <label className="block text-sm font-medium text-gray-700 mb-2">Voorraad Type</label>
+                    <select
+                      value={formData.voorraadType}
+                      onChange={(e) => setFormData({ ...formData, voorraadType: e.target.value })}
+                      className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                    >
+                      <option value="Standaard">Standaard (Regulier)</option>
+                      <option value="ODM">ODM (Original Design Manufacturer)</option>
+                      <option value="Geel">Gele Voorraad (Veiligheidsvoorraad voor upsells)</option>
+                      <option value="Groen">Groene Voorraad (Overjarig, mag verkocht worden)</option>
+                    </select>
+                  </div>
+                  <div>
                     <label className="block text-sm font-medium text-gray-700 mb-2">Logistiek Depot</label>
                     <select
                       value={formData.depot}
@@ -287,6 +301,7 @@ export function Inventory() {
                       <th className="px-6 py-4 text-left text-sm font-semibold text-gray-700">Product</th>
                       <th className="px-6 py-4 text-left text-sm font-semibold text-gray-700">SKU</th>
                       <th className="px-6 py-4 text-left text-sm font-semibold text-gray-700">Categorie</th>
+                      <th className="px-6 py-4 text-left text-sm font-semibold text-gray-700">Type</th>
                       <th className="px-6 py-4 text-left text-sm font-semibold text-gray-700">Voorraad</th>
                       <th className="px-6 py-4 text-left text-sm font-semibold text-gray-700">Inkoop</th>
                       <th className="px-6 py-4 text-left text-sm font-semibold text-gray-700">Verkoop</th>
@@ -315,6 +330,12 @@ export function Inventory() {
                                 {item.category}
                               </span>
                             )}
+                          </td>
+                          <td className="px-6 py-4">
+                            {item.voorraadType === 'ODM' && <span className="px-2 py-1 bg-purple-100 text-purple-800 rounded font-bold text-xs">ODM</span>}
+                            {item.voorraadType === 'Geel' && <span className="px-2 py-1 bg-yellow-100 text-yellow-800 border border-yellow-300 rounded font-bold text-xs" title="Veiligheidsvoorraad Upsells">Geel</span>}
+                            {item.voorraadType === 'Groen' && <span className="px-2 py-1 bg-green-100 text-green-800 border border-green-300 rounded font-bold text-xs" title="Overjarig">Groen</span>}
+                            {(!item.voorraadType || item.voorraadType === 'Standaard') && <span className="text-gray-400 text-xs">-</span>}
                           </td>
                           <td className="px-6 py-4">
                             <div className={`font-semibold ${isLowStock ? 'text-red-600' : 'text-gray-800'}`}>
@@ -427,6 +448,7 @@ export function Inventory() {
                       <tr>
                         <th className="p-4 font-bold text-gray-700">Product (SKU)</th>
                         <th className="p-4 font-bold text-gray-700 text-center">Huidige Voorraad</th>
+                        <th className="p-4 font-bold text-gray-700 text-center">Type</th>
                         <th className="p-4 font-bold text-gray-700 text-center">Min (Kritiek)</th>
                         <th className="p-4 font-bold text-gray-700 text-center">Max (Veilig)</th>
                         <th className="p-4 font-bold text-gray-700 text-center">Status</th>
@@ -436,6 +458,7 @@ export function Inventory() {
                       <tr className="border-b border-gray-100 hover:bg-gray-50">
                         <td className="p-4 font-bold">QE65S95F (Samsung QD-OLED)</td>
                         <td className="p-4 text-center text-lg font-black">10</td>
+                        <td className="p-4 text-center"><span className="px-2 py-1 bg-purple-100 text-purple-800 rounded font-bold text-xs">ODM</span></td>
                         <td className="p-4 text-center text-gray-500">2</td>
                         <td className="p-4 text-center text-gray-500">15</td>
                         <td className="p-4 text-center">
@@ -445,6 +468,7 @@ export function Inventory() {
                       <tr className="border-b border-gray-100 hover:bg-gray-50">
                         <td className="p-4 font-bold">OLED55G5 (LG OLED evo)</td>
                         <td className="p-4 text-center text-lg font-black text-red-600">1</td>
+                        <td className="p-4 text-center"><span className="px-2 py-1 bg-yellow-100 text-yellow-800 rounded font-bold text-xs">Geel</span></td>
                         <td className="p-4 text-center text-gray-500">3</td>
                         <td className="p-4 text-center text-gray-500">10</td>
                         <td className="p-4 text-center">
@@ -454,6 +478,7 @@ export function Inventory() {
                       <tr className="hover:bg-gray-50">
                         <td className="p-4 font-bold">Bravia 9 75" (Sony MiniLED)</td>
                         <td className="p-4 text-center text-lg font-black">4</td>
+                        <td className="p-4 text-center"><span className="px-2 py-1 bg-green-100 text-green-800 rounded font-bold text-xs">Groen</span></td>
                         <td className="p-4 text-center text-gray-500">1</td>
                         <td className="p-4 text-center text-gray-500">5</td>
                         <td className="p-4 text-center">
