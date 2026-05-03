@@ -49,25 +49,91 @@ const TOP_REVIEW_SELLERS = [
 
 export function GoogleReviews() {
   const [isExporting, setIsExporting] = useState(false);
+  const [filterStore, setFilterStore] = useState('Alle Winkels');
+  
+  const STORES = ['Alle Winkels', 'Alkmaar', 'Amsterdam', 'Breda', 'Duiven', 'Eindhoven', 'Rotterdam', 'Utrecht'];
+
+  const handleExportPDF = (platform: 'Google Maps' | 'Trustpilot') => {
+    setIsExporting(true);
+    
+    // Get data filtered by store
+    const storeData = filterStore === 'Alle Winkels' ? REVIEW_DATA : REVIEW_DATA.filter(r => r.filiaal === filterStore);
+    
+    const printWindow = window.open('', '_blank');
+    if (!printWindow) {
+      alert("Popup blocker verhinderde het openen van de PDF. Sta popups toe voor deze site.");
+      setIsExporting(false);
+      return;
+    }
+
+    const htmlContent = `
+      <html>
+        <head>
+          <title>${platform} Rapportage - ${filterStore}</title>
+          <style>
+            body { font-family: Arial, sans-serif; padding: 40px; color: #1a1a1a; }
+            .header { display: flex; justify-content: space-between; align-items: center; border-bottom: 2px solid #FDCB2C; padding-bottom: 20px; margin-bottom: 40px; }
+            .logo { display: flex; align-items: center; gap: 6px; font-weight: 900; font-size: 38px; letter-spacing: -2px; }
+            .logo-bubble { background: white; border: 8px solid #FDCB2C; padding: 8px 12px; border-radius: 40px; color: #1a1a1a; font-size: 28px; position: relative; border-bottom-left-radius: 4px; }
+            .title { font-size: 24px; font-weight: bold; color: ${platform === 'Google Maps' ? '#3b82f6' : '#10b981'}; }
+            .subtitle { color: #666; margin-bottom: 20px; font-weight: bold; }
+            table { width: 100%; border-collapse: collapse; margin-bottom: 40px; }
+            th, td { padding: 14px; text-align: left; border-bottom: 1px solid #eee; }
+            th { background-color: #f8f9fa; font-weight: bold; color: #555; text-transform: uppercase; font-size: 12px; }
+            .footer { margin-top: 50px; font-size: 12px; color: #888; text-align: center; }
+          </style>
+        </head>
+        <body>
+          <div class="header">
+            <div class="logo">
+              hello <div class="logo-bubble">tv</div>
+            </div>
+            <div class="title">${platform} Reviews Rapportage</div>
+          </div>
+          <div class="subtitle">Locatie Filter: ${filterStore} | Datum: ${new Date().toLocaleDateString('nl-NL')}</div>
+          
+          <table>
+            <thead>
+              <tr>
+                <th>Filiaal</th>
+                <th>Totaal Transacties</th>
+                <th>${platform} Score</th>
+                <th>Reviews (${platform} dit jaar)</th>
+              </tr>
+            </thead>
+            <tbody>
+              ${storeData.map(row => `
+                <tr>
+                  <td><strong>${row.filiaal}</strong></td>
+                  <td>${row.transacties}</td>
+                  <td><strong>${platform === 'Google Maps' ? row.rating : row.trustpilotRating}</strong> / 5.0</td>
+                  <td>${platform === 'Google Maps' ? row.jaar : row.trustpilotJaar}</td>
+                </tr>
+              `).join('')}
+              ${storeData.length === 0 ? '<tr><td colspan="4" style="text-align:center;">Geen data voor dit filiaal in de demo dataset.</td></tr>' : ''}
+            </tbody>
+          </table>
+
+          <div class="footer">
+            Automatisch gegenereerd door het HelloTV Management Systeem • Vertrouwelijk
+          </div>
+          
+          <script>
+            window.onload = function() { window.print(); window.close(); }
+          </script>
+        </body>
+      </html>
+    `;
+    
+    printWindow.document.open();
+    printWindow.document.write(htmlContent);
+    printWindow.document.close();
+    
+    setTimeout(() => setIsExporting(false), 1000);
+  };
 
   const handleExport = () => {
-    setIsExporting(true);
-    let csvContent = "data:text/csv;charset=utf-8,";
-    csvContent += "Filiaal,Transacties,Google Rating,Google Reviews (Jaar),Trustpilot Rating,Trustpilot Reviews (Jaar)\n";
 
-    REVIEW_DATA.forEach(row => {
-      csvContent += `${row.filiaal},${row.transacties},${row.rating},${row.jaar},${row.trustpilotRating},${row.trustpilotJaar}\n`;
-    });
-
-    const encodedUri = encodeURI(csvContent);
-    const link = document.createElement("a");
-    link.setAttribute("href", encodedUri);
-    link.setAttribute("download", `HelloTV_Reviews_${new Date().toISOString().split('T')[0]}.csv`);
-    document.body.appendChild(link);
-    link.click();
-    document.body.removeChild(link);
-    
-    setIsExporting(false);
   };
 
   return (
@@ -83,14 +149,34 @@ export function GoogleReviews() {
               Live data koppeling met Google & Trustpilot API: Reviews gekoppeld aan transacties.
             </p>
           </div>
-          <button
-            onClick={handleExport}
-            disabled={isExporting}
-            className="px-6 py-3 bg-blue-600 hover:bg-blue-700 text-white font-bold rounded-xl shadow-lg flex items-center gap-2 transition-colors disabled:opacity-50"
-          >
-            <Download size={20} />
-            {isExporting ? 'Exporteren...' : 'Maak Live Export'}
-          </button>
+          <div className="flex flex-col gap-3">
+            <div className="flex items-center gap-2 bg-white px-4 py-2 rounded-xl shadow-sm border border-gray-200">
+              <MapPin size={18} className="text-gray-400" />
+              <select
+                value={filterStore}
+                onChange={(e) => setFilterStore(e.target.value)}
+                className="bg-transparent font-bold text-gray-700 outline-none w-40"
+              >
+                {STORES.map(s => <option key={s} value={s}>{s}</option>)}
+              </select>
+            </div>
+            <div className="flex gap-2">
+              <button
+                onClick={() => handleExportPDF('Google Maps')}
+                disabled={isExporting}
+                className="px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white font-bold rounded-xl shadow-sm flex items-center gap-2 transition-colors disabled:opacity-50 text-sm"
+              >
+                <Download size={16} /> PDF Google
+              </button>
+              <button
+                onClick={() => handleExportPDF('Trustpilot')}
+                disabled={isExporting}
+                className="px-4 py-2 bg-green-600 hover:bg-green-700 text-white font-bold rounded-xl shadow-sm flex items-center gap-2 transition-colors disabled:opacity-50 text-sm"
+              >
+                <Download size={16} /> PDF Trustpilot
+              </button>
+            </div>
+          </div>
         </div>
 
         {/* Top KPIs */}
@@ -201,7 +287,7 @@ export function GoogleReviews() {
               <span className="text-xs font-bold px-3 py-1 bg-green-100 text-green-700 rounded-full animate-pulse">Live API Sync</span>
             </div>
             <div className="divide-y divide-gray-100">
-              {LIVE_REVIEWS.map(review => (
+              {LIVE_REVIEWS.filter(r => filterStore === 'Alle Winkels' || r.filiaal === filterStore).map(review => (
                 <div key={review.id} className="p-6 hover:bg-gray-50 transition-colors">
                   <div className="flex justify-between items-start mb-2">
                     <div>
@@ -234,6 +320,9 @@ export function GoogleReviews() {
                   <p className="text-gray-600 text-sm italic">"{review.text}"</p>
                 </div>
               ))}
+              {LIVE_REVIEWS.filter(r => filterStore === 'Alle Winkels' || r.filiaal === filterStore).length === 0 && (
+                <div className="p-6 text-center text-gray-500 font-medium">Geen reviews gevonden voor dit filiaal in de live feed.</div>
+              )}
             </div>
           </div>
 
@@ -254,7 +343,7 @@ export function GoogleReviews() {
                   </tr>
                 </thead>
                 <tbody className="divide-y divide-gray-100">
-                  {TOP_REVIEW_SELLERS.map((seller, idx) => (
+                  {TOP_REVIEW_SELLERS.filter(s => filterStore === 'Alle Winkels' || s.filiaal === filterStore).map((seller, idx) => (
                     <tr key={idx} className="hover:bg-blue-50 transition-colors">
                       <td className="px-4 py-3">
                         <div className="font-bold text-gray-900 flex items-center gap-2">
@@ -271,6 +360,9 @@ export function GoogleReviews() {
                       </td>
                     </tr>
                   ))}
+                  {TOP_REVIEW_SELLERS.filter(s => filterStore === 'Alle Winkels' || s.filiaal === filterStore).length === 0 && (
+                    <tr><td colSpan={3} className="px-4 py-4 text-center text-gray-500">Geen verkopers gevonden.</td></tr>
+                  )}
                 </tbody>
               </table>
             </div>
@@ -304,7 +396,7 @@ export function GoogleReviews() {
                 </tr>
               </thead>
               <tbody className="divide-y divide-gray-100">
-                {REVIEW_DATA.map((row, idx) => (
+                {REVIEW_DATA.filter(r => filterStore === 'Alle Winkels' || r.filiaal === filterStore).map((row, idx) => (
                   <tr key={idx} className="hover:bg-blue-50 transition-colors">
                     <td className="px-6 py-4 font-bold text-gray-900">{row.filiaal}</td>
                     <td className="px-6 py-4 text-center font-bold">{row.transacties}</td>

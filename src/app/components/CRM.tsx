@@ -154,7 +154,7 @@ export function CRM() {
               onChange={(e) => setKanaalFilter(e.target.value)}
               className="w-full px-4 py-2.5 bg-gray-50 border border-gray-200 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none font-bold text-gray-700"
             >
-              <option value="Alle Kanalen">Alle Kanalen (SQL)</option>
+              <option value="Alle Kanalen">Alle Kanalen</option>
               <option value="Filiaal">Filiaal</option>
               <option value="Chat">Chat</option>
               <option value="Mail">Mail</option>

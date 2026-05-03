@@ -134,13 +134,35 @@ export function Dashboard({ onNavigate }: { onNavigate?: (view: string) => void 
           </div>
         </div>
 
-        {/* Snelle Order Aanmaken (Customer Lookup Prototype) */}
-        <div className="mb-8">
-          <NewOrderWidget />
+        {/* Hero Section: #1 Verkoper & Totale Omzet */}
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-8">
+          {/* Hero: Totale Omzet */}
+          <div className="bg-gradient-to-br from-green-500 to-green-700 rounded-2xl shadow-xl p-8 text-white lg:col-span-1 flex flex-col justify-center">
+            <h2 className="text-green-100 font-bold mb-2 flex items-center gap-2 text-xl"><Euro size={24}/> Totale Omzet (Nederland)</h2>
+            <div className="text-5xl font-black mb-3">€{(stats?.totalRevenue || 0).toLocaleString('nl-NL', { minimumFractionDigits: 2 })}</div>
+            <div className="text-white font-bold bg-white/20 px-3 py-1 rounded-full inline-block self-start">+12.5% vs Vorige Maand</div>
+          </div>
+          
+          {/* Hero: Nummer 1 Verkoper */}
+          <div className="bg-gradient-to-br from-[#FDCB2C] to-yellow-500 rounded-2xl shadow-xl p-8 text-gray-900 lg:col-span-2 flex items-center gap-6">
+            <div className="bg-white p-6 rounded-full shadow-lg">
+              <Trophy size={56} className="text-yellow-500" />
+            </div>
+            <div>
+              <h2 className="text-yellow-900 font-bold mb-1 uppercase tracking-wider text-sm flex items-center gap-2">Nummer 1 Verkoper Vandaag <span className="bg-white text-yellow-600 px-2 py-0.5 rounded text-xs font-bold animate-pulse">LIVE</span></h2>
+              <div className="text-4xl font-black mb-3">Lisa Jansen</div>
+              <div className="flex flex-wrap gap-3 font-bold text-yellow-900">
+                <span className="bg-white/40 px-3 py-1.5 rounded-lg flex items-center gap-2 shadow-sm"><MessageCircle size={16}/> 24 Orders (Online)</span>
+                <span className="bg-white/40 px-3 py-1.5 rounded-lg flex items-center gap-2 shadow-sm"><Store size={16}/> Mark de Vries (18 Winkel)</span>
+                <span className="bg-white/40 px-3 py-1.5 rounded-lg flex items-center gap-2 shadow-sm"><Mail size={16}/> Tom Peters (12 Tickets)</span>
+              </div>
+            </div>
+          </div>
         </div>
 
+        {/* Dashboard Stats Grid (Without Total Revenue) */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-8">
-          {statCards.map((card, idx) => (
+          {statCards.slice(1).map((card, idx) => (
             <div
               key={idx}
               className="bg-white rounded-2xl shadow-lg overflow-hidden hover:shadow-xl transition-shadow"
@@ -164,57 +186,9 @@ export function Dashboard({ onNavigate }: { onNavigate?: (view: string) => void 
           ))}
         </div>
 
-        {/* Top Performers van Vandaag */}
-        <div className="mb-8 bg-white rounded-2xl shadow-lg p-6 border border-gray-100">
-          <h2 className="text-xl font-bold mb-6 text-gray-800 flex items-center gap-2">
-            <Trophy className="text-[#FDCB2C]" size={24} />
-            Nummer 1 Verkopers (Vandaag)
-          </h2>
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-            <div className="flex items-center gap-4 p-4 bg-blue-50 rounded-xl border border-blue-100">
-              <div className="bg-blue-500 text-white p-3 rounded-full shadow-md">
-                <MessageCircle size={24} />
-              </div>
-              <div>
-                <div className="text-xs font-bold text-blue-600 uppercase tracking-wider mb-1">Online (Chat)</div>
-                <div className="text-lg font-black text-gray-900">Lisa Jansen</div>
-                <div className="text-sm font-semibold text-gray-500">24 orders gesloten</div>
-              </div>
-            </div>
-
-            <div className="flex items-center gap-4 p-4 bg-green-50 rounded-xl border border-green-100">
-              <div className="bg-green-500 text-white p-3 rounded-full shadow-md">
-                <Store size={24} />
-              </div>
-              <div>
-                <div className="text-xs font-bold text-green-600 uppercase tracking-wider mb-1">In de Verkoop (Winkel)</div>
-                <div className="text-lg font-black text-gray-900">Mark de Vries</div>
-                <div className="text-sm font-semibold text-gray-500">18 orders gesloten</div>
-              </div>
-            </div>
-
-            <div className="flex items-center gap-4 p-4 bg-purple-50 rounded-xl border border-purple-100">
-              <div className="bg-purple-500 text-white p-3 rounded-full shadow-md">
-                <Mail size={24} />
-              </div>
-              <div>
-                <div className="text-xs font-bold text-purple-600 uppercase tracking-wider mb-1">Via Mail (Tickets)</div>
-                <div className="text-lg font-black text-gray-900">Tom Peters</div>
-                <div className="text-sm font-semibold text-gray-500">12 orders gesloten</div>
-              </div>
-            </div>
-
-            <div className="flex items-center gap-4 p-4 bg-orange-50 rounded-xl border border-orange-100">
-              <div className="bg-orange-500 text-white p-3 rounded-full shadow-md">
-                <Store size={24} />
-              </div>
-              <div>
-                <div className="text-xs font-bold text-orange-600 uppercase tracking-wider mb-1">Barbecue (BBQ)</div>
-                <div className="text-lg font-black text-gray-900">Ruben de Boer</div>
-                <div className="text-sm font-semibold text-gray-500">8 BBQ's gesloten</div>
-              </div>
-            </div>
-          </div>
+        {/* Snelle Order Aanmaken (Customer Lookup Prototype) */}
+        <div className="mb-8">
+          <NewOrderWidget />
         </div>
 
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-8">
