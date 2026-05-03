@@ -177,8 +177,8 @@ export function TrainersPortal() {
     setIsExportingPdf(true);
     setTimeout(() => {
       setIsExportingPdf(false);
-      alert('Mooie PDF Succesvol Geëxporteerd en opgeslagen!');
-    }, 2500);
+      window.print();
+    }, 500);
   };
 
   const TABS = ['OLED', 'Cleaners', 'Kabels', 'TV Beugels', 'SP TV'];
