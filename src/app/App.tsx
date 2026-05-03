@@ -60,25 +60,25 @@ export default function App() {
   }, []);
 
   const menuItems = [
-    { id: 'dashboard', label: 'Dashboard', icon: Home },
     { id: 'maick', label: 'Maick Portal', icon: ShieldAlert },
-    { id: 'website', label: 'HelloTV.nl (Live)', icon: Search },
-    { id: 'reviews', label: 'Google Maps Reviews', icon: Star },
-    { id: 'orders', label: 'Orders & Upsell', icon: ShoppingCart },
-    { id: 'quotes', label: 'Offertes', icon: FileSignature },
-    { id: 'showcase', label: 'Visie & Strategie', icon: Building2 },
+    { id: 'dashboard', label: 'Dashboard', icon: Home },
+    { id: 'storeportal', label: '18 Filialen (Winkels)', icon: Store },
     { id: 'crm', label: 'CRM', icon: Users },
     { id: 'sales', label: 'Sales Tracker', icon: TrendingUp },
+    { id: 'trainers', label: 'Sales Trainers', icon: GraduationCap },
+    { id: 'orders', label: 'Orders & Upsell', icon: ShoppingCart },
+    { id: 'quotes', label: 'Offertes', icon: FileSignature },
     { id: 'inventory', label: 'Voorraad & Inkoop', icon: Box },
     { id: 'transport', label: 'Transport (Hessey)', icon: Truck },
-    { id: 'storeportal', label: '18 Filialen (Winkels)', icon: Store },
     { id: 'reparatie', label: 'Reparatie & Service', icon: Wrench },
-    { id: 'magiclinks', label: 'AI & Magic Links', icon: LinkIcon },
-    { id: 'media', label: 'Media Portaal', icon: Film },
-    { id: 'trainers', label: 'Sales Trainers', icon: GraduationCap },
-    { id: 'shiftbase', label: 'Hello Base (Uren)', icon: CalendarClock },
     { id: 'hr', label: 'HR & Reiskosten', icon: HeartPulse },
+    { id: 'shiftbase', label: 'Hello Base (Uren)', icon: CalendarClock },
+    { id: 'media', label: 'Media Portaal', icon: Film },
+    { id: 'magiclinks', label: 'AI & Magic Links', icon: LinkIcon },
+    { id: 'reviews', label: 'Google Maps Reviews', icon: Star },
+    { id: 'showcase', label: 'Visie & Strategie', icon: Building2 },
     { id: 'vendit', label: 'Vendit API Koppeling', icon: Settings },
+    { id: 'website', label: 'HelloTV.nl (Live)', icon: Search },
   ];
 
   const handleNavClick = (id: string) => {
