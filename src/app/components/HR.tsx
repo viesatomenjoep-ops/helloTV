@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { MapPin, Send, CheckCircle, Car, FileText, Lock, Download, Mail, RefreshCw, Users } from 'lucide-react';
+import { MapPin, Send, CheckCircle, Car, FileText, Lock, Download, Mail, RefreshCw, Users, Database, Zap, AlertTriangle } from 'lucide-react';
 
 import { EMPLOYEES, getMedewerkerByCode } from '../../utils/employees';
 
@@ -334,7 +334,7 @@ export function HR() {
             <h2 className="text-2xl font-bold text-gray-800 mb-2">Administratie Beheer paneel</h2>
             <p className="text-gray-500 mb-8">Genereer unieke medewerkerscodes (ID's) en wachtwoorden voor de 250+ medewerkers en distribueer deze via geautomatiseerde mails.</p>
             
-            <div className="bg-gray-50 rounded-xl p-6 border border-gray-200">
+            <div className="bg-gray-50 rounded-xl p-6 border border-gray-200 mb-8">
               <div className="flex flex-col md:flex-row items-center gap-6">
                 <div className="flex-1">
                   <h3 className="text-lg font-bold text-gray-900 mb-2 flex items-center gap-2">
@@ -374,6 +374,56 @@ export function HR() {
                     <p>...</p>
                   </div>
                 </div>
+              </div>
+            </div>
+
+            {/* Innovative HR SQL Functions */}
+            <div className="mb-8">
+              <h3 className="text-xl font-bold text-gray-800 mb-4 flex items-center gap-2">
+                <Database className="text-indigo-600" />
+                Geavanceerde HR AI & Database (SQL) Portalen
+              </h3>
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+                
+                <div className="bg-indigo-50 border border-indigo-200 p-6 rounded-xl hover:shadow-md transition-shadow cursor-pointer group">
+                  <div className="w-12 h-12 bg-white rounded-lg flex items-center justify-center mb-4 border border-indigo-100 shadow-sm group-hover:bg-indigo-600 group-hover:text-white transition-colors">
+                    <Zap size={24} className="text-indigo-600 group-hover:text-white" />
+                  </div>
+                  <h4 className="font-bold text-lg text-indigo-900 mb-2">Live SQL Rooster Matchmaker</h4>
+                  <p className="text-sm text-indigo-800/80 mb-4">
+                    Koppelt live weersverwachtingen aan historische SQL-verkoopdata per filiaal om automatisch het personeelsrooster van Hello Base realtime te optimaliseren.
+                  </p>
+                  <button className="text-xs font-black text-indigo-600 uppercase tracking-wider flex items-center gap-1 group-hover:text-indigo-800">
+                    Run SQL Query <RefreshCw size={12} />
+                  </button>
+                </div>
+
+                <div className="bg-red-50 border border-red-200 p-6 rounded-xl hover:shadow-md transition-shadow cursor-pointer group">
+                  <div className="w-12 h-12 bg-white rounded-lg flex items-center justify-center mb-4 border border-red-100 shadow-sm group-hover:bg-red-600 group-hover:text-white transition-colors">
+                    <AlertTriangle size={24} className="text-red-600 group-hover:text-white" />
+                  </div>
+                  <h4 className="font-bold text-lg text-red-900 mb-2">SQL Fraude & Tijdregistratie</h4>
+                  <p className="text-sm text-red-800/80 mb-4">
+                    Voert een zware SQL-procedure uit over 2.5 miljoen pin-transacties en inklok-logs om afwijkingen (zoals ghost-klokken) op te sporen in het HR-systeem.
+                  </p>
+                  <button className="text-xs font-black text-red-600 uppercase tracking-wider flex items-center gap-1 group-hover:text-red-800">
+                    Start Database Scan <RefreshCw size={12} />
+                  </button>
+                </div>
+
+                <div className="bg-green-50 border border-green-200 p-6 rounded-xl hover:shadow-md transition-shadow cursor-pointer group">
+                  <div className="w-12 h-12 bg-white rounded-lg flex items-center justify-center mb-4 border border-green-100 shadow-sm group-hover:bg-green-600 group-hover:text-white transition-colors">
+                    <Database size={24} className="text-green-600 group-hover:text-white" />
+                  </div>
+                  <h4 className="font-bold text-lg text-green-900 mb-2">SQL Bonus & Promotie Engine</h4>
+                  <p className="text-sm text-green-800/80 mb-4">
+                    Real-time database trigger die CRM-verkoopmarges direct kruist met HR-loonschalen. Berekent volautomatisch wie er deze maand promotie maakt of bonus ontvangt.
+                  </p>
+                  <button className="text-xs font-black text-green-600 uppercase tracking-wider flex items-center gap-1 group-hover:text-green-800">
+                    Update HR Tables <RefreshCw size={12} />
+                  </button>
+                </div>
+
               </div>
             </div>
 

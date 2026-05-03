@@ -1,9 +1,93 @@
-import React from 'react';
-import { ShieldCheck, Tv, Headphones, PenTool as Tool, Search, User, ShoppingCart, CheckCircle, ChevronRight, Star } from 'lucide-react';
+import React, { useState } from 'react';
+import { ShieldCheck, Tv, Headphones, PenTool as Tool, Search, User, ShoppingCart, CheckCircle, ChevronRight, Star, Plus, Upload, X } from 'lucide-react';
 
 export function HelloTVWebsite() {
+  const [isAdminMode, setIsAdminMode] = useState(false);
+  const [teamMembers, setTeamMembers] = useState([
+    { id: 1, name: 'Sander Visser', photoUrl: 'https://images.unsplash.com/photo-1560250097-0b93528c311a?w=400&h=400&fit=crop' },
+    { id: 2, name: 'Lisa van Dijk', photoUrl: 'https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?w=400&h=400&fit=crop' }
+  ]);
+  const [newMemberName, setNewMemberName] = useState('');
+  const [newMemberPhoto, setNewMemberPhoto] = useState('');
+
+  const handleAddMember = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!newMemberName || !newMemberPhoto) return;
+    setTeamMembers([...teamMembers, { id: Date.now(), name: newMemberName, photoUrl: newMemberPhoto }]);
+    setNewMemberName('');
+    setNewMemberPhoto('');
+  };
+
+  const removeMember = (id: number) => {
+    setTeamMembers(teamMembers.filter(m => m.id !== id));
+  };
+
   return (
     <div className="min-h-screen bg-white font-sans text-gray-900 overflow-y-auto">
+      
+      {/* CMS Admin Toggle */}
+      <div className="bg-gray-900 text-white p-4 sticky top-0 z-[60] flex justify-between items-center">
+        <div className="font-bold">Website Beheeromgeving (CMS)</div>
+        <button 
+          onClick={() => setIsAdminMode(!isAdminMode)}
+          className={`px-4 py-2 rounded font-bold text-sm transition-colors ${isAdminMode ? 'bg-[#FDCB2C] text-black' : 'bg-gray-700 hover:bg-gray-600'}`}
+        >
+          {isAdminMode ? 'Sluit Beheer' : 'Open Website Beheer'}
+        </button>
+      </div>
+
+      {isAdminMode && (
+        <div className="bg-gray-100 p-8 border-b border-gray-300 shadow-inner z-[55] relative">
+          <div className="max-w-7xl mx-auto">
+            <h2 className="text-2xl font-black mb-6">Teamleden Beheer (Achterkant)</h2>
+            <form onSubmit={handleAddMember} className="bg-white p-6 rounded-xl shadow-sm border border-gray-200 flex flex-col md:flex-row gap-4 items-end mb-8">
+              <div className="flex-1 w-full">
+                <label className="block text-sm font-bold text-gray-700 mb-2">Naam Teamlid</label>
+                <input 
+                  type="text" 
+                  value={newMemberName}
+                  onChange={(e) => setNewMemberName(e.target.value)}
+                  placeholder="Bijv. Tom van Biene"
+                  className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#FDCB2C] outline-none"
+                  required
+                />
+              </div>
+              <div className="flex-1 w-full">
+                <label className="block text-sm font-bold text-gray-700 mb-2">Foto URL</label>
+                <input 
+                  type="url" 
+                  value={newMemberPhoto}
+                  onChange={(e) => setNewMemberPhoto(e.target.value)}
+                  placeholder="https://..."
+                  className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#FDCB2C] outline-none"
+                  required
+                />
+              </div>
+              <button type="submit" className="px-6 py-2 bg-blue-600 hover:bg-blue-700 text-white font-bold rounded-lg flex items-center gap-2 h-[42px]">
+                <Upload size={18} /> Toevoegen
+              </button>
+            </form>
+
+            <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-4">
+              {teamMembers.map(member => (
+                <div key={member.id} className="bg-white rounded-xl overflow-hidden shadow-sm border border-gray-200 relative group">
+                  <button 
+                    onClick={() => removeMember(member.id)}
+                    className="absolute top-2 right-2 bg-red-500 text-white p-1 rounded-full opacity-0 group-hover:opacity-100 transition-opacity z-10"
+                  >
+                    <X size={14} />
+                  </button>
+                  <img src={member.photoUrl} alt={member.name} className="w-full h-32 object-cover" />
+                  <div className="p-3 text-center">
+                    <p className="font-bold text-sm text-gray-900">{member.name}</p>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+        </div>
+      )}
+
       
       {/* Top Bar */}
       <div className="bg-[#FDCB2C] text-black text-xs font-bold py-2 px-4 flex justify-between items-center hidden md:flex">
@@ -204,6 +288,32 @@ export function HelloTVWebsite() {
             ].map(stad => (
               <div key={stad} className="p-4 rounded-xl border border-gray-100 bg-gray-50 hover:bg-[#FDCB2C] hover:border-[#FDCB2C] transition-colors cursor-pointer group">
                 <span className="font-bold text-gray-700 group-hover:text-black">{stad}</span>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Team Sectie (Voorkant) */}
+      <section className="py-20 bg-gray-50 border-t border-gray-200">
+        <div className="max-w-7xl mx-auto px-8">
+          <div className="text-center max-w-3xl mx-auto mb-16">
+            <h2 className="text-4xl font-black mb-6">Ontmoet ons Team</h2>
+            <p className="text-lg text-gray-600">
+              Onze gepassioneerde experts staan elke dag klaar om jou het beste advies te geven.
+            </p>
+          </div>
+          
+          <div className="flex flex-wrap justify-center gap-8">
+            {teamMembers.map(member => (
+              <div key={member.id} className="bg-white rounded-2xl overflow-hidden shadow-sm border border-gray-100 w-64 hover:shadow-xl transition-all group cursor-pointer">
+                <div className="h-64 overflow-hidden relative">
+                  <img src={member.photoUrl} alt={member.name} className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700" />
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+                </div>
+                <div className="p-6 text-center">
+                  <h3 className="text-xl font-bold text-gray-900">{member.name}</h3>
+                </div>
               </div>
             ))}
           </div>
