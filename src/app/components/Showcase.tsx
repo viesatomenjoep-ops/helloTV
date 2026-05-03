@@ -1,3 +1,5 @@
+import React from "react";
+
 import React from 'react';
 import { HelloTVLogo } from './ui/HelloTVLogo';
 import { MessageSquare, Zap, Layers, Server } from 'lucide-react';

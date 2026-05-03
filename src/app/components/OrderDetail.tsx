@@ -1,5 +1,6 @@
 import { OrderDetail } from '../../types/database';
-import { ArrowLeft, Package, CreditCard, Truck, ShieldCheck, MessageSquare } from 'lucide-react';
+import { ArrowLeft, Package, CreditCard, Truck, ShieldCheck, MessageSquare, Printer } from 'lucide-react';
+import { HelloTVLogo } from './ui/HelloTVLogo';
 
 interface Props {
   order: OrderDetail;
@@ -9,13 +10,39 @@ interface Props {
 export function OrderDetailView({ order, onBack }: Props) {
   return (
     <div className="p-8">
-      <button 
-        onClick={onBack}
-        className="flex items-center gap-2 text-gray-500 hover:text-blue-600 transition-colors mb-6"
-      >
-        <ArrowLeft size={18} />
-        <span>Terug naar orders</span>
-      </button>
+      <div className="flex justify-between items-center mb-6 print:hidden">
+        <button 
+          onClick={onBack}
+          className="flex items-center gap-2 text-gray-500 hover:text-blue-600 transition-colors"
+        >
+          <ArrowLeft size={18} />
+          <span>Terug naar orders</span>
+        </button>
+        <button
+          onClick={() => window.print()}
+          className="flex items-center gap-2 px-4 py-2 bg-gray-100 text-gray-700 rounded-lg font-medium hover:bg-gray-200 transition-colors"
+        >
+          <Printer size={18} />
+          Print als PDF
+        </button>
+      </div>
+
+      {/* Header for PDF / Print */}
+      <div className="hidden print:flex justify-between items-start mb-8 border-b border-gray-100 pb-8">
+        <div>
+          <HelloTVLogo className="h-12 mb-4" />
+          <div className="text-sm text-gray-500">
+            <p>HelloTV Nederland B.V.</p>
+            <p>KVK: 12345678</p>
+            <p>BTW: NL123456789B01</p>
+          </div>
+        </div>
+        <div className="text-right">
+          <h1 className="text-4xl font-black text-gray-900 mb-2">ORDER</h1>
+          <p className="text-xl text-gray-500 font-medium mb-1">#{order.id}</p>
+          <p className="text-sm text-gray-400">Datum: {order.aanschaf_datum.toLocaleDateString('nl-NL')}</p>
+        </div>
+      </div>
 
       <div className="flex justify-between items-start mb-8">
         <div>
@@ -167,6 +194,38 @@ export function OrderDetailView({ order, onBack }: Props) {
           </div>
         </div>
       )}
+
+      {/* CSS for printing */}
+      <style dangerouslySetInnerHTML={{__html: `
+        @media print {
+          body * {
+            visibility: hidden;
+          }
+          .print\\:hidden {
+            display: none !important;
+          }
+          .hidden.print\\:flex {
+            display: flex !important;
+            visibility: visible !important;
+          }
+          .hidden.print\\:flex * {
+            visibility: visible !important;
+          }
+          .p-8, .bg-gray-50, .bg-white {
+            background-color: white !important;
+            box-shadow: none !important;
+          }
+          .p-8 > div:nth-child(n+2), .p-8 > div:nth-child(n+2) * {
+            visibility: visible;
+          }
+          .p-8 > div:nth-child(2) {
+            position: absolute;
+            left: 0;
+            top: 0;
+            width: 100%;
+          }
+        }
+      `}} />
     </div>
   );
 }

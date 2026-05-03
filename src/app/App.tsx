@@ -17,9 +17,7 @@ type View = 'dashboard' | 'crm' | 'sales' | 'inventory' | 'quotes' | 'orders' | 
 export default function App() {
   const [currentView, setCurrentView] = useState<View>('dashboard');
   const [sidebarOpen, setSidebarOpen] = useState(true);
-  const [isAuthenticated, setIsAuthenticated] = useState(() => {
-    return localStorage.getItem('hellotv_auth') === 'true';
-  });
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [loginError, setLoginError] = useState('');
@@ -36,6 +34,9 @@ export default function App() {
   };
 
   useEffect(() => {
+    if (localStorage.getItem('hellotv_auth') === 'true') {
+      setIsAuthenticated(true);
+    }
     initDemoData();
   }, []);
 
@@ -125,8 +126,15 @@ export default function App() {
         <div className="flex items-center justify-between p-6">
           {sidebarOpen && (
             <div className="flex-1">
-              <HelloTVLogo className="h-10 mb-1" theme="dark" />
-              <div className="text-xs text-gray-400">Management System</div>
+              <HelloTVLogo className="h-10 mb-2" theme="dark" />
+              <div className="flex items-center gap-2 mb-2">
+                <UserCircle size={14} className="text-[#FDCB2C]" />
+                <div className="text-[10px] text-gray-300 leading-tight">
+                  <span className="font-bold text-white">Beheerder</span><br/>
+                  admin@hellotv.nl
+                </div>
+              </div>
+              <div className="text-xs text-gray-400 border-t border-gray-700 pt-2">Management System</div>
             </div>
           )}
           <button
@@ -155,16 +163,7 @@ export default function App() {
         </nav>
 
         {sidebarOpen ? (
-          <div className="absolute bottom-0 left-0 right-0 p-6 border-t border-gray-700 bg-gray-900/50">
-            <div className="flex items-center gap-3 mb-4">
-              <div className="bg-gray-800 p-2 rounded-full">
-                <UserCircle size={24} className="text-[#FDCB2C]" />
-              </div>
-              <div>
-                <div className="text-sm font-bold text-white">Beheerder</div>
-                <div className="text-xs text-gray-400">admin@hellotv.nl</div>
-              </div>
-            </div>
+          <div className="absolute bottom-0 left-0 right-0 p-4 border-t border-gray-700 bg-gray-900/50">
             <div className="flex gap-2">
               <button 
                 onClick={() => {
