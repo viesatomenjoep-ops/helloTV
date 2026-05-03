@@ -130,8 +130,8 @@ export function Transport() {
               <button
                 key={tab}
                 onClick={() => setActiveTab(tab as any)}
-                className={`px-4 py-2 font-bold rounded-lg transition-colors capitalize ${
-                  activeTab === tab ? 'bg-black text-[#FDCB2C]' : 'bg-black/10 text-gray-900 hover:bg-black/20'
+                className={`px-4 py-2 font-bold rounded-lg transition-all capitalize shadow-sm backdrop-blur-sm border border-black/10 ${
+                  activeTab === tab ? 'bg-black text-[#FDCB2C] scale-105' : 'bg-black/70 text-white/90 hover:bg-black/80 hover:text-white'
                 }`}
               >
                 {tab === 'admin' ? 'Master Admin' : tab === 'filiaal' ? 'Filiaal Overzicht' : 'Installateurs App'}
