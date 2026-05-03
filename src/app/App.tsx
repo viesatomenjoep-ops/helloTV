@@ -22,7 +22,8 @@ import {
   Film,
   Building2,
   ShieldAlert,
-  LogOut
+  LogOut,
+  Store
 } from 'lucide-react';
 import { Dashboard } from './components/Dashboard';
 import { CRM } from './components/CRM';
