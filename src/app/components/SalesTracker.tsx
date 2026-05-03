@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useMemo } from 'react';
-import { TrendingUp, Award, Target, Euro, Trophy, Tv, Cable, Store, Filter, Download, ChevronDown, ChevronUp, Calendar } from 'lucide-react';
+import { TrendingUp, Award, Target, Euro, Trophy, Tv, Cable, Store, Filter, Download, ChevronDown, ChevronUp, Calendar, Mail, CheckCircle, RefreshCw, Maximize2, Minimize2 } from 'lucide-react';
 import { api } from '../../utils/api';
 
 const STORES = [
@@ -26,6 +26,9 @@ export function SalesTracker() {
   const [expandedRow, setExpandedRow] = useState<string | null>(null);
   const [exportPeriod, setExportPeriod] = useState<string>('Maand');
   const [showExportMenu, setShowExportMenu] = useState(false);
+  const [emailSuccess, setEmailSuccess] = useState(false);
+  const [isEmailing, setIsEmailing] = useState(false);
+  const [tvMode, setTvMode] = useState(false);
 
   // Generate mock specific sales data for a seller
   const generateRecentSales = (salesCount: number) => {
@@ -174,6 +177,16 @@ export function SalesTracker() {
     document.body.removeChild(link);
   };
 
+  const handleEmailReport = () => {
+    setIsEmailing(true);
+    // Simuleer het genereren en versturen van het dashboard en excel via e-mail
+    setTimeout(() => {
+      setIsEmailing(false);
+      setEmailSuccess(true);
+      setTimeout(() => setEmailSuccess(false), 4000);
+    }, 1500);
+  };
+
   const topPerformer = filteredPerformance[0];
   const totalRevenue = filteredPerformance.reduce((sum, p) => sum + (p.totalRevenue || 0), 0);
   const totalSales = filteredPerformance.reduce((sum, p) => sum + (p.salesCount || 0), 0);
@@ -183,8 +196,10 @@ export function SalesTracker() {
   const totalAccMargin = filteredPerformance.reduce((sum, p) => sum + (p.accessoriesMargin || 0), 0);
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-gray-50 to-gray-100 p-8">
-      <div className="max-w-7xl mx-auto">
+    <div className={`bg-gradient-to-br from-gray-50 to-gray-100 p-8 overflow-y-auto transition-all ${
+      tvMode ? 'fixed inset-0 z-50 min-h-screen' : 'min-h-screen'
+    }`}>
+      <div className={`${tvMode ? 'max-w-[95%]' : 'max-w-7xl'} mx-auto`}>
         <div className="mb-8 flex flex-col md:flex-row md:items-end justify-between gap-4">
           <div>
             <h1 className="text-4xl font-bold text-gray-800 mb-2">Live Verkoop Tracker</h1>
@@ -236,6 +251,34 @@ export function SalesTracker() {
                 </div>
               )}
             </div>
+
+            {/* Email Report Button */}
+            <button
+              onClick={handleEmailReport}
+              disabled={isEmailing}
+              className={`px-6 py-3 font-bold rounded-xl shadow-sm transition-all flex items-center gap-2 ${
+                emailSuccess 
+                  ? 'bg-green-100 text-green-700 border border-green-300' 
+                  : 'bg-blue-600 text-white hover:bg-blue-700 hover:shadow-md'
+              }`}
+            >
+              {emailSuccess ? (
+                <><CheckCircle size={18} /> Verzonden naar tomvanbiene@gmail.com</>
+              ) : isEmailing ? (
+                <><RefreshCw size={18} className="animate-spin" /> Bezig met verzenden...</>
+              ) : (
+                <><Mail size={18} /> Mail Dagoverzicht & Excel</>
+              )}
+            </button>
+            
+            {/* TV Mode Toggle */}
+            <button
+              onClick={() => setTvMode(!tvMode)}
+              className="px-4 py-3 bg-gray-800 text-white font-bold rounded-xl shadow-sm hover:bg-gray-900 transition-all flex items-center gap-2"
+              title="Open Landingspagina (TV Modus)"
+            >
+              {tvMode ? <Minimize2 size={18} /> : <Maximize2 size={18} />}
+            </button>
           </div>
         </div>
 

@@ -111,9 +111,9 @@ export default function App() {
   const menuItems = [
     { id: 'dashboard', label: 'Dashboard', icon: LayoutDashboard },
     { id: 'orders', label: 'Orders', icon: ShoppingCart },
+    { id: 'quotes', label: 'Offertes', icon: FileText },
     { id: 'showcase', label: 'Case Study', icon: Layers },
     { id: 'crm', label: 'CRM', icon: Users },
-    { id: 'quotes', label: 'Offertes', icon: FileText },
     { id: 'sales', label: 'Sales Tracker', icon: TrendingUp },
     { id: 'inventory', label: 'Voorraad', icon: Package },
     { id: 'shiftbase', label: 'Shiftbase (Uren)', icon: Clock },
