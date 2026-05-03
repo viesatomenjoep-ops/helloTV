@@ -11,7 +11,7 @@ export interface Employee {
 }
 
 export const EMPLOYEES: Employee[] = [
-  { name: "Tom van Bienen", code: "921", isSeller: true, whatsappName: 'Jij', statusText: 'Voeg lidtag toe', role: 'Beheerder', isBeheerder: true, availability: 'Online' },
+  { name: "Tom van Biene", code: "921", isSeller: true, whatsappName: 'Jij', statusText: 'Voeg lidtag toe', role: 'Beheerder', isBeheerder: true, availability: 'Online' },
   { name: "Joep Morsink", code: "811", isSeller: true, whatsappName: 'Joep Morsink', statusText: 'Torn From Oblivion', role: 'Beheerder / CRM', isBeheerder: true, availability: 'Online' },
   { name: "Maick", code: "711", isSeller: true, whatsappName: 'Maick Hellotv', statusText: 'Having fun 🥂😎', role: 'Beheerder', isBeheerder: true, availability: 'Online' },
   { name: "Guido", code: "201", isSeller: false, whatsappName: '~ Guido', role: 'Beheerder / Directie', isBeheerder: true, phone: '+31 6 43027973', availability: 'Online' },
