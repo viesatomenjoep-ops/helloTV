@@ -109,8 +109,8 @@ export function Transport() {
     return order.items.every((i: any) => i.checked);
   };
 
-  const handleContactAnita = (orderId: string) => {
-    alert(`WhatsApp geopend naar Anita voor order ${orderId}. Bericht: "Hoi Anita, ik mis iets voor deze order..."`);
+  const handleContactWhatsApp = (orderId: string, target: string) => {
+    alert(`WhatsApp geopend naar ${target} voor order: ${orderId}`);
   };
 
   return (
@@ -244,9 +244,8 @@ export function Transport() {
               <p className="text-sm opacity-80">{installateurDriver}</p>
               
               <button 
-                onClick={() => handleContactAnita('Algemeen')}
-                className="absolute top-6 right-6 bg-[#25D366] text-white p-2 rounded-full shadow-lg hover:scale-110 transition-transform"
-                title="Contact Anita (Planning/Logistiek)"
+                onClick={() => handleContactWhatsApp('Algemeen', 'Logistiek')}
+                className="p-3 bg-[#25D366] text-white rounded-xl shadow-lg hover:bg-green-600 transition-colors flex items-center justify-center gap-2 font-bold"
               >
                 <MessageCircle size={20} />
               </button>
@@ -299,12 +298,32 @@ export function Transport() {
                     </div>
 
                     {!checkOrderComplete(order) && (
-                      <button 
-                        onClick={() => handleContactAnita(order.id)}
-                        className="w-full mt-4 py-2 border-2 border-red-100 text-red-600 bg-red-50 hover:bg-red-100 rounded-lg text-sm font-bold flex items-center justify-center gap-2 transition-colors"
-                      >
-                        <AlertTriangle size={16} /> Product Mist? App Anita
-                      </button>
+                      <div className="mt-4 border-t border-gray-100 pt-4">
+                        <p className="text-xs font-bold text-gray-500 mb-2">Product mist? Meld direct via WhatsApp:</p>
+                        <div className="flex gap-2">
+                          <button 
+                            onClick={() => handleContactWhatsApp(order.id, 'Master (André Wendelaar)')}
+                            className="flex-1 py-2 bg-[#25D366]/10 text-[#25D366] hover:bg-[#25D366] hover:text-white rounded-lg text-xs font-bold flex items-center justify-center gap-1 transition-colors border border-[#25D366]/20"
+                            title="Stuur WhatsApp naar Master"
+                          >
+                            <AlertTriangle size={12} /> Master
+                          </button>
+                          <button 
+                            onClick={() => handleContactWhatsApp(order.id, 'Filiaal')}
+                            className="flex-1 py-2 bg-[#25D366]/10 text-[#25D366] hover:bg-[#25D366] hover:text-white rounded-lg text-xs font-bold flex items-center justify-center gap-1 transition-colors border border-[#25D366]/20"
+                            title="Stuur WhatsApp naar Filiaal"
+                          >
+                            <AlertTriangle size={12} /> Filiaal
+                          </button>
+                          <button 
+                            onClick={() => handleContactWhatsApp(order.id, 'Logistiek')}
+                            className="flex-1 py-2 bg-[#25D366]/10 text-[#25D366] hover:bg-[#25D366] hover:text-white rounded-lg text-xs font-bold flex items-center justify-center gap-1 transition-colors border border-[#25D366]/20"
+                            title="Stuur WhatsApp naar Logistieke afdeling"
+                          >
+                            <AlertTriangle size={12} /> Logistiek
+                          </button>
+                        </div>
+                      </div>
                     )}
                   </div>
                 </div>
