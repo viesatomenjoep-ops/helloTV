@@ -1,7 +1,7 @@
 import React from "react";
 
 import { useState, useEffect } from 'react';
-import { LayoutDashboard, Users, TrendingUp, Package, FileText, ShoppingCart, Menu, X, Layers, LogOut, UserCircle } from 'lucide-react';
+import { LayoutDashboard, Users, TrendingUp, Package, FileText, ShoppingCart, Menu, X, Layers, LogOut, UserCircle, RefreshCw } from 'lucide-react';
 import { Dashboard } from './components/Dashboard';
 import { CRM } from './components/CRM';
 import { SalesTracker } from './components/SalesTracker';
@@ -165,16 +165,29 @@ export default function App() {
                 <div className="text-xs text-gray-400">admin@hellotv.nl</div>
               </div>
             </div>
-            <button 
-              onClick={() => {
-                setIsAuthenticated(false);
-                localStorage.removeItem('hellotv_auth');
-              }}
-              className="w-full py-2.5 bg-gray-800 text-gray-300 rounded-lg text-sm font-medium hover:bg-red-500 hover:text-white transition-colors flex items-center justify-center gap-2"
-            >
-              <LogOut size={16} />
-              Uitloggen
-            </button>
+            <div className="flex gap-2">
+              <button 
+                onClick={() => {
+                  setIsAuthenticated(false);
+                  localStorage.removeItem('hellotv_auth');
+                }}
+                className="flex-1 py-2.5 bg-gray-800 text-gray-300 rounded-lg text-sm font-medium hover:bg-[#FDCB2C] hover:text-black transition-colors flex items-center justify-center gap-2"
+                title="Wissel Account"
+              >
+                <RefreshCw size={16} />
+                Wissel
+              </button>
+              <button 
+                onClick={() => {
+                  setIsAuthenticated(false);
+                  localStorage.removeItem('hellotv_auth');
+                }}
+                className="flex-1 py-2.5 bg-gray-800 text-gray-300 rounded-lg text-sm font-medium hover:bg-red-500 hover:text-white transition-colors flex items-center justify-center gap-2"
+              >
+                <LogOut size={16} />
+                Uitloggen
+              </button>
+            </div>
           </div>
         ) : (
           <div className="absolute bottom-0 left-0 right-0 p-4 border-t border-gray-700 bg-gray-900/50 flex justify-center">
