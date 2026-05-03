@@ -1,7 +1,7 @@
 import React from "react";
 
 import { useState, useEffect } from 'react';
-import { LayoutDashboard, Users, TrendingUp, Package, FileText, ShoppingCart, Menu, X, Layers, LogOut, UserCircle, RefreshCw } from 'lucide-react';
+import { LayoutDashboard, Users, TrendingUp, Package, FileText, ShoppingCart, Menu, X, Layers, LogOut, UserCircle, RefreshCw, Clock } from 'lucide-react';
 import { Dashboard } from './components/Dashboard';
 import { CRM } from './components/CRM';
 import { SalesTracker } from './components/SalesTracker';
@@ -10,10 +10,11 @@ import { Quotes } from './components/Quotes';
 import { Orders } from './components/Orders';
 import { Showcase } from './components/Showcase';
 import { HR } from './components/HR';
+import { Shiftbase } from './components/Shiftbase';
 import { HelloTVLogo } from './components/ui/HelloTVLogo';
 import { initDemoData } from '../utils/initDemoData';
 
-type View = 'dashboard' | 'crm' | 'sales' | 'inventory' | 'quotes' | 'orders' | 'showcase' | 'hr';
+type View = 'dashboard' | 'crm' | 'sales' | 'inventory' | 'quotes' | 'orders' | 'showcase' | 'hr' | 'shiftbase';
 
 export default function App() {
   const [currentView, setCurrentView] = useState<View>('dashboard');
@@ -115,6 +116,7 @@ export default function App() {
     { id: 'quotes', label: 'Offertes', icon: FileText },
     { id: 'sales', label: 'Sales Tracker', icon: TrendingUp },
     { id: 'inventory', label: 'Voorraad', icon: Package },
+    { id: 'shiftbase', label: 'Shiftbase (Uren)', icon: Clock },
     { id: 'hr', label: 'HR & Reiskosten', icon: Users },
   ];
 
@@ -174,6 +176,7 @@ export default function App() {
         {currentView === 'quotes' && <Quotes />}
         {currentView === 'sales' && <SalesTracker />}
         {currentView === 'inventory' && <Inventory />}
+        {currentView === 'shiftbase' && <Shiftbase />}
         {currentView === 'hr' && <HR />}
       </div>
     </div>

@@ -1,9 +1,24 @@
 import React, { useState } from 'react';
 import { MapPin, Send, CheckCircle, Car, AlertCircle } from 'lucide-react';
 
+const EMPLOYEES = [
+  "Tom van Bienen",
+  "Joep Morsink",
+  "Thijs Meijer",
+  "Maick",
+  "Wendy",
+  "Johan",
+  "Sophie de Vries",
+  "Daan Bakker",
+  "Julia Jansen",
+  "Lars Visser"
+];
+
 export function HR() {
+  const [searchTerm, setSearchTerm] = useState('');
+  const [showDropdown, setShowDropdown] = useState(false);
   const [formData, setFormData] = useState({
-    medewerker_naam: 'Beheerder',
+    medewerker_naam: '',
     postcode: '',
     huisnummer: '',
     plaats: '',
@@ -13,6 +28,10 @@ export function HR() {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [success, setSuccess] = useState(false);
   const [mockDistance, setMockDistance] = useState<number | null>(null);
+
+  const filteredEmployees = EMPLOYEES.filter(emp => 
+    emp.toLowerCase().includes(searchTerm.toLowerCase())
+  );
 
   const calculateDistance = () => {
     // Simuleer een Google Maps API call
@@ -64,14 +83,42 @@ export function HR() {
               </div>
             ) : (
               <form onSubmit={handleSubmit} className="space-y-5">
-                <div>
-                  <label className="block text-sm font-semibold text-gray-700 mb-1">Medewerker</label>
+                <div className="relative">
+                  <label className="block text-sm font-semibold text-gray-700 mb-1">Medewerker Zoeken</label>
                   <input
                     type="text"
-                    disabled
-                    value={formData.medewerker_naam}
-                    className="w-full px-4 py-2 bg-gray-100 border border-gray-200 rounded-lg text-gray-500"
+                    placeholder="Typ een naam..."
+                    value={formData.medewerker_naam || searchTerm}
+                    onChange={(e) => {
+                      setSearchTerm(e.target.value);
+                      setFormData({ ...formData, medewerker_naam: '' });
+                      setShowDropdown(true);
+                    }}
+                    onFocus={() => setShowDropdown(true)}
+                    className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#FDCB2C] outline-none transition-all"
                   />
+                  {showDropdown && !formData.medewerker_naam && (
+                    <div className="absolute top-full mt-1 left-0 right-0 bg-white border border-gray-200 shadow-xl rounded-xl z-50 max-h-48 overflow-y-auto">
+                      {filteredEmployees.length > 0 ? (
+                        filteredEmployees.map(emp => (
+                          <button
+                            key={emp}
+                            type="button"
+                            onClick={() => {
+                              setFormData({ ...formData, medewerker_naam: emp });
+                              setSearchTerm(emp);
+                              setShowDropdown(false);
+                            }}
+                            className="w-full text-left px-4 py-2 hover:bg-blue-50 focus:bg-blue-50 outline-none text-gray-700 transition-colors"
+                          >
+                            {emp}
+                          </button>
+                        ))
+                      ) : (
+                        <div className="px-4 py-2 text-sm text-gray-500 text-center">Niet gevonden in database.</div>
+                      )}
+                    </div>
+                  )}
                 </div>
 
                 <div className="grid grid-cols-2 gap-4">
@@ -128,7 +175,7 @@ export function HR() {
 
                 <button
                   type="submit"
-                  disabled={isSubmitting || !mockDistance}
+                  disabled={isSubmitting || !mockDistance || !formData.medewerker_naam}
                   className="w-full py-3 mt-4 bg-gray-900 text-white font-bold rounded-lg flex justify-center items-center gap-2 hover:bg-[#FDCB2C] hover:text-black transition-all disabled:opacity-50 disabled:cursor-not-allowed"
                 >
                   {isSubmitting ? (
