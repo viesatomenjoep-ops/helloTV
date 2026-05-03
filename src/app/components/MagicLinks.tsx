@@ -23,16 +23,16 @@ export function MagicLinks() {
   ];
 
   const MAGIC_LINKS = [
-    { label: 'De Beste TV van Nederland 2025', url: 'http://testhelotv.nl/ai-chat/beste-tv-nederland' },
-    { label: 'OLED vs Neo QLED Advies', url: 'http://testhelotv.nl/ai-chat/oled-vs-qled' },
-    { label: 'Persoonlijke Offerte Bespreker', url: 'http://testhelotv.nl/ai-chat/offerte-bot' },
-    { label: 'Kijkafstand & Formaat Calculator', url: 'http://testhelotv.nl/ai-chat/kijkafstand' },
-    { label: 'Inruilwaarde Huidige TV', url: 'http://testhelotv.nl/ai-chat/inruil-check' },
-    { label: 'Soundbar Matcher', url: 'http://testhelotv.nl/ai-chat/audio-matcher' },
-    { label: 'PS5/Xbox Gaming TV Adviseur', url: 'http://testhelotv.nl/ai-chat/gaming-tv' },
-    { label: 'Installatie Service Planner', url: 'http://testhelotv.nl/ai-chat/installatie' },
-    { label: 'Voorraad & Levertijd Checker', url: 'http://testhelotv.nl/ai-chat/voorraad-check' },
-    { label: 'Direct Bestellen met Korting', url: 'http://testhelotv.nl/ai-chat/direct-bestellen' },
+    { label: 'De Beste TV van Nederland 2025', url: 'https://test.hellotv.nl/ai-chat/beste-tv-nederland' },
+    { label: 'OLED vs Neo QLED Advies', url: 'https://test.hellotv.nl/ai-chat/oled-vs-qled' },
+    { label: 'Persoonlijke Offerte Bespreker', url: 'https://test.hellotv.nl/ai-chat/offerte-bot' },
+    { label: 'Kijkafstand & Formaat Calculator', url: 'https://test.hellotv.nl/ai-chat/kijkafstand' },
+    { label: 'Inruilwaarde Huidige TV', url: 'https://test.hellotv.nl/ai-chat/inruil-check' },
+    { label: 'Soundbar Matcher', url: 'https://test.hellotv.nl/ai-chat/audio-matcher' },
+    { label: 'PS5/Xbox Gaming TV Adviseur', url: 'https://test.hellotv.nl/ai-chat/gaming-tv' },
+    { label: 'Installatie Service Planner', url: 'https://test.hellotv.nl/ai-chat/installatie' },
+    { label: 'Voorraad & Levertijd Checker', url: 'https://test.hellotv.nl/ai-chat/voorraad-check' },
+    { label: 'Direct Bestellen met Korting', url: 'https://test.hellotv.nl/ai-chat/direct-bestellen' },
   ];
 
   return (
