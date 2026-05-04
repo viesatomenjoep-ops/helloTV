@@ -135,7 +135,7 @@ export default function App() {
               TM
             </div>
             <div className="flex-1 min-w-0">
-              <p className="text-sm font-bold text-gray-900 truncate">test11@hellotv.nl</p>
+              <p className="text-sm font-bold text-gray-900 truncate">admin11@hellotv.nl</p>
               <p className="text-xs text-gray-500 truncate">Beheerder</p>
             </div>
             <LogOut size={18} className="text-gray-400" />
