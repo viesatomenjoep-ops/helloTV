@@ -54,5 +54,5 @@ CREATE TABLE IF NOT EXISTS public.kioskcodes (
 );
 
 -- VMS Sales Tracker split (Marge formule TV vs BBQ)
--- Dit kan een uitbreiding zijn op de transacties tabel, door een categorie (TV, BBQ) toe te voegen
-ALTER TABLE public.transacties ADD COLUMN IF NOT EXISTS product_categorie VARCHAR(50) DEFAULT 'TV';
+-- Dit kan een uitbreiding zijn op de orders tabel, door een categorie (TV, BBQ) toe te voegen
+ALTER TABLE public.orders ADD COLUMN IF NOT EXISTS product_categorie VARCHAR(50) DEFAULT 'TV';

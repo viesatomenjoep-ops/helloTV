@@ -44,3 +44,26 @@ INSERT INTO Filiaal_Prestaties (target_id, filiaal_naam, behaald_percentage) VAL
 ('11111111-1111-1111-1111-111111111111', 'Zoeterwoude', 39.81),
 ('11111111-1111-1111-1111-111111111111', 'Mail', 46.11),
 ('11111111-1111-1111-1111-111111111111', 'Chat', 44.14);
+
+-- Enable RLS
+ALTER TABLE public.Trainer_Targets ENABLE ROW LEVEL SECURITY;
+ALTER TABLE public.Filiaal_Prestaties ENABLE ROW LEVEL SECURITY;
+
+-- Create Policies
+CREATE POLICY "Allow read access for all users on Trainer_Targets" 
+    ON public.Trainer_Targets FOR SELECT USING (true);
+
+CREATE POLICY "Allow read access for all users on Filiaal_Prestaties" 
+    ON public.Filiaal_Prestaties FOR SELECT USING (true);
+
+CREATE POLICY "Allow insert for all users on Trainer_Targets" 
+    ON public.Trainer_Targets FOR INSERT WITH CHECK (true);
+
+CREATE POLICY "Allow insert for all users on Filiaal_Prestaties" 
+    ON public.Filiaal_Prestaties FOR INSERT WITH CHECK (true);
+
+CREATE POLICY "Allow update for all users on Trainer_Targets" 
+    ON public.Trainer_Targets FOR UPDATE USING (true);
+
+CREATE POLICY "Allow update for all users on Filiaal_Prestaties" 
+    ON public.Filiaal_Prestaties FOR UPDATE USING (true);

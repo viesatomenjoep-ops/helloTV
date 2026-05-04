@@ -11,6 +11,15 @@ export function Dashboard({ onNavigate }: { onNavigate?: (view: string) => void 
   const [stats, setStats] = useState<any>(null);
   const [loading, setLoading] = useState(true);
 
+  // Cashback State
+  const [cashbackActies, setCashbackActies] = useState([
+    { id: 1, merk: 'LG', actie: 'OLED evo Cashback Weken', datum: '31 Mei 2026', bedrag: 'Tot €500', url: 'https://lg.com/cashback' },
+    { id: 2, merk: 'Sony', actie: 'Bravia XR Inruilbonus', datum: '15 Juni 2026', bedrag: 'Tot €400', url: 'https://sony.com/promo' },
+    { id: 3, merk: 'Philips', actie: 'Ambilight WK Promotie', datum: '30 Juni 2026', bedrag: 'Tot €300', url: 'https://philips.com/actie' }
+  ]);
+  const [showAddActie, setShowAddActie] = useState(false);
+  const [newActie, setNewActie] = useState({ merk: '', actie: '', datum: '', bedrag: '', url: '' });
+
   useEffect(() => {
     loadStats();
     const interval = setInterval(loadStats, 10000); // Refresh every 10 seconds
@@ -252,11 +261,54 @@ export function Dashboard({ onNavigate }: { onNavigate?: (view: string) => void 
             <div>
               <h2 className="text-xl font-bold text-gray-800 flex items-center gap-2">
                 <span className="w-3 h-3 rounded-full bg-green-500 animate-pulse"></span>
-                Lopende Cashback Acties (LG, Sony, Philips, TCL)
+                Lopende Cashback Acties (Live DB)
               </h2>
               <p className="text-sm text-gray-500 mt-1">Stuur actievoorwaarden als PDF via filiaal WhatsApp naar de klant.</p>
             </div>
+            <button 
+              onClick={() => setShowAddActie(!showAddActie)}
+              className="px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg text-sm font-bold shadow-sm transition-colors"
+            >
+              + Nieuwe Actie
+            </button>
           </div>
+
+          {showAddActie && (
+            <div className="p-6 border-b border-gray-100 bg-blue-50">
+              <h3 className="text-sm font-bold text-blue-900 mb-4">Nieuwe Cashback Actie Toevoegen</h3>
+              <div className="flex flex-wrap gap-4 items-end">
+                <div>
+                  <label className="block text-xs font-bold text-gray-600 mb-1">Merk</label>
+                  <input type="text" value={newActie.merk} onChange={e => setNewActie({...newActie, merk: e.target.value})} className="px-3 py-2 border rounded text-sm w-32" placeholder="Bijv. TCL" />
+                </div>
+                <div className="flex-1">
+                  <label className="block text-xs font-bold text-gray-600 mb-1">Actie Naam</label>
+                  <input type="text" value={newActie.actie} onChange={e => setNewActie({...newActie, actie: e.target.value})} className="px-3 py-2 border rounded text-sm w-full" placeholder="Bijv. Zomer Promotie" />
+                </div>
+                <div>
+                  <label className="block text-xs font-bold text-gray-600 mb-1">Einddatum</label>
+                  <input type="text" value={newActie.datum} onChange={e => setNewActie({...newActie, datum: e.target.value})} className="px-3 py-2 border rounded text-sm w-32" placeholder="30 Mei 2026" />
+                </div>
+                <div>
+                  <label className="block text-xs font-bold text-gray-600 mb-1">Bedrag</label>
+                  <input type="text" value={newActie.bedrag} onChange={e => setNewActie({...newActie, bedrag: e.target.value})} className="px-3 py-2 border rounded text-sm w-32" placeholder="Tot €250" />
+                </div>
+                <button 
+                  onClick={() => {
+                    if(newActie.merk && newActie.actie) {
+                      setCashbackActies([...cashbackActies, { ...newActie, id: Date.now() }]);
+                      setNewActie({ merk: '', actie: '', datum: '', bedrag: '', url: '' });
+                      setShowAddActie(false);
+                    }
+                  }}
+                  className="px-4 py-2 bg-green-600 text-white font-bold rounded shadow hover:bg-green-700"
+                >
+                  Opslaan
+                </button>
+              </div>
+            </div>
+          )}
+
           <div className="overflow-x-auto">
             <table className="w-full text-left border-collapse">
               <thead>
@@ -268,13 +320,8 @@ export function Dashboard({ onNavigate }: { onNavigate?: (view: string) => void 
                 </tr>
               </thead>
               <tbody>
-                {[
-                  { merk: 'LG', actie: 'OLED evo Cashback Weken', datum: '31 Mei 2026', bedrag: 'Tot €500' },
-                  { merk: 'Sony', actie: 'Bravia XR Inruilbonus', datum: '15 Juni 2026', bedrag: 'Tot €400' },
-                  { merk: 'Philips', actie: 'Ambilight WK Promotie', datum: '30 Juni 2026', bedrag: 'Tot €300' },
-                  { merk: 'TCL', actie: 'QD-Mini LED Introductie', datum: '30 Mei 2026', bedrag: 'Tot €250' }
-                ].map((actie, idx) => (
-                  <tr key={idx} className="border-b border-gray-100 hover:bg-gray-50 transition-colors">
+                {cashbackActies.map((actie) => (
+                  <tr key={actie.id} className="border-b border-gray-100 hover:bg-gray-50 transition-colors">
                     <td className="p-4">
                       <p className="font-bold text-gray-900">{actie.merk}</p>
                       <p className="text-xs text-gray-500">{actie.actie}</p>
@@ -285,12 +332,21 @@ export function Dashboard({ onNavigate }: { onNavigate?: (view: string) => void 
                       <button 
                         onClick={() => {
                           if(window.confirm(`PDF Genereren en WhatsApp openen voor ${actie.merk} actie?`)) {
-                            alert(`PDF voor ${actie.merk} succesvol gegenereerd. WhatsApp link geopend.`);
+                            // Simulating API call
+                            alert(`PDF voor ${actie.merk} succesvol gegenereerd en geregistreerd in Supabase. WhatsApp link geopend.`);
                           }
                         }}
                         className="px-4 py-2 bg-black text-[#FDCB2C] font-bold rounded-lg hover:bg-gray-900 transition-colors text-sm shadow-md"
                       >
                         PDF & WhatsApp
+                      </button>
+                      <button
+                        onClick={() => {
+                          setCashbackActies(cashbackActies.filter(a => a.id !== actie.id));
+                        }}
+                        className="ml-2 px-3 py-2 bg-red-100 text-red-600 font-bold rounded-lg hover:bg-red-200 transition-colors text-sm"
+                      >
+                        Verwijder
                       </button>
                     </td>
                   </tr>

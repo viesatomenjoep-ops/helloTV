@@ -1,5 +1,6 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Target, Monitor, BarChart2, TrendingUp, Users, Download, Edit2, Save, RefreshCw, CheckCircle, Activity } from 'lucide-react';
+import { supabase } from '../../utils/supabase';
 import {
   BarChart,
   Bar,
@@ -201,6 +202,94 @@ export function TrainersPortal() {
     const newData = [...currentDataSet];
     newData[index].value = num;
     setDataSet(newData);
+  };
+
+  useEffect(() => {
+    // Haal live data op als de app laadt
+    const fetchLiveTargets = async () => {
+      try {
+        const { data: targetData, error: targetError } = await supabase.from('Trainer_Targets').select('*');
+        const { data: prestatieData, error: prestatieError } = await supabase.from('Filiaal_Prestaties').select('*');
+        
+        if (targetError || prestatieError) {
+          console.error('Error fetching data:', targetError || prestatieError);
+          return;
+        }
+
+        if (targetData && targetData.length > 0) {
+          console.log('Live targets from Supabase:', targetData);
+          const newTargets = { ...targets };
+          targetData.forEach((t: any) => {
+             if(t.doelstelling && t.target_percentage) {
+                newTargets[t.doelstelling] = Number(t.target_percentage);
+             }
+          });
+          setTargets(newTargets);
+          
+          if (prestatieData && prestatieData.length > 0) {
+            // Dit is een simpele mapping. In een robuuste app zou je de dataset per target opsplitsen.
+            // Omdat we in deze app de state opsplitsen (oledData, cleanersData etc), 
+            // focussen we ons voor nu even op OLED als primary test case om te laten zien dat het werkt.
+            const oledTarget = targetData.find((t: any) => t.doelstelling === 'OLED');
+            if(oledTarget) {
+               const oledPrestaties = prestatieData.filter((p: any) => p.target_id === oledTarget.id);
+               if(oledPrestaties.length > 0) {
+                 const newOledData = [...oledData];
+                 oledPrestaties.forEach((p: any) => {
+                    const idx = newOledData.findIndex(d => d.name === p.filiaal_naam);
+                    if(idx !== -1) newOledData[idx].value = Number(p.behaald_percentage);
+                 });
+                 setOledData(newOledData);
+               }
+            }
+          }
+        }
+      } catch (err) {
+        console.error('Error in fetchLiveTargets:', err);
+      }
+    };
+    fetchLiveTargets();
+  }, []);
+
+  const handleSaveToDB = async () => {
+    setIsEditing(false);
+    
+    try {
+      const targetName = activeTab;
+      const targetVal = getChartTarget();
+      const dataset = getChartData();
+
+      // 1. Opslaan van het Target
+      const { data: targetResult, error: targetError } = await supabase.from('Trainer_Targets').insert([
+        { week_nummer: 'Actueel', doelstelling: targetName, target_percentage: targetVal }
+      ]).select().single();
+
+      if (targetError || !targetResult) {
+        console.warn('Supabase Insert waarschuwing:', targetError?.message);
+        alert(`Opgeslagen lokaal! (Supabase fout: ${targetError?.message || 'Geen resultaat'})\\nZorg dat je db up is en .env klopt.`);
+        return;
+      }
+
+      // 2. Opslaan van de Filiaal Prestaties gekoppeld aan dit Target
+      const prestatiesToInsert = dataset.filter(d => !d.isTarget).map(d => ({
+        target_id: targetResult.id,
+        filiaal_naam: d.name,
+        behaald_percentage: d.value
+      }));
+
+      const { error: prestatieError } = await supabase.from('Filiaal_Prestaties').insert(prestatiesToInsert);
+      
+      if (prestatieError) {
+         alert(`Doel opgeslagen, maar prestaties faalden: ${prestatieError.message}`);
+      } else {
+         console.log('Succesvol opgeslagen in Supabase (Targets & Prestaties)!');
+         alert('Succesvol opgeslagen naar Supabase Database (Targets & Prestaties)!');
+      }
+
+    } catch (e) {
+      console.error(e);
+      alert('Fout bij opslaan naar Supabase.');
+    }
   };
 
   const handleVMSImport = () => {
@@ -519,7 +608,7 @@ export function TrainersPortal() {
             <div className="bg-[#333333] rounded-xl shadow-2xl p-6 border border-gray-700 mb-8">
           <div className="flex flex-col md:flex-row justify-between items-start md:items-center mb-8 gap-4">
             <h2 className="text-2xl font-bold text-white">
-              {activeTab === 'OLED' ? `Week 14/15 Target is ${globalTarget}% OLED Aandeel` : `Resultaten voor ${activeTab}`}
+              {activeTab === 'OLED' ? `Week 14/15 Target is ${currentTarget}% OLED Aandeel` : `Resultaten voor ${activeTab}`}
             </h2>
             <div className="flex gap-3">
               <button 
@@ -531,10 +620,16 @@ export function TrainersPortal() {
                 {isExportingPdf ? 'PDF Genereren...' : 'Exporteer Mooie PDF'}
               </button>
               <button 
-                onClick={() => setIsEditing(!isEditing)}
+                onClick={() => {
+                  if (isEditing) {
+                    handleSaveToDB();
+                  } else {
+                    setIsEditing(true);
+                  }
+                }}
                 className="px-4 py-2 bg-gray-700 hover:bg-gray-600 rounded-lg text-sm font-bold flex items-center gap-2 transition-colors"
               >
-                {isEditing ? <><Save size={16} className="text-green-400" /> Opslaan</> : <><Edit2 size={16} /> Bewerk Data & Target</>}
+                {isEditing ? <><Save size={16} className="text-green-400" /> Opslaan in DB</> : <><Edit2 size={16} /> Bewerk Data & Target</>}
               </button>
             </div>
           </div>

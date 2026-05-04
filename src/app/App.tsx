@@ -50,6 +50,7 @@ import { initDemoData } from '../utils/initDemoData';
 type View = 'dashboard' | 'maick' | 'crm' | 'sales' | 'inventory' | 'quotes' | 'orders' | 'showcase' | 'hr' | 'shiftbase' | 'trainers' | 'transport' | 'media' | 'vendit' | 'reviews' | 'website' | 'reparatie' | 'magiclinks' | 'storeportal';
 
 export default function App() {
+  const [isAuthenticated, setIsAuthenticated] = useState(true);
   const [currentView, setCurrentView] = useState<View>('dashboard');
   const [sidebarOpen, setSidebarOpen] = useState(true);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
@@ -84,6 +85,24 @@ export default function App() {
     setCurrentView(id as View);
     setMobileMenuOpen(false); // sluit menu op mobiel na klikken
   };
+
+  if (!isAuthenticated) {
+    return (
+      <div className="min-h-screen flex items-center justify-center bg-gray-50">
+        <div className="bg-white p-8 rounded-2xl shadow-xl max-w-md w-full text-center">
+          <HelloTVLogo className="h-16 mx-auto mb-6" />
+          <h2 className="text-2xl font-bold text-gray-900 mb-2">Welkom Terug</h2>
+          <p className="text-gray-500 mb-8">Log in om toegang te krijgen tot het portaal.</p>
+          <button 
+            onClick={() => setIsAuthenticated(true)}
+            className="w-full py-3 bg-[#FDCB2C] hover:bg-yellow-500 text-black font-bold rounded-xl transition-colors shadow-sm"
+          >
+            Inloggen met HelloTV Account
+          </button>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="flex h-[100dvh] w-full max-w-[100vw] overflow-x-hidden bg-white font-sans">
@@ -130,7 +149,10 @@ export default function App() {
 
         {/* User Profile Footer */}
         <div className="p-4 border-t border-gray-100 bg-gray-50 shrink-0 flex flex-col gap-3">
-          <div className="flex items-center gap-3 px-4 py-3 bg-white rounded-xl border border-gray-200 shadow-sm cursor-pointer hover:bg-gray-50 transition-colors">
+          <div 
+            onClick={() => setIsAuthenticated(false)}
+            className="flex items-center gap-3 px-4 py-3 bg-white rounded-xl border border-gray-200 shadow-sm cursor-pointer hover:bg-gray-50 transition-colors"
+          >
             <div className="w-10 h-10 rounded-full bg-[#FDCB2C] flex items-center justify-center text-black font-bold">
               TM
             </div>
@@ -142,8 +164,7 @@ export default function App() {
           </div>
           <button 
             onClick={() => {
-              alert('Je bent succesvol uitgelogd.');
-              window.location.reload();
+              setIsAuthenticated(false);
             }}
             className="w-full flex items-center justify-center gap-2 p-2 rounded-xl bg-red-50 text-red-600 hover:bg-red-100 hover:text-red-700 transition-colors border border-red-200 text-sm font-bold"
           >
