@@ -534,6 +534,7 @@ export function Transport() {
           </div>
         )}
       </div>
+      </div>
 
       {/* Print Only Layout (Real PDF Look) */}
       {isPrintingPaklijst && (
