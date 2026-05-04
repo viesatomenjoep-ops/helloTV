@@ -1,12 +1,15 @@
 import React, { useState } from 'react';
 import { Search, UserPlus, ShoppingCart, CheckCircle, Package } from 'lucide-react';
 import { mockCustomers } from '../../utils/mockCustomers';
+import { mockOrders } from '../../utils/mockOrders';
 import { Customer } from '../../types/database';
 
 export function NewOrderWidget() {
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedCustomer, setSelectedCustomer] = useState<Customer | null>(null);
   const [orderCreated, setOrderCreated] = useState(false);
+  const [selectedMerk, setSelectedMerk] = useState('Samsung');
+  const [selectedProduct, setSelectedProduct] = useState('');
 
   const searchResults = mockCustomers.filter(c => 
     c.achternaam.toLowerCase().includes(searchQuery.toLowerCase()) || 
@@ -20,10 +23,58 @@ export function NewOrderWidget() {
 
   const handleCreateOrder = (e: React.FormEvent) => {
     e.preventDefault();
+    
+    // Simulate order creation and add to global mockOrders
+    const newOrder = {
+      id: Math.floor(Math.random() * 1000000000).toString(),
+      label: 'PTV',
+      vms: false,
+      klant_id: selectedCustomer?.id || 'onbekend',
+      order_totaal: 999.00,
+      aanschaf_datum: new Date(),
+      laatst_gewijzigd: new Date(),
+      verzending: 'bezorgen',
+      betaalmethode: 'IDEAL',
+      bezorg_datum: null,
+      status: 'Nieuwe Order (Processing)',
+      sco_status: null,
+      online_order: false,
+      shipping_pdf_url: null,
+      verwerkings_datum: new Date(),
+      referer: 'Dashboard Snel-Order',
+      magento_ordernummer: `MG-Snel-${Math.floor(Math.random() * 10000)}`,
+      magento_entity_id: '9999',
+      trustpilot_review_link: '',
+      communicatiekanaal: 'Winkel',
+      order_regels: [
+        {
+          aantal: 1,
+          productnaam: selectedProduct || 'Onbekend Product',
+          model_type: selectedMerk,
+          korting_procent: 0,
+          btw_procent: 21,
+          prijs_ex: 825.62,
+          prijs_inc: 999.00,
+          totaal_ex: 825.62,
+          totaal_inc: 999.00
+        }
+      ],
+      interne_memos: [],
+      fraud_check: {
+        aavcheck: 'Match',
+        cvccheck: 'Match',
+        cccty: 'NL',
+        ipcty: 'NL'
+      }
+    };
+    
+    mockOrders.unshift(newOrder);
+    
     setOrderCreated(true);
     setTimeout(() => {
       setOrderCreated(false);
       setSelectedCustomer(null);
+      setSelectedProduct('');
     }, 3000);
   };
 
@@ -105,11 +156,34 @@ export function NewOrderWidget() {
           </div>
 
           <div className="space-y-4">
-            <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">Product toevoegen</label>
-              <div className="relative">
-                <Package className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" size={18} />
-                <input type="text" placeholder="Scan of typ productnaam..." className="w-full pl-10 pr-4 py-2 border border-gray-200 rounded-lg focus:ring-2 focus:ring-blue-500" />
+            <div className="grid grid-cols-2 gap-4">
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-1">Merk</label>
+                <select 
+                  value={selectedMerk}
+                  onChange={(e) => setSelectedMerk(e.target.value)}
+                  className="w-full px-4 py-2 bg-white border border-gray-200 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none"
+                >
+                  <option value="Samsung">Samsung</option>
+                  <option value="LG">LG</option>
+                  <option value="Sony">Sony</option>
+                  <option value="Philips">Philips</option>
+                  <option value="TCL">TCL</option>
+                </select>
+              </div>
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-1">Product</label>
+                <div className="relative">
+                  <Package className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" size={18} />
+                  <input 
+                    type="text" 
+                    required
+                    value={selectedProduct}
+                    onChange={(e) => setSelectedProduct(e.target.value)}
+                    placeholder="Typ productnaam..." 
+                    className="w-full pl-10 pr-4 py-2 border border-gray-200 rounded-lg focus:ring-2 focus:ring-blue-500" 
+                  />
+                </div>
               </div>
             </div>
             

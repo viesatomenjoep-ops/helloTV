@@ -70,7 +70,7 @@ const MOCK_ORDERS = [
 ];
 
 export function Transport() {
-  const [activeTab, setActiveTab] = useState<'admin' | 'installateur' | 'filiaal'>('admin');
+  const [activeTab, setActiveTab] = useState<'admin' | 'installateur' | 'filiaal' | 'paklijsten'>('admin');
   const [selectedStore, setSelectedStore] = useState('Alle Filialen');
   const [orders, setOrders] = useState(MOCK_ORDERS);
   const [installateurDriver, setInstallateurDriver] = useState('Sander (BUS-1)');
@@ -127,7 +127,8 @@ export function Transport() {
   };
 
   return (
-    <div className="min-h-screen bg-gray-50 pb-24">
+    <div className="min-h-screen bg-gray-50 pb-24 print:bg-white">
+      <div className={isPrintingPaklijst ? 'hidden print:hidden' : ''}>
       {/* Header */}
       <div className="bg-[#FDCB2C] text-gray-900 p-8 shadow-md relative overflow-hidden">
         <div className="max-w-7xl mx-auto relative z-10 flex flex-col md:flex-row justify-between items-start md:items-center gap-4">

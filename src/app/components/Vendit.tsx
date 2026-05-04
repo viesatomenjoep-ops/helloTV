@@ -31,7 +31,7 @@ export function Vendit() {
           </div>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
           <div className="bg-white rounded-2xl shadow-sm border border-gray-100 p-6 flex flex-col justify-center items-center text-center">
             <div className="w-12 h-12 bg-blue-100 text-blue-600 rounded-full flex items-center justify-center mb-4">
               <RefreshCw size={24} />
@@ -46,14 +46,6 @@ export function Vendit() {
             </div>
             <h3 className="font-bold text-gray-900 mb-1">2-Way Datastroom</h3>
             <p className="text-xs text-gray-500">Mutaties in HelloTV OS worden direct naar Vendit gepusht en vice versa.</p>
-          </div>
-
-          <div className="bg-white rounded-2xl shadow-sm border border-gray-100 p-6 flex flex-col justify-center items-center text-center">
-            <div className="w-12 h-12 bg-orange-100 text-orange-600 rounded-full flex items-center justify-center mb-4">
-              <Database size={24} />
-            </div>
-            <h3 className="font-bold text-gray-900 mb-1">Database Backup</h3>
-            <p className="text-xs text-gray-500">Alle Vendit-data wordt veilig gemirrored naar Supabase.</p>
           </div>
         </div>
 

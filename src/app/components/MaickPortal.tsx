@@ -1,10 +1,10 @@
 import React, { useState } from 'react';
-import { ShieldAlert, Users, TrendingUp, Settings, Edit, Save, Trash2, Plus, Star, Wrench, Search, Box } from 'lucide-react';
+import { ShieldAlert, Users, TrendingUp, Settings, Edit, Save, Trash2, Plus, Star, Wrench, Search, Box, Store, Link as LinkIcon } from 'lucide-react';
 
 const INITIAL_TEAM = [
   { id: 1, naam: 'Tom van Biene', email: 'tom@hellotv.nl', role: 'Spits', filiaal: 'Amsterdam', status: 'Actief', target: 25000, salaris: 3200, bonus: 450, contract: 'Vast' },
   { id: 2, naam: 'Max de Groot', email: 'max@hellotv.nl', role: 'Aanvaller', filiaal: 'Alkmaar', status: 'Actief', target: 18000, salaris: 2800, bonus: 200, contract: 'Onderhandeling' },
-  { id: 3, naam: 'Lisa Visser', email: 'lisa@hellotv.nl', role: 'Middenvelder', filiaal: 'Breda', status: 'Actief', target: 12000, salaris: 2400, bonus: 150, contract: 'Tijdelijk' },
+  { id: 3, naam: 'Ton van Biene', email: 'ton@hellotv.nl', role: 'Middenvelder', filiaal: 'Breda', status: 'Actief', target: 12000, salaris: 2400, bonus: 150, contract: 'Tijdelijk' },
   { id: 4, naam: 'Klaas Jansen', email: 'klaas@hellotv.nl', role: 'Verdediger', filiaal: 'Eindhoven', status: 'Actief', target: 8000, salaris: 2200, bonus: 0, contract: 'Vast' },
   { id: 5, naam: 'Maick', email: 'maick@hellotv.nl', role: 'Coach', filiaal: 'Hoofdkantoor', status: 'Actief', target: 0, salaris: 6500, bonus: 1200, contract: 'Onbepaalde Tijd' },
   { id: 6, naam: 'Daan Bos', email: 'daan@hellotv.nl', role: 'Trainer', filiaal: 'Rotterdam', status: 'Actief', target: 0, salaris: 3100, bonus: 300, contract: 'Vast' },
@@ -55,7 +55,7 @@ export function MaickPortal() {
             </div>
             <p className="text-gray-500 text-sm font-bold uppercase tracking-wide">Totale Omzet Vandaag</p>
             <h3 className="text-3xl font-black text-gray-900 mt-1">€ 42.850</h3>
-            <p className="text-sm text-green-600 mt-2 font-bold flex items-center gap-1">Top verkoper: Lisa (Breda)</p>
+            <p className="text-sm text-green-600 mt-2 font-bold flex items-center gap-1">Top verkoper: Ton (Breda)</p>
           </div>
 
           <div className="bg-white border border-gray-200 rounded-2xl p-6 shadow-sm hover:border-[#FDCB2C] transition-colors">
@@ -114,7 +114,7 @@ export function MaickPortal() {
               <ul className="space-y-4">
                 <li className="flex justify-between items-center p-4 bg-gray-50 rounded-xl">
                   <span className="text-gray-700 font-bold">🏆 #1 Salestrekker (Vandaag)</span>
-                  <span className="text-yellow-600 font-black text-lg">Lisa Visser (Breda)</span>
+                  <span className="text-yellow-600 font-black text-lg">Ton van Biene (Breda)</span>
                 </li>
                 <li className="flex justify-between items-center p-4 bg-gray-50 rounded-xl border border-red-200">
                   <span className="text-gray-700 font-bold">📚 Bijscholing Vereist</span>
@@ -200,6 +200,41 @@ export function MaickPortal() {
                   ))}
                 </tbody>
               </table>
+            </div>
+          </div>
+        )}
+
+        {activeTab === 'SysteemInstellingen' && (
+          <div className="bg-white border border-gray-200 rounded-2xl shadow-sm p-8">
+            <h2 className="text-2xl font-bold text-gray-900 mb-6 flex items-center gap-3 border-b border-gray-200 pb-4">
+              <Settings className="text-[#FDCB2C]" size={28} /> Systeem Configuraties
+            </h2>
+            <p className="text-gray-500 mb-8">Beheer hier alle backend instellingen, API koppelingen en filiaal-gegevens voor het gehele HelloTV platform.</p>
+            
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              <div className="border border-gray-100 bg-gray-50 p-6 rounded-xl">
+                <h3 className="font-bold text-gray-900 text-lg mb-2 flex items-center gap-2"><Store size={20} className="text-blue-500"/> Filialen & Vestigingen</h3>
+                <p className="text-sm text-gray-500 mb-4">Beheer adressen, contactgegevens en openingstijden van de 18 winkels.</p>
+                <button className="px-4 py-2 bg-white border border-gray-200 shadow-sm rounded-lg text-sm font-bold text-gray-700 hover:bg-gray-100">Instellingen Aanpassen</button>
+              </div>
+
+              <div className="border border-gray-100 bg-gray-50 p-6 rounded-xl">
+                <h3 className="font-bold text-gray-900 text-lg mb-2 flex items-center gap-2"><TrendingUp size={20} className="text-green-500"/> Targets & Bonussen</h3>
+                <p className="text-sm text-gray-500 mb-4">Stel wekelijkse/maandelijkse verkoopdoelen en bonuspercentages in.</p>
+                <button className="px-4 py-2 bg-white border border-gray-200 shadow-sm rounded-lg text-sm font-bold text-gray-700 hover:bg-gray-100">Instellingen Aanpassen</button>
+              </div>
+
+              <div className="border border-gray-100 bg-gray-50 p-6 rounded-xl">
+                <h3 className="font-bold text-gray-900 text-lg mb-2 flex items-center gap-2"><Users size={20} className="text-orange-500"/> Rechten & Rollen</h3>
+                <p className="text-sm text-gray-500 mb-4">Bepaal welke medewerkers toegang hebben tot specifieke portals (HR, Inkoop, etc).</p>
+                <button className="px-4 py-2 bg-white border border-gray-200 shadow-sm rounded-lg text-sm font-bold text-gray-700 hover:bg-gray-100">Instellingen Aanpassen</button>
+              </div>
+
+              <div className="border border-gray-100 bg-gray-50 p-6 rounded-xl">
+                <h3 className="font-bold text-gray-900 text-lg mb-2 flex items-center gap-2"><LinkIcon size={20} className="text-purple-500"/> Externe API Koppelingen</h3>
+                <p className="text-sm text-gray-500 mb-4">Beheer de koppelingen met Vendit, Shiftbase, Trustpilot en logistieke partners.</p>
+                <button className="px-4 py-2 bg-white border border-gray-200 shadow-sm rounded-lg text-sm font-bold text-gray-700 hover:bg-gray-100">Instellingen Aanpassen</button>
+              </div>
             </div>
           </div>
         )}

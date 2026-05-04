@@ -78,7 +78,6 @@ export default function App() {
     { id: 'reviews', label: 'Google Maps Reviews', icon: Star },
     { id: 'showcase', label: 'Visie & Strategie', icon: Building2 },
     { id: 'vendit', label: 'Vendit API Koppeling', icon: Settings },
-    { id: 'website', label: 'HelloTV.nl (Live)', icon: Search },
   ];
 
   const handleNavClick = (id: string) => {
@@ -87,10 +86,10 @@ export default function App() {
   };
 
   return (
-    <div className="flex h-[100dvh] w-full max-w-[100vw] overflow-x-hidden bg-[#F5F5F5] font-sans">
+    <div className="flex h-[100dvh] w-full max-w-[100vw] overflow-x-hidden bg-white font-sans">
       {/* Mobile menu button */}
       <button 
-        className="md:hidden fixed top-4 right-4 z-50 p-2 bg-gray-900 text-white rounded-lg"
+        className="md:hidden fixed top-4 right-4 z-50 p-2 bg-white text-gray-900 rounded-lg border border-gray-200 shadow-sm"
         onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
       >
         {mobileMenuOpen ? <X size={24} /> : <Menu size={24} />}
@@ -98,13 +97,13 @@ export default function App() {
 
       {/* Sidebar */}
       <div className={`
-        fixed inset-y-0 left-0 z-40 w-64 bg-gray-900 text-white transform transition-transform duration-300 ease-in-out flex flex-col shadow-2xl border-r border-gray-800
+        fixed inset-y-0 left-0 z-40 w-64 bg-white text-gray-900 transform transition-transform duration-300 ease-in-out flex flex-col shadow-xl border-r border-gray-200
         ${mobileMenuOpen ? 'translate-x-0' : '-translate-x-full'}
         md:relative md:translate-x-0
       `}>
-        <div className="flex flex-col items-center justify-center py-6 h-44 border-b border-gray-800 bg-gray-900 px-6 shrink-0 text-center w-full">
-          <HelloTVLogo className="h-24 w-auto object-contain mx-auto block brightness-0 invert opacity-50" />
-          <span className="text-white font-black text-sm uppercase tracking-widest mt-3 opacity-90 block w-full text-center">Master Management</span>
+        <div className="flex flex-col items-center justify-center py-6 h-44 border-b border-gray-100 bg-white px-6 shrink-0 text-center w-full">
+          <HelloTVLogo className="h-24 w-auto object-contain mx-auto block" />
+          <span className="text-gray-500 font-black text-sm uppercase tracking-widest mt-3 block w-full text-center">Master Management</span>
         </div>
         
         <nav className="flex-1 px-4 py-6 space-y-1 overflow-y-auto custom-scrollbar">
@@ -112,16 +111,16 @@ export default function App() {
             <button
               key={item.id}
               onClick={() => handleNavClick(item.id)}
-              className={`w-full flex items-center gap-3 px-4 py-3 rounded-xl transition-all duration-200 group font-medium ${
+              className={`w-full flex items-center gap-3 px-4 py-3 rounded-xl transition-all duration-200 group font-bold ${
                 currentView === item.id 
-                  ? 'bg-gradient-to-r from-[#FDCB2C]/20 to-transparent text-[#FDCB2C] shadow-sm border-l-4 border-[#FDCB2C]' 
-                  : 'text-gray-400 hover:bg-gray-800 hover:text-[#FDCB2C]'
+                  ? 'bg-[#FDCB2C] text-black shadow-sm' 
+                  : 'text-gray-600 hover:bg-gray-100 hover:text-black'
               }`}
             >
               <item.icon 
                 size={20} 
                 className={`transition-colors duration-200 ${
-                  currentView === item.id ? 'text-[#FDCB2C]' : 'text-gray-400 group-hover:text-[#FDCB2C]'
+                  currentView === item.id ? 'text-black' : 'text-gray-400 group-hover:text-black'
                 }`}
               />
               <span className="truncate">{item.label}</span>
@@ -130,28 +129,27 @@ export default function App() {
         </nav>
 
         {/* User Profile Footer */}
-        <nav className="border-t border-gray-200 p-4 bg-white shrink-0">
-          <div className="flex flex-col gap-2">
-            <div className="flex items-center justify-between p-3 rounded-xl bg-gray-50 border border-gray-200 hover:bg-gray-100 transition-colors cursor-pointer group">
-              <div className="flex items-center gap-3">
-                <UserCircle size={24} className="text-gray-400 group-hover:text-[#FDCB2C]" />
-                <div className="text-xs leading-tight">
-                  <span className="font-bold text-gray-900 group-hover:text-[#FDCB2C]">Beheerder</span><br/>
-                  <span className="text-gray-500">admin@heleutievier.nl</span>
-                </div>
-              </div>
+        <div className="p-4 border-t border-gray-100 bg-gray-50 shrink-0 flex flex-col gap-3">
+          <div className="flex items-center gap-3 px-4 py-3 bg-white rounded-xl border border-gray-200 shadow-sm cursor-pointer hover:bg-gray-50 transition-colors">
+            <div className="w-10 h-10 rounded-full bg-[#FDCB2C] flex items-center justify-center text-black font-bold">
+              TM
             </div>
-            <button 
-              onClick={() => {
-                alert('Je bent succesvol uitgelogd.');
-                window.location.reload();
-              }}
-              className="w-full flex items-center justify-center gap-2 p-2 rounded-xl bg-red-50 text-red-600 hover:bg-red-100 hover:text-red-700 transition-colors border border-red-200 text-sm font-bold"
-            >
-              <LogOut size={16} /> Uitloggen
-            </button>
+            <div className="flex-1 min-w-0">
+              <p className="text-sm font-bold text-gray-900 truncate">test11@hellotv.nl</p>
+              <p className="text-xs text-gray-500 truncate">Beheerder</p>
+            </div>
+            <LogOut size={18} className="text-gray-400" />
           </div>
-        </nav>
+          <button 
+            onClick={() => {
+              alert('Je bent succesvol uitgelogd.');
+              window.location.reload();
+            }}
+            className="w-full flex items-center justify-center gap-2 p-2 rounded-xl bg-red-50 text-red-600 hover:bg-red-100 hover:text-red-700 transition-colors border border-red-200 text-sm font-bold"
+          >
+            Uitloggen
+          </button>
+        </div>
       </div>
 
       {/* Main Content Area */}

@@ -102,7 +102,7 @@ export function Dashboard({ onNavigate }: { onNavigate?: (view: string) => void 
   ];
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-gray-50 to-gray-100 relative overflow-hidden">
+    <div className="min-h-screen bg-white relative overflow-hidden">
       {/* Background Logo */}
       <img src="/HelloTV.png" className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-full max-w-5xl object-contain opacity-5 pointer-events-none mix-blend-multiply" alt="" />
       

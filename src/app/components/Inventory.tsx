@@ -57,26 +57,20 @@ export function Inventory() {
   }, []);
 
   const loadInventory = async () => {
-    try {
-      const result = await api.getInventory();
-      if (result.success) {
-        setItems(result.items);
-      }
-    } catch (error) {
-      console.error('Failed to load inventory:', error);
-    }
+    // Rely on local state initialized from mockInventory
   };
 
   const handleVoorraadSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    try {
-      await api.createInventoryItem(formData);
-      setFormData({ name: '', sku: '', quantity: 0, lowStockThreshold: 10, price: 0, category: '', voorraadType: 'Standaard', depot: 'Logistiek Duiven' });
-      setShowForm(false);
-      loadInventory();
-    } catch (error) {
-      console.error('Failed to create inventory item:', error);
-    }
+    const newItem = {
+      id: Math.random().toString(36).substr(2, 9),
+      ...formData,
+      status: formData.quantity <= formData.lowStockThreshold ? 'Low Stock' : 'In Stock',
+      lastRestocked: new Date().toISOString()
+    };
+    setItems([newItem, ...items]);
+    setFormData({ name: '', sku: '', quantity: 0, lowStockThreshold: 10, price: 0, category: '', voorraadType: 'Standaard', depot: 'Logistiek Duiven' });
+    setShowForm(false);
   };
 
   const handleInkoopSubmit = (e: React.FormEvent) => {

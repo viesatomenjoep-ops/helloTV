@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useMemo } from 'react';
-import { TrendingUp, Award, Target, Euro, Trophy, Tv, Cable, Store, Filter, Download, ChevronDown, ChevronUp, Calendar, Mail, CheckCircle, RefreshCw, Maximize2, Minimize2, Smartphone, Users } from 'lucide-react';
+import { TrendingUp, Award, Target, Euro, Trophy, Tv, Cable, Store, Filter, Download, ChevronDown, ChevronUp, Calendar, Mail, CheckCircle, RefreshCw, Maximize2, Minimize2, Smartphone, Users, Star } from 'lucide-react';
 import { api } from '../../utils/api';
 
 const STORES = [
@@ -373,8 +373,8 @@ export function SalesTracker() {
             </div>
             <div>
               <p className="text-xs font-bold text-gray-400 uppercase">#1 Kabel Verkoper</p>
-              <p className="text-xl font-black text-gray-900">Mark de Groot</p>
-              <p className="text-sm text-green-600 font-bold mt-1">452 verkocht (+120 pnt)</p>
+              <p className="text-xl font-black text-gray-900">{topPerformer?.name || 'Laden...'}</p>
+              <p className="text-sm text-green-600 font-bold mt-1">{topPerformer?.accessoriesSold || 0} verkocht (+{Math.floor((topPerformer?.accessoriesSold || 0) * 0.3)} pnt)</p>
             </div>
           </div>
 
@@ -384,7 +384,7 @@ export function SalesTracker() {
             </div>
             <div>
               <p className="text-xs font-bold text-gray-400 uppercase">#1 Cleaner Verkoper</p>
-              <p className="text-xl font-black text-gray-900">Lisa Visser</p>
+              <p className="text-xl font-black text-gray-900">Ton van Biene</p>
               <p className="text-sm text-green-600 font-bold mt-1">389 verkocht (+90 pnt)</p>
             </div>
           </div>
