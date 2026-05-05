@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
-import { ChevronRight, ChevronLeft, Calendar, Euro, Users, Shield, AlertTriangle, CheckCircle2, TrendingUp, Zap, Clock, Rocket, Sparkles, X } from 'lucide-react';
+import { ChevronRight, ChevronLeft, Calendar, Euro, Users, Shield, AlertTriangle, CheckCircle2, TrendingUp, Zap, Clock, Rocket, Sparkles, X, Lock } from 'lucide-react';
 import hellotvLogo from '../../assets/hellotv_logoo.svg';
 import viesaLogo from '../../assets/Viesa.svg';
 
@@ -23,6 +23,21 @@ export function SalesPitch({ onClose }: { onClose?: () => void }) {
   const [currentSlide, setCurrentSlide] = useState(0);
   const [direction, setDirection] = useState(0);
   const [time, setTime] = useState(new Date());
+  
+  const [isUnlocked, setIsUnlocked] = useState(false);
+  const [pin, setPin] = useState('');
+  const [pinError, setPinError] = useState(false);
+
+  const handlePinSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (pin === '2990') {
+      setIsUnlocked(true);
+      setPinError(false);
+    } else {
+      setPinError(true);
+      setPin('');
+    }
+  };
 
   useEffect(() => {
     const timer = setInterval(() => setTime(new Date()), 1000);
@@ -660,6 +675,60 @@ export function SalesPitch({ onClose }: { onClose?: () => void }) {
   };
 
   const currentSection = sections[currentSlide];
+
+  if (!isUnlocked) {
+    return (
+      <div className="w-screen h-screen fixed inset-0 z-50 flex flex-col items-center justify-center bg-black">
+        {onClose && (
+          <button 
+            onClick={onClose}
+            className="absolute top-6 right-6 md:right-10 text-gray-500 hover:text-white transition-colors bg-gray-900 p-3 rounded-xl border-2 border-gray-800 hover:border-[#FFC107]"
+          >
+            <X size={24} />
+          </button>
+        )}
+        <motion.div 
+          initial={{ scale: 0.9, opacity: 0 }}
+          animate={{ scale: 1, opacity: 1 }}
+          className="bg-gray-900 border-4 rounded-3xl p-10 text-center max-w-md w-full mx-4 shadow-2xl relative overflow-hidden"
+          style={{ borderColor: '#FFC107' }}
+        >
+          <div className="absolute top-0 left-0 w-full h-2 bg-[#FFC107]"></div>
+          <Lock className="w-16 h-16 mx-auto mb-6" style={{ color: '#FFC107' }} />
+          <h2 className="text-3xl font-black text-white mb-2">Private Access</h2>
+          <p className="text-gray-400 mb-8 font-medium">Voer de toegangscode in om het Master Voorstel te bekijken.</p>
+          
+          <form onSubmit={handlePinSubmit}>
+            <input
+              type="password"
+              value={pin}
+              onChange={(e) => {
+                setPin(e.target.value);
+                setPinError(false);
+              }}
+              className={`w-full bg-black text-center text-3xl tracking-[0.5em] font-mono text-white p-4 rounded-xl border-2 mb-6 outline-none focus:border-[#FFC107] transition-colors ${
+                pinError ? 'border-red-500' : 'border-gray-700'
+              }`}
+              placeholder="••••"
+              maxLength={4}
+              autoFocus
+            />
+            {pinError && (
+              <motion.p initial={{ opacity: 0, y: -10 }} animate={{ opacity: 1, y: 0 }} className="text-red-500 font-bold mb-4 -mt-2">
+                Onjuiste toegangscode
+              </motion.p>
+            )}
+            <button
+              type="submit"
+              className="w-full bg-[#FFC107] hover:bg-yellow-500 text-black font-black text-xl py-4 rounded-xl transition-all hover:scale-105 shadow-xl"
+            >
+              Ontgrendel
+            </button>
+          </form>
+        </motion.div>
+      </div>
+    );
+  }
 
   return (
     <div className="w-screen h-screen fixed inset-0 z-50 overflow-hidden bg-white">
