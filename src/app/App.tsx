@@ -107,6 +107,10 @@ export default function App() {
     );
   }
 
+  if (currentView === 'salespitch') {
+    return <SalesPitch onClose={() => setCurrentView('dashboard')} />;
+  }
+
   return (
     <div className="flex h-[100dvh] w-full max-w-[100vw] overflow-x-hidden bg-white font-sans">
       {/* Mobile menu button */}
@@ -179,7 +183,6 @@ export default function App() {
       {/* Main Content Area */}
       <div className="flex-1 overflow-auto bg-white rounded-tl-2xl shadow-xl border-t border-l border-gray-200">
         {currentView === 'dashboard' && <Dashboard onNavigate={setCurrentView} />}
-        {currentView === 'salespitch' && <SalesPitch />}
         {currentView === 'maick' && <MaickPortal />}
         {currentView === 'website' && <HelloTVWebsite />}
         {currentView === 'reviews' && <GoogleReviews />}
