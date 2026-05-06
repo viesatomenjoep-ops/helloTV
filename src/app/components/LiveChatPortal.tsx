@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { MessageSquare, Send, Search, CheckCircle, Store, Box, CreditCard, ChevronRight, UserCircle, Bell, X, FileText, ShoppingCart, Maximize2, Minimize2 } from 'lucide-react';
+import { MessageSquare, Send, Search, CheckCircle, Store, Box, CreditCard, ChevronRight, UserCircle, Bell, X, FileText, ShoppingCart, Maximize2, Minimize2, Database } from 'lucide-react';
 
 const MOCK_VISITORS = [
   { id: '8912', name: 'Bezoeker #8912', time: '10:16', preview: 'Zeker OLED, we kijken veel films...', status: 'Online (Kijkt naar LG OLED55C3)', context: 'LG OLED55C3', duration: '4 min', url: '/tv/lg-oled55c3' },

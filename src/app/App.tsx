@@ -24,7 +24,8 @@ import {
   ShieldAlert,
   LogOut,
   Store,
-  MessageSquare
+  MessageSquare,
+  Tv
 } from 'lucide-react';
 import { Dashboard } from './components/Dashboard';
 import { CRM } from './components/CRM';
