@@ -204,8 +204,8 @@ export function Dashboard({ onNavigate }: { onNavigate?: (view: string) => void 
               <span className="w-1.5 h-1.5 bg-white rounded-full"></span> LIVE
             </div>
             <h2 className="text-blue-200 font-bold mb-2 flex items-center gap-2 text-xl"><Euro size={24}/> Totale Omzet (Deze Maand)</h2>
-            <div className="text-4xl font-black mb-3">€{(stats?.totalRevenue || 10000000).toLocaleString('nl-NL', { minimumFractionDigits: 2 })}</div>
-            <div className="text-white font-bold bg-white/20 px-3 py-1 rounded-full inline-block self-start">+12.5% vs Vorige Maand</div>
+            <div className="text-3xl font-black mb-3">€{(stats?.totalRevenue || 10000000).toLocaleString('nl-NL', { minimumFractionDigits: 2 })}</div>
+            <div className="text-white font-bold bg-white/20 px-3 py-1 rounded-full inline-block self-start text-sm">+12.5% vs Vorige Maand</div>
           </div>
           
           {/* Hero: Top Verkopers */}
@@ -242,12 +242,10 @@ export function Dashboard({ onNavigate }: { onNavigate?: (view: string) => void 
               onClick={() => onNavigate?.(card.link)}
               className="bg-white rounded-2xl shadow-lg overflow-hidden hover:shadow-xl transition-all cursor-pointer hover:scale-[1.02]"
             >
-              <div className={`${card.color} p-6 text-white relative`}>
-                {idx === 0 && (
-                  <div className="absolute top-4 right-4 bg-white/20 text-white text-[10px] font-black px-2 py-0.5 rounded-full animate-pulse flex items-center gap-1">
-                    <span className="w-1.5 h-1.5 bg-white rounded-full"></span> LIVE
-                  </div>
-                )}
+              <div className={`${card.color} p-6 text-white relative h-full flex flex-col justify-between`}>
+                <div className="absolute top-4 right-4 bg-white/20 text-white text-[10px] font-black px-2 py-0.5 rounded-full animate-pulse flex items-center gap-1 shadow-sm border border-white/30">
+                  <span className="w-1.5 h-1.5 bg-white rounded-full"></span> LIVE
+                </div>
                 <div className="flex items-center justify-between mb-4">
                   <div className="flex items-center gap-2">
                     <card.icon size={24} className="opacity-90" />

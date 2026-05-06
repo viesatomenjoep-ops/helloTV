@@ -9,10 +9,10 @@ const STORES = [
 
 const MOCK_STAFF: Record<string, {name: string, role: string, photo: string}[]> = {
   'Amsterdam': [
-    { name: 'Sander Visser', role: 'Store Manager', photo: 'https://images.unsplash.com/photo-1560250097-0b93528c311a?w=400&h=400&fit=crop' },
-    { name: 'Lisa van Dijk', role: 'Senior Adviseur', photo: 'https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?w=400&h=400&fit=crop' },
-    { name: 'Tom de Boer', role: 'Verkoper', photo: 'https://images.unsplash.com/photo-1519085360753-af0119f7cbe7?w=400&h=400&fit=crop' },
-    { name: 'Emma Jansen', role: 'Klantenservice', photo: 'https://images.unsplash.com/photo-1580489944761-15a19d654956?w=400&h=400&fit=crop' },
+    { name: 'Nick', role: 'Verkoper', photo: '/images/nick.png' },
+    { name: 'Sanne', role: 'Verkoper', photo: '/images/sanne.png' },
+    { name: 'Lorenzo', role: 'Verkoper', photo: '/images/lorenzo.png' },
+    { name: 'Steve', role: 'Verkoper', photo: '/images/steve.png' },
   ],
   'Breda': [
     { name: 'Martijn Hendriks', role: 'Store Manager', photo: 'https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=400&h=400&fit=crop' },
@@ -31,12 +31,16 @@ export function StorePortal() {
   const [printingOrder, setPrintingOrder] = useState<any>(null);
   const currentStaff = MOCK_STAFF[selectedStore] || MOCK_STAFF['default'];
 
-  const handlePrint = (orderInfo: any) => {
+  const handleOpenPrintPreview = (orderInfo: any) => {
     setPrintingOrder(orderInfo);
-    setTimeout(() => {
-      window.print();
-      setPrintingOrder(null);
-    }, 100);
+  };
+
+  const handleExecutePrint = () => {
+    window.print();
+  };
+
+  const closePrintPreview = () => {
+    setPrintingOrder(null);
   };
 
   return (
@@ -124,7 +128,7 @@ export function StorePortal() {
                     <p className="text-sm text-gray-500">1x Samsung 65" QD-OLED, 1x Beugel</p>
                   </div>
                   <button 
-                    onClick={() => handlePrint({ id: `TR-100${item + 44}`, details: '1x Samsung 65" QD-OLED, 1x Beugel' })}
+                    onClick={() => handleOpenPrintPreview({ id: `TR-100${item + 44}`, details: '1x Samsung 65" QD-OLED, 1x Beugel', items: [{qty: '1x', desc: 'Samsung 65" QD-OLED'}, {qty: '1x', desc: "Muurbeugel Vogel's (Thin)"}] })}
                     className="px-4 py-2 bg-[#1D6F42] hover:bg-green-800 text-white font-bold rounded-lg text-sm transition-colors print:hidden"
                   >
                     Paklijst Printen
@@ -173,24 +177,37 @@ export function StorePortal() {
         </div>
       </div>
 
-      {/* Print Only Layout (Real PDF Look) */}
+      {/* Print Preview Modal */}
       {printingOrder && (
-        <div className="hidden print:block fixed inset-0 bg-white z-[9999] p-12 text-black text-left">
+        <div className="fixed inset-0 bg-white z-[9999] p-12 text-black text-left overflow-auto">
+          <div className="print:hidden flex justify-between items-center mb-8 bg-gray-100 p-4 rounded-xl border border-gray-200 shadow-sm">
+            <div>
+              <h2 className="font-bold text-gray-800">Paklijst Preview & Bewerken</h2>
+              <p className="text-sm text-gray-500">Klik op de tekst hieronder om aan te passen voordat je print.</p>
+            </div>
+            <div className="flex gap-3">
+              <button onClick={closePrintPreview} className="px-6 py-2 bg-gray-300 hover:bg-gray-400 text-gray-800 font-bold rounded-lg">Annuleren</button>
+              <button onClick={handleExecutePrint} className="px-6 py-2 bg-blue-600 hover:bg-blue-700 text-white font-bold rounded-lg flex items-center gap-2">
+                Definitief Printen
+              </button>
+            </div>
+          </div>
+
           <div className="flex justify-between items-start border-b-4 border-[#FDCB2C] pb-6 mb-8">
             <div>
-              <img src="/HelloTV.png" alt="HelloTV Logo" className="h-16 mb-4 filter brightness-0" />
-              <h1 className="text-3xl font-black uppercase tracking-widest text-gray-900">Officiële Paklijst</h1>
+              <img src="/HelloTV.png" alt="HelloTV Logo" className="h-16 mb-4 object-contain" />
+              <h1 className="text-3xl font-black uppercase tracking-widest text-gray-900" contentEditable suppressContentEditableWarning>Officiële Paklijst</h1>
             </div>
             <div className="text-right">
-              <p className="text-sm font-bold text-gray-500">Filiaal: {selectedStore}</p>
-              <p className="text-sm font-bold text-gray-500">Datum: {new Date().toLocaleDateString('nl-NL')}</p>
-              <p className="text-xl font-black mt-2">{printingOrder.id}</p>
+              <p className="text-sm font-bold text-gray-500">Filiaal: <span contentEditable suppressContentEditableWarning>{selectedStore}</span></p>
+              <p className="text-sm font-bold text-gray-500">Datum: <span contentEditable suppressContentEditableWarning>{new Date().toLocaleDateString('nl-NL')}</span></p>
+              <p className="text-xl font-black mt-2" contentEditable suppressContentEditableWarning>{printingOrder.id}</p>
             </div>
           </div>
 
           <div className="mb-12">
             <h2 className="text-lg font-bold bg-gray-100 px-4 py-2 uppercase tracking-widest mb-4">Verzendgegevens</h2>
-            <div className="px-4 text-sm font-medium space-y-1">
+            <div className="px-4 text-sm font-medium space-y-1" contentEditable suppressContentEditableWarning>
               <p>HelloTV Logistiek Centrum</p>
               <p>Transport via Hessey Logistics</p>
               <p>Bestemming: Magazijn {selectedStore}</p>
@@ -206,20 +223,15 @@ export function StorePortal() {
               </tr>
             </thead>
             <tbody>
-              <tr className="border-b border-gray-200">
-                <td className="py-4 px-4 font-black text-lg">1x</td>
-                <td className="py-4 px-4 font-bold">Samsung 65" QD-OLED</td>
-                <td className="py-4 px-4 text-right">
-                  <div className="inline-block w-6 h-6 border-2 border-gray-900 rounded-sm"></div>
-                </td>
-              </tr>
-              <tr className="border-b border-gray-200">
-                <td className="py-4 px-4 font-black text-lg">1x</td>
-                <td className="py-4 px-4 font-bold">Muurbeugel Vogel's (Thin)</td>
-                <td className="py-4 px-4 text-right">
-                  <div className="inline-block w-6 h-6 border-2 border-gray-900 rounded-sm"></div>
-                </td>
-              </tr>
+              {printingOrder.items?.map((item: any, i: number) => (
+                <tr key={i} className="border-b border-gray-200">
+                  <td className="py-4 px-4 font-black text-lg outline-none focus:bg-yellow-50" contentEditable suppressContentEditableWarning>{item.qty}</td>
+                  <td className="py-4 px-4 font-bold outline-none focus:bg-yellow-50" contentEditable suppressContentEditableWarning>{item.desc}</td>
+                  <td className="py-4 px-4 text-right">
+                    <div className="inline-block w-6 h-6 border-2 border-gray-900 rounded-sm"></div>
+                  </td>
+                </tr>
+              ))}
             </tbody>
           </table>
 

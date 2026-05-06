@@ -184,7 +184,7 @@ export default function App() {
         {currentView === 'maick' && <MaickPortal />}
         {currentView === 'website' && <HelloTVWebsite />}
         {currentView === 'reviews' && <GoogleReviews />}
-        {currentView === 'orders' && <Orders />}
+        {currentView === 'orders' && <Orders onNavigate={setCurrentView} />}
         {currentView === 'showcase' && <Showcase />}
         {currentView === 'crm' && <CRM />}
         {currentView === 'quotes' && <Quotes />}

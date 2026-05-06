@@ -54,7 +54,7 @@ const MOCK_PRODUCTS = [
   { id: '85X975', merk: 'TCL', model: '85X975 (2026)', categorie: 'MiniLED', prijs: 2799, inkoop: 1850, marge: 33, voorraad: 3 },
 ];
 
-export function Orders() {
+export function Orders({ onNavigate }: { onNavigate?: (view: string) => void }) {
   const [activeTab, setActiveTab] = useState<'overzicht' | 'upsell'>('overzicht');
   
   const [ordersList, setOrdersList] = useState(mockOrders);
@@ -205,6 +205,14 @@ export function Orders() {
       <div className="max-w-7xl mx-auto">
         <div className="flex flex-col md:flex-row justify-between items-start md:items-center mb-8 gap-4">
           <div>
+            <div className="flex items-center gap-2 mb-2">
+              <button 
+                onClick={() => onNavigate?.('dashboard')}
+                className="text-gray-500 hover:text-gray-900 font-bold text-sm bg-white border border-gray-200 px-3 py-1 rounded-lg shadow-sm flex items-center gap-1 transition-colors"
+              >
+                ← Terug naar Dashboard
+              </button>
+            </div>
             <h1 className="text-3xl font-bold text-gray-800">Order & Upsell Beheer</h1>
             <p className="text-gray-500 text-sm mt-1">Beheer alle orders en creëer directe upsell links</p>
           </div>
