@@ -53,9 +53,25 @@ export function Dashboard({ onNavigate }: { onNavigate?: (view: string) => void 
 
   useEffect(() => {
     loadStats();
-    const interval = setInterval(loadStats, 10000); // Refresh every 10 seconds
-    return () => clearInterval(interval);
   }, []);
+
+  // Simulate live revenue ticking
+  useEffect(() => {
+    if (!stats) return;
+    const interval = setInterval(() => {
+      // Randomly add between €1.50 and €15.00 every few seconds
+      if (Math.random() > 0.3) {
+        const amount = Math.floor(Math.random() * 1500) / 100;
+        setStats((prev: any) => ({
+          ...prev,
+          totalRevenue: prev.totalRevenue + amount,
+          todayRevenue: prev.todayRevenue + amount,
+          totalOrders: prev.totalOrders + (Math.random() > 0.8 ? 1 : 0)
+        }));
+      }
+    }, 2500);
+    return () => clearInterval(interval);
+  }, [stats]);
 
   const loadStats = async () => {
     try {
@@ -182,10 +198,13 @@ export function Dashboard({ onNavigate }: { onNavigate?: (view: string) => void 
           {/* Hero: Totale Omzet Maand */}
           <div 
             onClick={() => onNavigate?.('orders')}
-            className="bg-gradient-to-br from-blue-600 to-blue-800 rounded-2xl shadow-xl p-8 text-white lg:col-span-1 flex flex-col justify-center cursor-pointer hover:scale-[1.02] transition-transform"
+            className="bg-gradient-to-br from-blue-600 to-blue-800 rounded-2xl shadow-xl p-8 text-white lg:col-span-1 flex flex-col justify-center cursor-pointer hover:scale-[1.02] transition-transform relative overflow-hidden"
           >
+            <div className="absolute top-4 right-4 bg-red-500 text-white text-[10px] font-black px-2 py-0.5 rounded-full animate-pulse flex items-center gap-1 shadow-md">
+              <span className="w-1.5 h-1.5 bg-white rounded-full"></span> LIVE
+            </div>
             <h2 className="text-blue-200 font-bold mb-2 flex items-center gap-2 text-xl"><Euro size={24}/> Totale Omzet (Deze Maand)</h2>
-            <div className="text-4xl font-black mb-3">€{(stats?.totalRevenue || 10000000).toLocaleString('nl-NL', { minimumFractionDigits: 0 })}</div>
+            <div className="text-4xl font-black mb-3">€{(stats?.totalRevenue || 10000000).toLocaleString('nl-NL', { minimumFractionDigits: 2 })}</div>
             <div className="text-white font-bold bg-white/20 px-3 py-1 rounded-full inline-block self-start">+12.5% vs Vorige Maand</div>
           </div>
           
@@ -223,13 +242,18 @@ export function Dashboard({ onNavigate }: { onNavigate?: (view: string) => void 
               onClick={() => onNavigate?.(card.link)}
               className="bg-white rounded-2xl shadow-lg overflow-hidden hover:shadow-xl transition-all cursor-pointer hover:scale-[1.02]"
             >
-              <div className={`${card.color} p-6 text-white`}>
+              <div className={`${card.color} p-6 text-white relative`}>
+                {idx === 0 && (
+                  <div className="absolute top-4 right-4 bg-white/20 text-white text-[10px] font-black px-2 py-0.5 rounded-full animate-pulse flex items-center gap-1">
+                    <span className="w-1.5 h-1.5 bg-white rounded-full"></span> LIVE
+                  </div>
+                )}
                 <div className="flex items-center justify-between mb-4">
                   <div className="flex items-center gap-2">
                     <card.icon size={24} className="opacity-90" />
                     <span className="font-bold text-lg">{card.title}</span>
                   </div>
-                  {card.change && (
+                  {card.change && idx !== 0 && (
                     <span className="text-xs font-semibold bg-white/20 px-3 py-1 rounded-full">
                       {card.change}
                     </span>
