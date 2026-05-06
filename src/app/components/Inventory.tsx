@@ -58,6 +58,21 @@ export function Inventory() {
       setAutoSyncStatus('success');
     }, 2000);
   };
+
+  const [syncingRowIdx, setSyncingRowIdx] = useState<number | null>(null);
+
+  const handleRowSync = (idx: number) => {
+    setSyncingRowIdx(idx);
+    setTimeout(() => {
+      setVloercheckStock(prev => {
+        const updated = [...prev];
+        updated[idx] = { ...updated[idx], vms: updated[idx].phys };
+        return updated;
+      });
+      setSyncingRowIdx(null);
+    }, 800);
+  };
+
   const [items, setItems] = useState<any[]>(mockInventory);
 
   // ODM State
@@ -890,9 +905,9 @@ export function Inventory() {
                     'bg-[#1D6F42] hover:bg-green-800 text-white'
                   }`}
                 >
-                  {autoSyncStatus === 'success' ? <><CheckCircle size={18} /> VMS Gesynchroniseerd!</> :
+                  {autoSyncStatus === 'success' ? <><CheckCircle size={18} /> Alles Gesynchroniseerd!</> :
                    autoSyncStatus === 'syncing' ? <><RefreshCw size={18} className="animate-spin" /> Bezig met Syncen...</> :
-                   <><RefreshCw size={18} /> Automatiseer VMS Correctie</>}
+                   <><RefreshCw size={18} /> Synchroniseer Alles naar VMS</>}
                 </button>
               </div>
             </div>
@@ -906,18 +921,18 @@ export function Inventory() {
                     <th className="p-4 font-bold text-gray-700 text-center">Fysieke Voorraad</th>
                     <th className="p-4 font-bold text-gray-700 text-center">Vrije Voorraad</th>
                     <th className="p-4 font-bold text-gray-700 text-center">Status</th>
+                    <th className="p-4 font-bold text-gray-700 text-center">Acties</th>
                   </tr>
                 </thead>
                 <tbody>
                   {vloercheckStock.map((item, idx) => {
                     const hasDifference = item.vms !== item.phys;
                     const isNegative = item.vms < 0;
-                    const isSynced = autoSyncStatus === 'success';
                     return (
-                      <tr key={idx} className={`border-b border-gray-100 ${hasDifference && !isSynced ? 'bg-red-50' : 'hover:bg-gray-50'}`}>
+                      <tr key={idx} className={`border-b border-gray-100 ${hasDifference ? 'bg-red-50' : 'hover:bg-gray-50'}`}>
                         <td className="p-4 font-bold text-gray-900">{item.model}</td>
                         <td className={`p-4 text-center font-mono ${isNegative ? 'text-red-600 font-bold' : ''}`}>
-                          {isSynced && hasDifference ? item.phys : item.vms}
+                          {item.vms}
                         </td>
                         <td className="p-4 text-center">
                           <input 
@@ -929,18 +944,27 @@ export function Inventory() {
                         </td>
                         <td className="p-4 text-center text-gray-600">{item.free}</td>
                         <td className="p-4 text-center">
-                          {isSynced ? (
+                          {!hasDifference ? (
                             <span className="px-2 py-1 bg-green-100 text-green-700 rounded text-xs font-bold flex items-center justify-center gap-1">
                               <CheckCircle size={12} /> Correct
                             </span>
-                          ) : hasDifference ? (
+                          ) : (
                             <span className="px-2 py-1 bg-red-100 text-red-700 rounded text-xs font-bold flex items-center justify-center gap-1">
                               <AlertTriangle size={12} /> Verschil: {item.phys - item.vms > 0 ? '+' : ''}{item.phys - item.vms}
                             </span>
+                          )}
+                        </td>
+                        <td className="p-4 text-center">
+                          {hasDifference ? (
+                            <button 
+                              onClick={() => handleRowSync(idx)}
+                              disabled={syncingRowIdx === idx}
+                              className="px-3 py-1.5 bg-blue-100 hover:bg-blue-200 text-blue-700 font-bold rounded-lg text-xs flex items-center justify-center gap-1 mx-auto transition-colors disabled:opacity-50"
+                            >
+                              {syncingRowIdx === idx ? <><RefreshCw size={14} className="animate-spin" /> Sync...</> : <><RefreshCw size={14} /> Sync VMS</>}
+                            </button>
                           ) : (
-                            <span className="px-2 py-1 bg-gray-100 text-gray-700 rounded text-xs font-bold flex items-center justify-center gap-1">
-                              <CheckCircle size={12} className="text-gray-400" /> Klopt
-                            </span>
+                            <span className="text-gray-400 text-xs font-bold">-</span>
                           )}
                         </td>
                       </tr>

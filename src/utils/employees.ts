@@ -8,6 +8,7 @@ export interface Employee {
   isBeheerder?: boolean;
   phone?: string;
   availability?: string;
+  filiaal?: string;
 }
 
 export const EMPLOYEES: Employee[] = [
@@ -46,6 +47,12 @@ export const EMPLOYEES: Employee[] = [
   { name: "Nick F", code: "425", isSeller: true, whatsappName: 'Nick F', availability: 'Online' },
   { name: "Paul de Boer", code: "426", isSeller: true, whatsappName: 'Paul de Boer', statusText: 'Bezig', availability: 'Bezig' },
   
+  // Amsterdam Verkopers
+  { name: "Nick", code: "501", isSeller: true, filiaal: 'Amsterdam', role: 'Verkoper' },
+  { name: "Sanne", code: "502", isSeller: true, filiaal: 'Amsterdam', role: 'Verkoper' },
+  { name: "Lorenzo", code: "503", isSeller: true, filiaal: 'Amsterdam', role: 'Verkoper' },
+  { name: "Steven", code: "504", isSeller: true, filiaal: 'Amsterdam', role: 'Verkoper' },
+
   // Previous dummy data to ensure no breakage
   { name: "Thijs Meijer", code: "101", isSeller: true },
   { name: "Wendy", code: "102", isSeller: true },

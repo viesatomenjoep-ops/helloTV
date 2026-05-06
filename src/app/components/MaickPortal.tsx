@@ -8,6 +8,10 @@ const INITIAL_TEAM = [
   { id: 4, naam: 'Klaas Jansen', email: 'klaas@hellotv.nl', role: 'Verdediger', filiaal: 'Eindhoven', status: 'Actief', target: 8000, salaris: 2200, bonus: 0, contract: 'Vast' },
   { id: 5, naam: 'Maick', email: 'maick@hellotv.nl', role: 'Coach', filiaal: 'Hoofdkantoor', status: 'Actief', target: 0, salaris: 6500, bonus: 1200, contract: 'Onbepaalde Tijd' },
   { id: 6, naam: 'Daan Bos', email: 'daan@hellotv.nl', role: 'Trainer', filiaal: 'Rotterdam', status: 'Actief', target: 0, salaris: 3100, bonus: 300, contract: 'Vast' },
+  { id: 7, naam: 'Nick', email: 'nick@hellotv.nl', role: 'Aanvaller', filiaal: 'Amsterdam', status: 'Actief', target: 20000, salaris: 2800, bonus: 300, contract: 'Vast' },
+  { id: 8, naam: 'Sanne', email: 'sanne@hellotv.nl', role: 'Aanvaller', filiaal: 'Amsterdam', status: 'Actief', target: 22000, salaris: 2900, bonus: 350, contract: 'Vast' },
+  { id: 9, naam: 'Lorenzo', email: 'lorenzo@hellotv.nl', role: 'Aanvaller', filiaal: 'Amsterdam', status: 'Actief', target: 19000, salaris: 2750, bonus: 250, contract: 'Vast' },
+  { id: 10, naam: 'Steven', email: 'steven@hellotv.nl', role: 'Aanvaller', filiaal: 'Amsterdam', status: 'Actief', target: 21000, salaris: 2850, bonus: 300, contract: 'Vast' },
 ];
 
 export function MaickPortal() {
