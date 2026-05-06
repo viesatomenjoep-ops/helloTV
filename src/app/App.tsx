@@ -44,12 +44,13 @@ import { StorePortal } from './components/StorePortal';
 import { HelloTVWebsite } from './components/HelloTVWebsite';
 import { Reparatie } from './components/Reparatie';
 import { MagicLinks } from './components/MagicLinks';
+import { ProductDashboard } from './components/ProductDashboard';
 import { HelloTVLogo } from './components/ui/HelloTVLogo';
 import { MaickPortal } from './components/MaickPortal';
 import { LiveChatPortal } from './components/LiveChatPortal';
 import { initDemoData } from '../utils/initDemoData';
 
-type View = 'dashboard' | 'maick' | 'crm' | 'sales' | 'inventory' | 'quotes' | 'orders' | 'showcase' | 'hr' | 'shiftbase' | 'trainers' | 'transport' | 'media' | 'vendit' | 'reviews' | 'website' | 'reparatie' | 'magiclinks' | 'storeportal' | 'livechat';
+type View = 'dashboard' | 'maick' | 'crm' | 'sales' | 'inventory' | 'quotes' | 'orders' | 'showcase' | 'hr' | 'shiftbase' | 'trainers' | 'transport' | 'media' | 'vendit' | 'reviews' | 'website' | 'reparatie' | 'magiclinks' | 'storeportal' | 'livechat' | 'producten';
 
 export default function App() {
   const [isAuthenticated, setIsAuthenticated] = useState(true);
@@ -73,6 +74,7 @@ export default function App() {
     { id: 'orders', label: 'Orders & Upsell', icon: ShoppingCart },
     { id: 'quotes', label: 'Offertes', icon: FileSignature },
     { id: 'inventory', label: 'Voorraad & Inkoop', icon: Box },
+    { id: 'producten', label: 'Producten & Marges', icon: Tv },
     { id: 'transport', label: 'Transport (Hessey)', icon: Truck },
     { id: 'reparatie', label: 'Reparatie & Service', icon: Wrench },
     { id: 'hr', label: 'HR & Reiskosten', icon: HeartPulse },
@@ -199,6 +201,7 @@ export default function App() {
         {currentView === 'magiclinks' && <MagicLinks />}
         {currentView === 'media' && <MediaPortal />}
         {currentView === 'livechat' && <LiveChatPortal />}
+      {currentView === 'producten' && <ProductDashboard />}
         {currentView === 'vendit' && <Vendit />}
       </div>
     </div>

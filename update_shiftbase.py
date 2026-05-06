@@ -1,4 +1,10 @@
-import React, { useState, useEffect } from 'react';
+import re
+
+with open('src/app/components/Shiftbase.tsx', 'r') as f:
+    content = f.read()
+
+# I will write a completely new Shiftbase.tsx
+new_content = """import React, { useState, useEffect } from 'react';
 import { Clock, Play, Square, Coffee, Calendar, Search, CheckCircle, Home, FileText, User as UserIcon, Plus, Bell, Key, Briefcase, Users, Mail, MessageCircle } from 'lucide-react';
 import { HelloTVLogo } from './ui/HelloTVLogo';
 
@@ -91,8 +97,7 @@ export function Shiftbase() {
     e.preventDefault();
     setVakantieSuccess(true);
     setAanvragen([{ type: vakantieType, date: 'Nieuwe aanvraag', status: 'In Behandeling' }, ...aanvragen]);
-    alert(`Verzoek verzonden!
-Roostermaker heeft zojuist een notificatie ontvangen via WhatsApp & E-mail.`);
+    alert(`Verzoek verzonden!\nRoostermaker heeft zojuist een notificatie ontvangen via WhatsApp & E-mail.`);
   };
 
   const handleKioskSave = () => {
@@ -201,92 +206,19 @@ Roostermaker heeft zojuist een notificatie ontvangen via WhatsApp & E-mail.`);
           {activeTab === 'rooster' && (
             <div className="p-6 space-y-6">
               <div>
-                <div className="flex justify-between items-center mb-4">
-                  <h2 className="text-lg font-bold text-gray-900">Mijn Rooster</h2>
-                  <span className="text-xs font-bold text-gray-500 bg-gray-200 px-2 py-1 rounded">Week 20 - 2026</span>
+                <h2 className="text-lg font-bold text-gray-900 mb-3">Mijn Rooster</h2>
+                <div className="bg-white p-4 rounded-xl border border-gray-100 shadow-sm mb-3">
+                  <div className="flex justify-between items-center mb-2">
+                    <span className="font-bold text-gray-800">Vandaag</span>
+                    <span className="text-xs text-green-600 font-bold bg-green-50 px-2 py-1 rounded">Actief</span>
+                  </div>
+                  <p className="text-sm text-gray-600">09:00 - 18:00 (Verkoop)</p>
                 </div>
-                <p className="text-xs text-gray-500 mb-4 uppercase font-bold tracking-wider">11 Mei 2026 t/m 17 Mei 2026</p>
-                
-                <div className="space-y-3 mb-6">
-                  {/* Maandag */}
-                  <div className="bg-white p-4 rounded-xl border border-gray-100 shadow-sm flex justify-between items-center">
-                    <div>
-                      <span className="font-bold text-gray-800 block">Ma 11 Mei</span>
-                      <span className="text-xs text-gray-500">Filiaal Breda</span>
-                    </div>
-                    <div className="text-right">
-                      <span className="font-black text-blue-600 block">10:00 - 18:00</span>
-                      <span className="text-xs text-gray-400">Verkoop (8u)</span>
-                    </div>
+                <div className="bg-white p-4 rounded-xl border border-gray-100 shadow-sm opacity-70">
+                  <div className="flex justify-between items-center mb-2">
+                    <span className="font-bold text-gray-800">Morgen</span>
                   </div>
-
-                  {/* Dinsdag */}
-                  <div className="bg-white p-4 rounded-xl border border-gray-100 shadow-sm flex justify-between items-center">
-                    <div>
-                      <span className="font-bold text-gray-800 block">Di 12 Mei</span>
-                      <span className="text-xs text-gray-500">Filiaal Breda</span>
-                    </div>
-                    <div className="text-right">
-                      <span className="font-black text-blue-600 block">10:00 - 18:00</span>
-                      <span className="text-xs text-gray-400">Verkoop (8u)</span>
-                    </div>
-                  </div>
-
-                  {/* Woensdag */}
-                  <div className="bg-gray-50 p-4 rounded-xl border border-gray-100 shadow-sm flex justify-between items-center opacity-60">
-                    <div>
-                      <span className="font-bold text-gray-500 block">Wo 13 Mei</span>
-                    </div>
-                    <div className="text-right">
-                      <span className="font-bold text-gray-400 block uppercase text-xs tracking-widest">Vrij / Afwezig</span>
-                    </div>
-                  </div>
-
-                  {/* Donderdag */}
-                  <div className="bg-white p-4 rounded-xl border border-gray-100 shadow-sm flex justify-between items-center">
-                    <div>
-                      <span className="font-bold text-gray-800 block">Do 14 Mei</span>
-                      <span className="text-xs text-gray-500">Filiaal Breda</span>
-                    </div>
-                    <div className="text-right">
-                      <span className="font-black text-blue-600 block">10:00 - 18:00</span>
-                      <span className="text-xs text-gray-400">Verkoop (8u)</span>
-                    </div>
-                  </div>
-
-                  {/* Vrijdag */}
-                  <div className="bg-white p-4 rounded-xl border border-gray-100 shadow-sm flex justify-between items-center">
-                    <div>
-                      <span className="font-bold text-gray-800 block">Vr 15 Mei</span>
-                      <span className="text-xs text-gray-500">Filiaal Breda</span>
-                    </div>
-                    <div className="text-right">
-                      <span className="font-black text-blue-600 block">10:00 - 18:00</span>
-                      <span className="text-xs text-gray-400">Verkoop (8u)</span>
-                    </div>
-                  </div>
-
-                  {/* Zaterdag */}
-                  <div className="bg-white p-4 rounded-xl border border-gray-100 shadow-sm flex justify-between items-center border-l-4 border-blue-500">
-                    <div>
-                      <span className="font-bold text-gray-800 block">Za 16 Mei</span>
-                      <span className="text-xs text-gray-500">Filiaal Breda</span>
-                    </div>
-                    <div className="text-right">
-                      <span className="font-black text-blue-600 block">10:00 - 18:00</span>
-                      <span className="text-xs text-gray-400">Weekend (8u)</span>
-                    </div>
-                  </div>
-
-                  {/* Zondag */}
-                  <div className="bg-gray-50 p-4 rounded-xl border border-gray-100 shadow-sm flex justify-between items-center opacity-60">
-                    <div>
-                      <span className="font-bold text-gray-500 block">Zo 17 Mei</span>
-                    </div>
-                    <div className="text-right">
-                      <span className="font-bold text-gray-400 block uppercase text-xs tracking-widest">Vrij / Afwezig</span>
-                    </div>
-                  </div>
+                  <p className="text-sm text-gray-600">09:00 - 18:00 (Verkoop)</p>
                 </div>
               </div>
 
@@ -614,3 +546,8 @@ Roostermaker heeft zojuist een notificatie ontvangen via WhatsApp & E-mail.`);
     </div>
   );
 }
+"""
+
+with open('src/app/components/Shiftbase.tsx', 'w') as f:
+    f.write(new_content)
+

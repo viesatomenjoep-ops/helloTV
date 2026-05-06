@@ -1,4 +1,12 @@
-import React, { useState } from 'react';
+import re
+
+with open('src/app/components/LiveChatPortal.tsx', 'r') as f:
+    content = f.read()
+
+# We need to completely refactor LiveChatPortal to support 10 mock visitors and fullscreen mode.
+# I will generate the complete replacement content for the component.
+
+new_content = """import React, { useState } from 'react';
 import { MessageSquare, Send, Search, CheckCircle, Store, Box, CreditCard, ChevronRight, UserCircle, Bell, X, FileText, ShoppingCart, Maximize2, Minimize2 } from 'lucide-react';
 
 const MOCK_VISITORS = [
@@ -300,3 +308,8 @@ export function LiveChatPortal() {
     </div>
   );
 }
+"""
+
+with open('src/app/components/LiveChatPortal.tsx', 'w') as f:
+    f.write(new_content)
+

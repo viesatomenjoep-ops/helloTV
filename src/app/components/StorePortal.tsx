@@ -163,8 +163,8 @@ export function StorePortal() {
           </h2>
           <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
             {currentStaff.map((staff, idx) => (
-              <div key={idx} className="bg-gray-50 rounded-xl overflow-hidden border border-gray-200 text-center hover:shadow-md transition-shadow group">
-                <div className="h-48 overflow-hidden relative">
+              <div key={idx} className="bg-gray-50 rounded-xl overflow-hidden border border-gray-200 text-center hover:shadow-md transition-shadow group flex flex-col items-center">
+                <div className="h-24 w-24 overflow-hidden relative rounded-full mt-6 shadow-sm border-2 border-white">
                   <img src={staff.photo} alt={staff.name} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
                 </div>
                 <div className="p-4">

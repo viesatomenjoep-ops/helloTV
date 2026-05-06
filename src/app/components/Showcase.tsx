@@ -30,7 +30,7 @@ export function Showcase() {
         <div className="relative z-10 max-w-6xl mx-auto px-6 text-center">
           <div className="inline-flex items-center gap-2 px-6 py-2 rounded-full bg-white/5 border border-white/10 backdrop-blur-md mb-8 animate-in fade-in slide-in-from-bottom-4">
             <Star className="text-[#FDCB2C]" size={16} fill="currentColor" />
-            <span className="text-sm font-bold tracking-widest uppercase text-gray-300">De Magie van 11-11-11-11-33</span>
+            <span className="text-sm font-bold tracking-widest uppercase text-gray-300">De Magie van The Show</span>
           </div>
           
           <h1 className="text-6xl md:text-8xl font-black mb-8 leading-tight tracking-tighter animate-in fade-in slide-in-from-bottom-8">
@@ -175,7 +175,7 @@ export function Showcase() {
             
             <div className="mt-20">
               <div className="inline-block px-12 py-6 rounded-full border border-[#FDCB2C]/30 bg-[#FDCB2C]/10 text-[#FDCB2C] font-bold tracking-widest text-lg">
-                11-11-11-11-33
+                Premium Quality
               </div>
             </div>
           </div>

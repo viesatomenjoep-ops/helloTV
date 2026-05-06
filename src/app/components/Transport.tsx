@@ -373,6 +373,45 @@ export function Transport() {
                         </div>
                       </div>
                     )}
+
+                    {checkOrderComplete(order) && (
+                      <div className="mt-4 border-t border-gray-100 pt-4 animate-in fade-in slide-in-from-top-2">
+                        <p className="text-sm font-bold text-gray-800 mb-3">Installatie Afronden</p>
+                        <div className="space-y-3">
+                          <div>
+                            <label className="text-xs font-bold text-gray-500 block mb-1">Klant Tevredenheid</label>
+                            <select className="w-full border border-gray-200 rounded-lg p-2 text-sm bg-gray-50">
+                              <option>Zeer Tevreden (5/5)</option>
+                              <option>Tevreden (4/5)</option>
+                              <option>Neutraal (3/5)</option>
+                              <option>Ontevreden (Probleem)</option>
+                            </select>
+                          </div>
+                          <div>
+                            <label className="text-xs font-bold text-gray-500 block mb-1">Installatie Notities</label>
+                            <textarea className="w-full border border-gray-200 rounded-lg p-2 text-sm bg-gray-50 h-16" placeholder="Bijzonderheden tijdens installatie..."></textarea>
+                          </div>
+                          <div className="flex gap-2">
+                            <label className="flex-1 border border-dashed border-gray-300 rounded-lg p-3 text-center cursor-pointer hover:bg-gray-50 transition-colors">
+                              <span className="text-xs font-bold text-gray-600 block">📷 Foto Uploaden</span>
+                              <input type="file" accept="image/*" className="hidden" />
+                            </label>
+                            <label className="flex-1 border border-dashed border-gray-300 rounded-lg p-3 text-center cursor-pointer hover:bg-gray-50 transition-colors">
+                              <span className="text-xs font-bold text-gray-600 block">🎥 Video Uploaden</span>
+                              <input type="file" accept="video/*" className="hidden" />
+                            </label>
+                          </div>
+                          <button 
+                            onClick={() => {
+                              alert(`Installatierapport inclusief foto/video geüpload naar de backend en direct via WhatsApp verzonden naar Masteradmin André.`);
+                            }}
+                            className="w-full py-3 bg-[#1D6F42] text-white font-bold rounded-xl shadow-lg mt-2 flex items-center justify-center gap-2 hover:bg-green-800 transition-colors"
+                          >
+                            <CheckCircle size={18} /> Apleveren & Stuur naar WhatsApp (André)
+                          </button>
+                        </div>
+                      </div>
+                    )}
                   </div>
                 </div>
               ))}

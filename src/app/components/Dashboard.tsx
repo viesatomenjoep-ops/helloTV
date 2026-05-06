@@ -66,8 +66,10 @@ export function Dashboard({ onNavigate }: { onNavigate?: (view: string) => void 
           ...prev,
           totalRevenue: prev.totalRevenue + amount,
           todayRevenue: prev.todayRevenue + amount,
-          totalOrders: prev.totalOrders + (Math.random() > 0.85 ? 1 : 0),
-          totalCustomers: prev.totalCustomers + (Math.random() > 0.9 ? 1 : 0),
+          totalOrders: prev.totalOrders + (Math.random() > 0.7 ? 1 : 0),
+          totalCustomers: prev.totalCustomers + (Math.random() > 0.8 ? 1 : 0),
+          pendingQuotes: prev.pendingQuotes - (Math.random() > 0.9 ? 1 : 0), // Quotes get converted
+          pendingOrders: prev.pendingOrders + (Math.random() > 0.85 ? 1 : 0), // Tickets/pending orders increase
         }));
       }
     }, 1200); // Check every 1.2s for a very active feel
@@ -193,12 +195,6 @@ export function Dashboard({ onNavigate }: { onNavigate?: (view: string) => void 
                   </span>
                 </div>
                 <p className="text-xs md:text-sm text-gray-500">Welkom terug! Hier is je overzicht van vandaag.</p>
-              </div>
-            </div>
-            <div className="flex items-center gap-4 w-full md:w-auto justify-end">
-              <div className="text-right bg-gradient-to-r from-green-500 to-green-600 px-6 py-3 rounded-2xl shadow-lg border border-green-400">
-                <div className="text-[11px] md:text-xs text-green-100 uppercase tracking-wider font-bold mb-1">Totale Omzet Nederland Vandaag</div>
-                <div className="font-black text-white text-2xl md:text-3xl">€ 222.222</div>
               </div>
             </div>
           </div>

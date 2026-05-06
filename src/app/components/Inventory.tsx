@@ -74,6 +74,7 @@ export function Inventory() {
   };
 
   const [items, setItems] = useState<any[]>(mockInventory);
+  const [filterLowStock, setFilterLowStock] = useState(false);
 
   // ODM State
   const [odmStock, setOdmStock] = useState([
@@ -265,7 +266,9 @@ export function Inventory() {
                 <div className="text-4xl font-bold text-gray-800">{items.length}</div>
               </div>
 
-              <div className={`rounded-2xl shadow-lg p-6 ${
+              <div 
+                onClick={() => { setActiveTab('voorraad'); setFilterLowStock(!filterLowStock); }}
+                className={`rounded-2xl shadow-lg p-6 cursor-pointer transition-transform hover:scale-105 ${
                 lowStockItems.length > 0 ? 'bg-gradient-to-br from-red-500 to-red-600 text-white' : 'bg-white'
               }`}>
                 <div className="flex items-center gap-3 mb-3">
@@ -274,7 +277,7 @@ export function Inventory() {
                 </div>
                 <div className="text-4xl font-bold">{lowStockItems.length}</div>
                 {lowStockItems.length > 0 && (
-                  <div className="mt-2 text-sm opacity-90">⚠️ Actie vereist!</div>
+                  <div className="mt-2 text-sm opacity-90">⚠️ Actie vereist! Klik om te bekijken</div>
                 )}
               </div>
 
@@ -414,7 +417,10 @@ export function Inventory() {
                     </tr>
                   </thead>
                   <tbody>
-                    {items.map((item) => {
+                    {(filterLowStock ? lowStockItems : items).filter(item => 
+                    item.model?.toLowerCase().includes(search?.toLowerCase() || '') ||
+                    item.brand?.toLowerCase().includes(search?.toLowerCase() || '')
+                  ).map((item) => {
                       const isLowStock = (item.stock || item.quantity) <= (item.lowStockThreshold || 10);
                       return (
                         <tr
