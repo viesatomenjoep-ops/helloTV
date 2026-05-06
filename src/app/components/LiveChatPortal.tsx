@@ -256,9 +256,13 @@ export function LiveChatPortal() {
                 <ShoppingCart size={16} className="text-purple-500" /> Directe Ordercreatie
               </h3>
               
-              <p className="text-xs text-gray-500 mb-4">
-                Maak direct een bestelling aan vanuit de chat. De order wordt na betaling automatisch in VMS geplaatst.
-              </p>
+              <button 
+                onClick={extractAddress}
+                className={`w-full py-2 mb-4 border font-bold rounded-xl shadow-sm transition-colors text-sm flex items-center justify-center gap-2 ${addressExtracted ? 'bg-green-50 border-green-300 text-green-700' : 'bg-gray-50 border-gray-300 text-gray-700 hover:bg-gray-100'}`}
+              >
+                <Database size={16} /> 
+                {addressExtracted ? 'Klantgegevens Gekoppeld' : 'Klantgegevens & Adres Ophalen'}
+              </button>
 
               {orderState === 'idle' && (
                 <button 
@@ -283,15 +287,30 @@ export function LiveChatPortal() {
               )}
 
               {orderState === 'paid' && (
-                <div className="w-full p-4 bg-green-50 border border-green-200 text-green-800 rounded-xl">
+                <div className="w-full p-4 bg-green-50 border border-green-200 text-green-800 rounded-xl mb-3">
                   <p className="font-black flex items-center justify-center gap-2 mb-2"><CheckCircle size={18}/> Betaling Geslaagd!</p>
-                  <p className="text-xs text-center font-bold text-green-700">Order is automatisch in Vendit geplaatst. Jouw target is zojuist geüpdatet.</p>
+                  <p className="text-xs text-center font-bold text-green-700">Order is automatisch in Vendit geplaatst.</p>
                 </div>
               )}
 
-              <button className="w-full py-2 bg-white border border-gray-300 text-gray-700 font-bold rounded-xl shadow-sm hover:bg-gray-50 transition-colors mt-3 flex items-center justify-center gap-2 text-sm">
-                <FileText size={16} /> Stuur PDF Offerte
-              </button>
+              <div className="grid grid-cols-2 gap-2 mt-3">
+                <button 
+                  onClick={sendPdfOfferte}
+                  disabled={pdfState !== 'idle'}
+                  className="py-2 bg-white border border-gray-300 text-gray-700 font-bold rounded-xl shadow-sm hover:bg-gray-50 transition-colors flex flex-col items-center justify-center gap-1 text-xs"
+                >
+                  <FileText size={16} /> 
+                  {pdfState === 'generating_offerte' ? 'Genereren...' : pdfState === 'sent_offerte' ? 'Verzonden!' : 'Stuur PDF Offerte'}
+                </button>
+                <button 
+                  onClick={sendPdfOrder}
+                  disabled={pdfState !== 'idle'}
+                  className="py-2 bg-white border border-gray-300 text-gray-700 font-bold rounded-xl shadow-sm hover:bg-gray-50 transition-colors flex flex-col items-center justify-center gap-1 text-xs"
+                >
+                  <FileText size={16} /> 
+                  {pdfState === 'generating_order' ? 'Genereren...' : pdfState === 'sent_order' ? 'Verzonden!' : 'Stuur PDF Order'}
+                </button>
+              </div>
             </div>
             
           </div>
