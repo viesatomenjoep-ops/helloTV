@@ -92,6 +92,7 @@ export function Dashboard({ onNavigate }: { onNavigate?: (view: string) => void 
       icon: TrendingUp,
       color: 'bg-gradient-to-br from-blue-500 to-blue-600',
       change: '+8.2%',
+      link: 'orders',
     },
     {
       title: 'Klanten',
@@ -99,6 +100,7 @@ export function Dashboard({ onNavigate }: { onNavigate?: (view: string) => void 
       icon: Users,
       color: 'bg-gradient-to-br from-purple-500 to-purple-600',
       change: '+5.4%',
+      link: 'crm',
     },
     {
       title: 'Offertes',
@@ -106,6 +108,7 @@ export function Dashboard({ onNavigate }: { onNavigate?: (view: string) => void 
       icon: FileText,
       color: 'bg-gradient-to-br from-orange-500 to-orange-600',
       subtitle: 'in behandeling',
+      link: 'quotes',
     },
     {
       title: 'Orders',
@@ -113,6 +116,7 @@ export function Dashboard({ onNavigate }: { onNavigate?: (view: string) => void 
       icon: ShoppingCart,
       color: 'bg-gradient-to-br from-cyan-500 to-cyan-600',
       subtitle: `${stats?.pendingOrders || 124} pending`,
+      link: 'orders',
     },
     {
       title: 'Lage Voorraad',
@@ -120,6 +124,7 @@ export function Dashboard({ onNavigate }: { onNavigate?: (view: string) => void 
       icon: AlertTriangle,
       color: 'bg-gradient-to-br from-red-500 to-red-600',
       alert: (stats?.lowStockItems || 42) > 0,
+      link: 'inventory',
     },
   ];
 
@@ -175,7 +180,10 @@ export function Dashboard({ onNavigate }: { onNavigate?: (view: string) => void 
         {/* Hero Section: #1 Verkoper & Totale Omzet */}
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-8">
           {/* Hero: Totale Omzet Maand */}
-          <div className="bg-gradient-to-br from-blue-600 to-blue-800 rounded-2xl shadow-xl p-8 text-white lg:col-span-1 flex flex-col justify-center">
+          <div 
+            onClick={() => onNavigate?.('orders')}
+            className="bg-gradient-to-br from-blue-600 to-blue-800 rounded-2xl shadow-xl p-8 text-white lg:col-span-1 flex flex-col justify-center cursor-pointer hover:scale-[1.02] transition-transform"
+          >
             <h2 className="text-blue-200 font-bold mb-2 flex items-center gap-2 text-xl"><Euro size={24}/> Totale Omzet (Deze Maand)</h2>
             <div className="text-4xl font-black mb-3">€{(stats?.totalRevenue || 10000000).toLocaleString('nl-NL', { minimumFractionDigits: 0 })}</div>
             <div className="text-white font-bold bg-white/20 px-3 py-1 rounded-full inline-block self-start">+12.5% vs Vorige Maand</div>
@@ -209,10 +217,11 @@ export function Dashboard({ onNavigate }: { onNavigate?: (view: string) => void 
 
         {/* Dashboard Stats Grid (Without Total Revenue) */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-8">
-          {statCards.slice(1).map((card, idx) => (
+          {statCards.slice(1).map((card: any, idx) => (
             <div
               key={idx}
-              className="bg-white rounded-2xl shadow-lg overflow-hidden hover:shadow-xl transition-shadow"
+              onClick={() => onNavigate?.(card.link)}
+              className="bg-white rounded-2xl shadow-lg overflow-hidden hover:shadow-xl transition-all cursor-pointer hover:scale-[1.02]"
             >
               <div className={`${card.color} p-6 text-white`}>
                 <div className="flex items-center justify-between mb-4">
