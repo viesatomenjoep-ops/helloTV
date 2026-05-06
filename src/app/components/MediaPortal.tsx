@@ -22,7 +22,7 @@ export function MediaPortal() {
     if (!laudInput) return;
     const newItem = {
       id: Date.now(),
-      title: laudInput.split('\').pop()?.split('/').pop() || 'Nieuwe_Upload.mp4',
+      title: laudInput.split('\\\\').pop()?.split('/').pop() || 'Nieuwe_Upload.mp4',
       status: 'Synchroniseren...'
     };
     setLaudItems([newItem, ...laudItems]);
@@ -240,7 +240,7 @@ export function MediaPortal() {
                   <p className="font-bold text-indigo-900 mb-1 text-sm">Klik of sleep MP4/MOV/JPG hierheen</p>
                   <p className="text-xs text-gray-500 mb-2">Max 5GB per bestand (Automatische compressie voor web & schermen)</p>
                   <div className="px-4 py-1.5 bg-indigo-600 hover:bg-indigo-700 text-white font-bold text-sm rounded-lg transition-colors inline-block">
-                    {laudInput ? laudInput.split('\').pop()?.split('/').pop() : 'Bestand Selecteren'}
+                    {laudInput ? laudInput.split('\\\\').pop()?.split('/').pop() : 'Bestand Selecteren'}
                   </div>
                 </div>
 
