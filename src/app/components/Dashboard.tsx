@@ -47,7 +47,7 @@ export function Dashboard({ onNavigate }: { onNavigate?: (view: string) => void 
     setSyncingTargets(true);
     setTimeout(() => {
       setSyncingTargets(false);
-      alert('Targets succesvol gepusht naar E-mail Maick én alle 18 WhatsApp Groepsapps!');
+      alert('Targets succesvol gepusht naar E-mail Maick én alle 18 WhatsApp groep apps!');
     }, 1500);
   };
 
@@ -267,7 +267,7 @@ export function Dashboard({ onNavigate }: { onNavigate?: (view: string) => void 
               {syncingTargets ? (
                 <><RefreshCw size={18} className="animate-spin" /> Bezig met Pushen...</>
               ) : (
-                <><DatabaseIcon size={18} /> Push Targets naar Email Maick & WhatsApp Groepsapps</>
+                <><DatabaseIcon size={18} /> Push Targets naar Email Maick & WhatsApp groep apps</>
               )}
             </button>
           </div>
