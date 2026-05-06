@@ -17,6 +17,48 @@ const MOCK_VISITORS = [
 export function LiveChatPortal() {
   const [activeChatId, setActiveChatId] = useState<string | null>('8912');
   const [isFullscreen, setIsFullscreen] = useState(false);
+  const [addressExtracted, setAddressExtracted] = useState(false);
+  const [pdfState, setPdfState] = useState<'idle' | 'generating_offerte' | 'sent_offerte' | 'generating_order' | 'sent_order'>('idle');
+
+  const extractAddress = () => {
+    // Simulatie van AI extractie van naam en adres uit chat
+    alert("AI heeft adresgegevens succesvol uit de chat gehaald: Tom van Biene, Breda. Deze zijn direct in Vendit gekoppeld aan de order.");
+    setAddressExtracted(true);
+  };
+
+  const sendPdfOfferte = () => {
+    if (!activeChatId) return;
+    setPdfState('generating_offerte');
+    setTimeout(() => {
+      setPdfState('sent_offerte');
+      
+      // Voeg bericht toe aan chat
+      const botMsg = { id: Date.now(), sender: 'agent', text: 'Hierbij de PDF Offerte. Laat gerust weten als u vragen heeft.', time: new Date().toLocaleTimeString('nl-NL', {hour: '2-digit', minute:'2-digit'}), isSystem: true, pdf: 'Offerte_HelloTV.pdf' };
+      setMessages(prev => ({
+        ...prev,
+        [activeChatId]: [...(prev[activeChatId] || []), botMsg]
+      }));
+
+      setTimeout(() => setPdfState('idle'), 4000);
+    }, 1500);
+  };
+
+  const sendPdfOrder = () => {
+    if (!activeChatId) return;
+    setPdfState('generating_order');
+    setTimeout(() => {
+      setPdfState('sent_order');
+      
+      // Voeg bericht toe aan chat
+      const botMsg = { id: Date.now(), sender: 'agent', text: 'Gefeliciteerd met uw aankoop! Hierbij de officiële PDF Order.', time: new Date().toLocaleTimeString('nl-NL', {hour: '2-digit', minute:'2-digit'}), isSystem: true, pdf: 'Order_HelloTV.pdf' };
+      setMessages(prev => ({
+        ...prev,
+        [activeChatId]: [...(prev[activeChatId] || []), botMsg]
+      }));
+
+      setTimeout(() => setPdfState('idle'), 4000);
+    }, 1500);
+  };
   const [messages, setMessages] = useState<Record<string, any[]>>({
     '8912': [
       { id: 1, text: 'Hoi, ik zoek een nieuwe 55 inch tv voor mijn woonkamer. Welke raden jullie aan?', sender: 'customer', time: '10:14' },
@@ -168,6 +210,11 @@ export function LiveChatPortal() {
                   ) : (
                     <div className={`max-w-[70%] rounded-2xl px-5 py-3 shadow-sm ${msg.sender === 'agent' ? 'bg-[#FDCB2C] text-black rounded-tr-none' : 'bg-white border border-gray-200 text-gray-800 rounded-tl-none'}`}>
                       <p className="text-[15px]">{msg.text}</p>
+                      {msg.pdf && (
+                        <div className="mt-3 inline-flex items-center gap-2 bg-white/50 border border-black/10 text-black px-4 py-2 rounded-lg text-sm font-bold shadow-sm cursor-pointer hover:bg-white/80">
+                          <FileText size={16} /> {msg.pdf}
+                        </div>
+                      )}
                       <p className={`text-[10px] mt-1 text-right ${msg.sender === 'agent' ? 'text-gray-700' : 'text-gray-400'}`}>{msg.time}</p>
                     </div>
                   )}
