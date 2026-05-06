@@ -47,7 +47,7 @@ export function Dashboard({ onNavigate }: { onNavigate?: (view: string) => void 
     setSyncingTargets(true);
     setTimeout(() => {
       setSyncingTargets(false);
-      alert('Targets succesvol gesynchroniseerd met de SQL Database én gepusht naar alle 18 WhatsApp Groepsapps!');
+      alert('Targets succesvol gepusht naar E-mail Maick én alle 18 WhatsApp Groepsapps!');
     }, 1500);
   };
 
@@ -246,7 +246,7 @@ export function Dashboard({ onNavigate }: { onNavigate?: (view: string) => void 
                 <Target className="text-indigo-600" />
                 Dagelijkse Targets per Filiaal
               </h2>
-              <p className="text-sm text-gray-500 mt-1">Stel doelen in en synchroniseer met de centrale SQL server.</p>
+              <p className="text-sm text-gray-500 mt-1">Targets worden live berekend (VMS Omzet zelfde dag +1 vorig jaar).</p>
             </div>
             <button 
               onClick={handlePushToSQL}
@@ -256,9 +256,9 @@ export function Dashboard({ onNavigate }: { onNavigate?: (view: string) => void 
               }`}
             >
               {syncingTargets ? (
-                <><RefreshCw size={18} className="animate-spin" /> Bezig met Syncen...</>
+                <><RefreshCw size={18} className="animate-spin" /> Bezig met Pushen...</>
               ) : (
-                <><DatabaseIcon size={18} /> Push Targets naar SQL & Groepsapps</>
+                <><DatabaseIcon size={18} /> Push Targets naar Email Maick & WhatsApp Groepsapps</>
               )}
             </button>
           </div>
