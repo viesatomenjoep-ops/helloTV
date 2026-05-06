@@ -190,18 +190,18 @@ export function Dashboard({ onNavigate }: { onNavigate?: (view: string) => void 
             <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
               <div className="bg-white/40 p-4 rounded-xl shadow-sm">
                 <div className="text-xs font-bold text-yellow-900 mb-1 flex items-center gap-1"><MessageCircle size={14}/> ONLINE (CHAT)</div>
-                <div className="text-2xl font-black mb-1">Tom van Biene</div>
-                <div className="text-sm font-bold text-yellow-800">24 Orders</div>
+                <div className="text-2xl font-black mb-1">Daan van PopUp</div>
+                <div className="text-sm font-bold text-yellow-800">44 Orders</div>
               </div>
               <div className="bg-white/40 p-4 rounded-xl shadow-sm">
                 <div className="text-xs font-bold text-yellow-900 mb-1 flex items-center gap-1"><Store size={14}/> WINKEL</div>
-                <div className="text-2xl font-black mb-1">Mark de Vries</div>
-                <div className="text-sm font-bold text-yellow-800">18 Orders</div>
+                <div className="text-2xl font-black mb-1">Tom van Biene</div>
+                <div className="text-sm font-bold text-yellow-800">22 Orders</div>
               </div>
               <div className="bg-white/40 p-4 rounded-xl shadow-sm">
                 <div className="text-xs font-bold text-yellow-900 mb-1 flex items-center gap-1"><Mail size={14}/> TICKETS</div>
                 <div className="text-2xl font-black mb-1">Tim Swens</div>
-                <div className="text-sm font-bold text-yellow-800">12 Tickets</div>
+                <div className="text-sm font-bold text-yellow-800">88 Tickets</div>
               </div>
             </div>
           </div>
