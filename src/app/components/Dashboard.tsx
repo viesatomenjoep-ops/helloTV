@@ -164,7 +164,7 @@ export function Dashboard({ onNavigate }: { onNavigate?: (view: string) => void 
           {/* Hero: Totale Omzet Maand */}
           <div className="bg-gradient-to-br from-blue-600 to-blue-800 rounded-2xl shadow-xl p-8 text-white lg:col-span-1 flex flex-col justify-center">
             <h2 className="text-blue-200 font-bold mb-2 flex items-center gap-2 text-xl"><Euro size={24}/> Totale Omzet (Deze Maand)</h2>
-            <div className="text-5xl font-black mb-3">€{(stats?.totalRevenue || 10000000).toLocaleString('nl-NL', { minimumFractionDigits: 0 })}</div>
+            <div className="text-4xl font-black mb-3">€{(stats?.totalRevenue || 10000000).toLocaleString('nl-NL', { minimumFractionDigits: 0 })}</div>
             <div className="text-white font-bold bg-white/20 px-3 py-1 rounded-full inline-block self-start">+12.5% vs Vorige Maand</div>
           </div>
           
@@ -175,11 +175,11 @@ export function Dashboard({ onNavigate }: { onNavigate?: (view: string) => void 
             </div>
             <div>
               <h2 className="text-yellow-900 font-bold mb-1 uppercase tracking-wider text-sm flex items-center gap-2">Nummer 1 Verkoper Vandaag <span className="bg-white text-yellow-600 px-2 py-0.5 rounded text-xs font-bold animate-pulse">LIVE</span></h2>
-              <div className="text-4xl font-black mb-3">Lisa Jansen</div>
+              <div className="text-3xl font-black mb-3">Tom van Biene</div>
               <div className="flex flex-wrap gap-3 font-bold text-yellow-900">
                 <span className="bg-white/40 px-3 py-1.5 rounded-lg flex items-center gap-2 shadow-sm"><MessageCircle size={16}/> 24 Orders (Online)</span>
                 <span className="bg-white/40 px-3 py-1.5 rounded-lg flex items-center gap-2 shadow-sm"><Store size={16}/> Mark de Vries (18 Winkel)</span>
-                <span className="bg-white/40 px-3 py-1.5 rounded-lg flex items-center gap-2 shadow-sm"><Mail size={16}/> Tom Peters (12 Tickets)</span>
+                <span className="bg-white/40 px-3 py-1.5 rounded-lg flex items-center gap-2 shadow-sm"><Mail size={16}/> Tim Swens (12 Tickets)</span>
               </div>
             </div>
           </div>
@@ -194,18 +194,21 @@ export function Dashboard({ onNavigate }: { onNavigate?: (view: string) => void 
             >
               <div className={`${card.color} p-6 text-white`}>
                 <div className="flex items-center justify-between mb-4">
-                  <card.icon size={32} className="opacity-90" />
+                  <div className="flex items-center gap-2">
+                    <card.icon size={24} className="opacity-90" />
+                    <span className="font-bold text-lg">{card.title}</span>
+                  </div>
                   {card.change && (
                     <span className="text-xs font-semibold bg-white/20 px-3 py-1 rounded-full">
                       {card.change}
                     </span>
                   )}
                 </div>
-                <div className={`font-black mb-1 ${(card.title === 'Offertes' || card.title === 'Orders') ? 'text-6xl' : 'text-3xl'}`}>
+                <div className="text-3xl font-black mb-1">
                   {card.value}
                 </div>
-                <div className="text-sm opacity-90">
-                  {card.subtitle || card.title}
+                <div className="text-sm opacity-80">
+                  {card.subtitle}
                   {card.alert && <span className="ml-2">⚠️</span>}
                 </div>
               </div>
