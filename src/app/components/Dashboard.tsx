@@ -190,7 +190,7 @@ export function Dashboard({ onNavigate }: { onNavigate?: (view: string) => void 
             <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
               <div className="bg-white/40 p-4 rounded-xl shadow-sm">
                 <div className="text-xs font-bold text-yellow-900 mb-1 flex items-center gap-1"><MessageCircle size={14}/> ONLINE (CHAT)</div>
-                <div className="text-2xl font-black mb-1">Daan van PopUp</div>
+                <div className="text-2xl font-black mb-1">Daan van Poppel</div>
                 <div className="text-sm font-bold text-yellow-800">44 Orders</div>
               </div>
               <div className="bg-white/40 p-4 rounded-xl shadow-sm">
