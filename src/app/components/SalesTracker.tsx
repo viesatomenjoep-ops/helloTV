@@ -384,7 +384,7 @@ export function SalesTracker() {
             </div>
             <div>
               <p className="text-xs font-bold text-gray-400 uppercase">#1 Cleaner Verkoper</p>
-              <p className="text-xl font-black text-gray-900">Ton van Biene</p>
+              <p className="text-xl font-black text-gray-900">Tom van Biene</p>
               <p className="text-sm text-green-600 font-bold mt-1">389 verkocht (+90 pnt)</p>
             </div>
           </div>

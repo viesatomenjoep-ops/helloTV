@@ -438,11 +438,38 @@ export function HR() {
                   <p className="text-xs text-gray-500 font-bold uppercase mb-2">Voorbeeld Export (.csv)</p>
                   <div className="text-xs font-mono text-gray-600 space-y-1">
                     <p>Naam, ID, Code, Wachtwoord</p>
-                    <p>T. van Bienen, HTV-1, 921, X9k2Lp</p>
+                    <p>T. van Biene, HTV-1, 921, X9k2Lp</p>
                     <p>J. Morsink, HTV-2, 811, P2m9Xq</p>
                     <p>M. Jansen, HTV-3, 711, A7b4Yz</p>
                     <p>...</p>
                   </div>
+                </div>
+              </div>
+            </div>
+
+            {/* Quick Links & System Settings */}
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
+              <div className="bg-white border border-gray-200 p-6 rounded-xl shadow-sm">
+                <h3 className="font-bold text-lg text-gray-800 mb-4 flex items-center gap-2">
+                  <Zap className="text-yellow-500" /> Snelle Navigatie (Directe Links)
+                </h3>
+                <div className="grid grid-cols-2 gap-3">
+                  <button className="p-3 bg-blue-50 text-blue-700 font-bold rounded-lg hover:bg-blue-100 transition flex items-center justify-center gap-2">Sales & Trainers</button>
+                  <button className="p-3 bg-red-50 text-red-700 font-bold rounded-lg hover:bg-red-100 transition flex items-center justify-center gap-2">Reparatie</button>
+                  <button className="p-3 bg-green-50 text-green-700 font-bold rounded-lg hover:bg-green-100 transition flex items-center justify-center gap-2">Inkoop & Voorraad</button>
+                  <button className="p-3 bg-purple-50 text-purple-700 font-bold rounded-lg hover:bg-purple-100 transition flex items-center justify-center gap-2">Transport & Logistiek</button>
+                </div>
+              </div>
+
+              <div className="bg-white border border-gray-200 p-6 rounded-xl shadow-sm">
+                <h3 className="font-bold text-lg text-gray-800 mb-4 flex items-center gap-2">
+                  <Lock className="text-gray-600" /> Systeeminstellingen
+                </h3>
+                <p className="text-sm text-gray-500 mb-4">Beheer API keys, master SQL configuraties en toegang voor het MyC-Administrator portaal.</p>
+                <div className="flex gap-3">
+                  <button onClick={() => alert('Systeeminstellingen Master SQL verbinding geopend...')} className="px-4 py-2 bg-gray-900 text-white font-bold rounded-lg hover:bg-black transition w-full flex justify-center items-center gap-2">
+                    <Database size={16} /> Open Configuratiescherm
+                  </button>
                 </div>
               </div>
             </div>
@@ -616,7 +643,7 @@ export function HR() {
                 <label className="block text-sm font-semibold text-gray-700 mb-2">Medewerker</label>
                 <input 
                   type="text" 
-                  placeholder="Naam van medewerker (bijv. Tom van Bienen)" 
+                  placeholder="Naam van medewerker (bijv. Tom van Biene)" 
                   required 
                   className="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-xl focus:ring-2 focus:ring-[#FDCB2C] outline-none"
                 />

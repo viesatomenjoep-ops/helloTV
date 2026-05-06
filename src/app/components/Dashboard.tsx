@@ -168,18 +168,27 @@ export function Dashboard({ onNavigate }: { onNavigate?: (view: string) => void 
             <div className="text-white font-bold bg-white/20 px-3 py-1 rounded-full inline-block self-start">+12.5% vs Vorige Maand</div>
           </div>
           
-          {/* Hero: Nummer 1 Verkoper */}
-          <div className="bg-gradient-to-br from-[#FDCB2C] to-yellow-500 rounded-2xl shadow-xl p-8 text-gray-900 lg:col-span-2 flex items-center gap-6">
-            <div className="bg-white p-6 rounded-full shadow-lg">
-              <Trophy size={56} className="text-yellow-500" />
-            </div>
-            <div>
-              <h2 className="text-yellow-900 font-bold mb-1 uppercase tracking-wider text-sm flex items-center gap-2">Nummer 1 Verkoper Vandaag <span className="bg-white text-yellow-600 px-2 py-0.5 rounded text-xs font-bold animate-pulse">LIVE</span></h2>
-              <div className="text-3xl font-black mb-3">Tom van Biene</div>
-              <div className="flex flex-wrap gap-3 font-bold text-yellow-900">
-                <span className="bg-white/40 px-3 py-1.5 rounded-lg flex items-center gap-2 shadow-sm"><MessageCircle size={16}/> 24 Orders (Online)</span>
-                <span className="bg-white/40 px-3 py-1.5 rounded-lg flex items-center gap-2 shadow-sm"><Store size={16}/> Mark de Vries (18 Winkel)</span>
-                <span className="bg-white/40 px-3 py-1.5 rounded-lg flex items-center gap-2 shadow-sm"><Mail size={16}/> Tim Swens (12 Tickets)</span>
+          {/* Hero: Top Verkopers */}
+          <div className="bg-gradient-to-br from-[#FDCB2C] to-yellow-500 rounded-2xl shadow-xl p-8 text-gray-900 lg:col-span-2">
+            <h2 className="text-yellow-900 font-bold mb-4 uppercase tracking-wider text-sm flex items-center gap-2">
+              <Trophy size={18} className="text-yellow-900" />
+              Nummer 1 Verkopers Vandaag <span className="bg-white text-yellow-600 px-2 py-0.5 rounded text-xs font-bold animate-pulse">LIVE</span>
+            </h2>
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+              <div className="bg-white/40 p-4 rounded-xl shadow-sm">
+                <div className="text-xs font-bold text-yellow-900 mb-1 flex items-center gap-1"><MessageCircle size={14}/> ONLINE (CHAT)</div>
+                <div className="text-2xl font-black mb-1">Tom van Biene</div>
+                <div className="text-sm font-bold text-yellow-800">24 Orders</div>
+              </div>
+              <div className="bg-white/40 p-4 rounded-xl shadow-sm">
+                <div className="text-xs font-bold text-yellow-900 mb-1 flex items-center gap-1"><Store size={14}/> WINKEL</div>
+                <div className="text-2xl font-black mb-1">Mark de Vries</div>
+                <div className="text-sm font-bold text-yellow-800">18 Orders</div>
+              </div>
+              <div className="bg-white/40 p-4 rounded-xl shadow-sm">
+                <div className="text-xs font-bold text-yellow-900 mb-1 flex items-center gap-1"><Mail size={14}/> TICKETS</div>
+                <div className="text-2xl font-black mb-1">Tim Swens</div>
+                <div className="text-sm font-bold text-yellow-800">12 Tickets</div>
               </div>
             </div>
           </div>
