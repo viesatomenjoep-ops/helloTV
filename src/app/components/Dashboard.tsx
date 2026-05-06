@@ -23,18 +23,31 @@ export function Dashboard({ onNavigate }: { onNavigate?: (view: string) => void 
   // Targets State
   const [syncingTargets, setSyncingTargets] = useState(false);
   const filiaalTargets = [
+    { name: 'Alkmaar', target: 14000, current: 12100 },
     { name: 'Amsterdam', target: 25000, current: 18400 },
-    { name: 'Rotterdam', target: 22000, current: 23100 },
-    { name: 'Eindhoven', target: 18000, current: 12500 },
-    { name: 'Breda', target: 15000, current: 16200 },
-    { name: 'Utrecht', target: 20000, current: 8900 }
+    { name: 'Apeldoorn', target: 12000, current: 9500 },
+    { name: 'Arnhem', target: 15000, current: 16200 },
+    { name: 'Breda', target: 18000, current: 19100 },
+    { name: 'Cruquius', target: 11000, current: 11500 },
+    { name: 'Den Bosch', target: 16000, current: 14200 },
+    { name: 'Den Haag', target: 21000, current: 18900 },
+    { name: 'Eindhoven', target: 22000, current: 24500 },
+    { name: 'Groningen', target: 13000, current: 11200 },
+    { name: 'Heerlen', target: 9000, current: 7500 },
+    { name: 'Leeuwarden', target: 8000, current: 8100 },
+    { name: 'Nijmegen', target: 14000, current: 12800 },
+    { name: 'Rotterdam', target: 28000, current: 29500 },
+    { name: 'Tilburg', target: 15000, current: 14900 },
+    { name: 'Utrecht', target: 24000, current: 21000 },
+    { name: 'Zoeterwoude', target: 10000, current: 9200 },
+    { name: 'Zwolle', target: 12000, current: 13500 },
   ];
 
   const handlePushToSQL = () => {
     setSyncingTargets(true);
     setTimeout(() => {
       setSyncingTargets(false);
-      alert('Targets succesvol gesynchroniseerd met de SQL Database!');
+      alert('Targets succesvol gesynchroniseerd met de SQL Database én gepusht naar alle 18 WhatsApp Groepsapps!');
     }, 1500);
   };
 
@@ -245,7 +258,7 @@ export function Dashboard({ onNavigate }: { onNavigate?: (view: string) => void 
               {syncingTargets ? (
                 <><RefreshCw size={18} className="animate-spin" /> Bezig met Syncen...</>
               ) : (
-                <><DatabaseIcon size={18} /> Push Targets naar SQL</>
+                <><DatabaseIcon size={18} /> Push Targets naar SQL & Groepsapps</>
               )}
             </button>
           </div>
