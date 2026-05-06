@@ -23,8 +23,7 @@ import {
   Building2,
   ShieldAlert,
   LogOut,
-  Store,
-  Presentation
+  Store
 } from 'lucide-react';
 import { Dashboard } from './components/Dashboard';
 import { CRM } from './components/CRM';
@@ -46,10 +45,9 @@ import { Reparatie } from './components/Reparatie';
 import { MagicLinks } from './components/MagicLinks';
 import { HelloTVLogo } from './components/ui/HelloTVLogo';
 import { MaickPortal } from './components/MaickPortal';
-import { SalesPitch } from './components/SalesPitch';
 import { initDemoData } from '../utils/initDemoData';
 
-type View = 'dashboard' | 'maick' | 'crm' | 'sales' | 'inventory' | 'quotes' | 'orders' | 'showcase' | 'hr' | 'shiftbase' | 'trainers' | 'transport' | 'media' | 'vendit' | 'reviews' | 'website' | 'reparatie' | 'magiclinks' | 'storeportal' | 'salespitch';
+type View = 'dashboard' | 'maick' | 'crm' | 'sales' | 'inventory' | 'quotes' | 'orders' | 'showcase' | 'hr' | 'shiftbase' | 'trainers' | 'transport' | 'media' | 'vendit' | 'reviews' | 'website' | 'reparatie' | 'magiclinks' | 'storeportal';
 
 export default function App() {
   const [isAuthenticated, setIsAuthenticated] = useState(true);
@@ -63,7 +61,6 @@ export default function App() {
   }, []);
 
   const menuItems = [
-    { id: 'salespitch', label: 'Sales Pitch (11-11)', icon: Presentation },
     { id: 'maick', label: 'Maick Portal', icon: ShieldAlert },
     { id: 'dashboard', label: 'Dashboard', icon: Home },
     { id: 'storeportal', label: '18 Filialen (Winkels)', icon: Store },
@@ -107,9 +104,7 @@ export default function App() {
     );
   }
 
-  if (currentView === 'salespitch') {
-    return <SalesPitch onClose={() => setCurrentView('dashboard')} />;
-  }
+
 
   return (
     <div className="flex h-[100dvh] w-full max-w-[100vw] overflow-x-hidden bg-white font-sans">
