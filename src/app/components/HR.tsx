@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { MapPin, Send, CheckCircle, Car, FileText, Lock, Download, Mail, RefreshCw, Users, Database, Zap, AlertTriangle } from 'lucide-react';
+import { MapPin, Send, CheckCircle, Car, FileText, Lock, Download, Mail, RefreshCw, Users, Database, Zap, AlertTriangle, Plus } from 'lucide-react';
 
 import { EMPLOYEES, getMedewerkerByCode } from '../../utils/employees';
 
@@ -25,6 +25,8 @@ export function HR() {
   // Admin Paneel State
   const [isExporting, setIsExporting] = useState(false);
   const [exportSuccess, setExportSuccess] = useState(false);
+  const [showAddEmployeeForm, setShowAddEmployeeForm] = useState(false);
+  const [newEmployee, setNewEmployee] = useState({ name: '', address: '', bsn: '', generatedCode: '' });
 
   const calculateDistance = () => {
     if (formData.postcode && formData.huisnummer) {
@@ -70,6 +72,22 @@ export function HR() {
       setExportSuccess(true);
       setTimeout(() => setExportSuccess(false), 5000);
     }, 2000);
+  };
+
+  const handleOpenAddForm = () => {
+    setNewEmployee({
+      name: '',
+      address: '',
+      bsn: '',
+      generatedCode: Math.floor(100 + Math.random() * 900).toString()
+    });
+    setShowAddEmployeeForm(true);
+  };
+
+  const handleAddEmployeeSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    alert(`Nieuwe verkoper ${newEmployee.name} succesvol toegevoegd met unieke code ${newEmployee.generatedCode}!`);
+    setShowAddEmployeeForm(false);
   };
 
   return (
@@ -480,10 +498,78 @@ export function HR() {
             </div>
 
             <div className="mt-8">
-              <h3 className="text-xl font-bold text-gray-800 mb-4 flex items-center gap-2">
-                <Users className="text-blue-600" />
-                Medewerker Database ({EMPLOYEES.length})
-              </h3>
+              <div className="flex justify-between items-center mb-4">
+                <h3 className="text-xl font-bold text-gray-800 flex items-center gap-2">
+                  <Users className="text-blue-600" />
+                  Medewerker Database ({EMPLOYEES.length})
+                </h3>
+                <button 
+                  onClick={handleOpenAddForm}
+                  className="px-4 py-2 bg-blue-600 text-white font-bold rounded-lg flex items-center gap-2 hover:bg-blue-700 transition-colors shadow-sm"
+                >
+                  <Plus size={18} /> Nieuwe Toevoegen
+                </button>
+              </div>
+
+              {showAddEmployeeForm && (
+                <div className="bg-blue-50 border border-blue-200 p-6 rounded-xl mb-6">
+                  <h4 className="text-lg font-bold text-blue-900 mb-4">Nieuwe Verkoper Toevoegen</h4>
+                  <form onSubmit={handleAddEmployeeSubmit} className="space-y-4">
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                      <div>
+                        <label className="block text-sm font-semibold text-gray-700 mb-1">Volledige Naam</label>
+                        <input 
+                          type="text" 
+                          required 
+                          value={newEmployee.name}
+                          onChange={(e) => setNewEmployee({...newEmployee, name: e.target.value})}
+                          className="w-full px-4 py-2 border border-gray-300 rounded-lg outline-none focus:ring-2 focus:ring-blue-500"
+                        />
+                      </div>
+                      <div>
+                        <label className="block text-sm font-semibold text-gray-700 mb-1">Automatisch Gegenereerde Code</label>
+                        <input 
+                          type="text" 
+                          readOnly 
+                          value={newEmployee.generatedCode}
+                          className="w-full px-4 py-2 bg-gray-100 border border-gray-300 rounded-lg font-mono font-bold text-gray-600 outline-none"
+                        />
+                      </div>
+                    </div>
+                    <div>
+                      <label className="block text-sm font-semibold text-gray-700 mb-1">Adres (Straat, Huisnummer, Woonplaats)</label>
+                      <input 
+                        type="text" 
+                        required 
+                        value={newEmployee.address}
+                        onChange={(e) => setNewEmployee({...newEmployee, address: e.target.value})}
+                        className="w-full px-4 py-2 border border-gray-300 rounded-lg outline-none focus:ring-2 focus:ring-blue-500"
+                      />
+                    </div>
+                    <div>
+                      <label className="block text-sm font-semibold text-gray-700 mb-1">BSN-nummer</label>
+                      <input 
+                        type="text" 
+                        required 
+                        maxLength={9}
+                        placeholder="123456789"
+                        value={newEmployee.bsn}
+                        onChange={(e) => setNewEmployee({...newEmployee, bsn: e.target.value})}
+                        className="w-full px-4 py-2 border border-gray-300 rounded-lg outline-none focus:ring-2 focus:ring-blue-500 font-mono tracking-wider"
+                      />
+                    </div>
+                    <div className="flex gap-4 pt-2">
+                      <button type="submit" className="px-6 py-2 bg-blue-600 text-white font-bold rounded-lg hover:bg-blue-700 transition-colors">
+                        Opslaan in Database
+                      </button>
+                      <button type="button" onClick={() => setShowAddEmployeeForm(false)} className="px-6 py-2 bg-gray-200 text-gray-700 font-bold rounded-lg hover:bg-gray-300 transition-colors">
+                        Annuleren
+                      </button>
+                    </div>
+                  </form>
+                </div>
+              )}
+
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
                 {EMPLOYEES.map((medewerker) => (
                   <div key={medewerker.code} className="flex justify-between items-center p-4 bg-gray-50 rounded-xl border border-gray-100">

@@ -1,10 +1,51 @@
 import React, { useState, useEffect } from 'react';
-import { Package, Plus, AlertTriangle, TrendingDown, Edit2, MessageSquare, Mail, ShoppingCart, Truck, CheckCircle, Building, Zap } from 'lucide-react';
+import { Package, Plus, AlertTriangle, TrendingDown, Edit2, MessageSquare, Mail, ShoppingCart, Truck, CheckCircle, Building, Zap, ClipboardCheck, RefreshCw } from 'lucide-react';
 import { api } from '../../utils/api';
 import { mockInventory } from '../../utils/mockInventory';
 
 export function Inventory() {
-  const [activeTab, setActiveTab] = useState<'voorraad' | 'inkoop' | 'voorraad_per_filiaal'>('voorraad');
+  const [activeTab, setActiveTab] = useState<'voorraad' | 'inkoop' | 'voorraad_per_filiaal' | 'vloercheck'>('voorraad');
+  const [autoSyncStatus, setAutoSyncStatus] = useState<'idle' | 'syncing' | 'success'>('idle');
+
+  const bredaStock = [
+    { model: '55LS03F', vms: 6, phys: 6, free: 6 },
+    { model: '55QN93F', vms: 3, phys: 5, free: 3 },
+    { model: '55S90F', vms: 0, phys: 0, free: 0 },
+    { model: '55S93F', vms: 7, phys: 7, free: 7 },
+    { model: '55S95F', vms: 9, phys: 12, free: 7 },
+    { model: '65LS03F', vms: 6, phys: 7, free: 7 },
+    { model: '65QN93F', vms: 3, phys: 3, free: 3 },
+    { model: '65S90F', vms: 2, phys: 1, free: 0 },
+    { model: '65S95F', vms: 13, phys: 11, free: 8 },
+    { model: 'OLED48G5', vms: 1, phys: 1, free: 1 },
+    { model: 'OLED55C5', vms: 6, phys: 8, free: 7 },
+    { model: 'OLED55G5', vms: 2, phys: 2, free: 2 },
+    { model: 'OLED55G6', vms: 1, phys: 1, free: 1 },
+    { model: 'OLED65C5', vms: 6, phys: 9, free: 7 },
+    { model: 'OLED65G5', vms: 9, phys: 10, free: 9 },
+    { model: '32S5L', vms: 15, phys: 15, free: 15 },
+    { model: '43P79K', vms: 6, phys: 6, free: 6 },
+    { model: '43P7L', vms: 3, phys: 3, free: 3 },
+    { model: '50P79K', vms: 2, phys: 2, free: 2 },
+    { model: '55P89K', vms: -1, phys: 0, free: 0 },
+    { model: '55C69K', vms: -3, phys: 0, free: 0 },
+    { model: '65C69K', vms: 1, phys: 2, free: 2 },
+    { model: '43PUS9000', vms: 3, phys: 3, free: 3 },
+    { model: '50PUS9000', vms: 1, phys: 1, free: 0 },
+    { model: '55PUS9000', vms: 3, phys: 3, free: 3 },
+    { model: '65PUS9000', vms: 2, phys: 2, free: 2 },
+    { model: '55OLED810', vms: 5, phys: 5, free: 4 },
+    { model: '65OLED810', vms: 3, phys: 5, free: 5 },
+    { model: 'HW-Q800F', vms: 15, phys: 15, free: 15 },
+    { model: 'HW-Q930F', vms: 9, phys: 9, free: 8 },
+    { model: 'HW-Q990F', vms: 12, phys: 13, free: 11 },
+    { model: 'Arc ultra zwart', vms: 7, phys: 6, free: 6 }
+  ];
+
+  const handleAutoSync = () => {
+    setAutoSyncStatus('syncing');
+    setTimeout(() => setAutoSyncStatus('success'), 2000);
+  };
   const [items, setItems] = useState<any[]>(mockInventory);
   
   // Voorraad State
@@ -133,6 +174,14 @@ export function Inventory() {
             }`}
           >
             <Building size={18} /> Voorraad per Filiaal & DC
+          </button>
+          <button
+            onClick={() => setActiveTab('vloercheck')}
+            className={`px-6 py-3 font-bold rounded-t-xl transition-colors flex items-center gap-2 ${
+              activeTab === 'vloercheck' ? 'bg-[#1D6F42] text-white' : 'bg-white text-gray-500 hover:bg-gray-100'
+            }`}
+          >
+            <ClipboardCheck size={18} /> Vloercheck Breda
           </button>
         </div>
 
@@ -752,6 +801,80 @@ export function Inventory() {
                   </div>
                 </div>
               </div>
+            </div>
+          </div>
+        )}
+
+        {/* Tab 4: Vloercheck Breda */}
+        {activeTab === 'vloercheck' && (
+          <div className="bg-white rounded-2xl shadow-sm border border-gray-100 p-8">
+            <div className="flex justify-between items-center mb-6">
+              <div>
+                <h2 className="text-2xl font-bold text-gray-800 flex items-center gap-2">
+                  <ClipboardCheck className="text-[#1D6F42]" /> 
+                  Voorraadverschillen (Vloercheck Breda)
+                </h2>
+                <p className="text-gray-500">Controleer en automatiseer correcties tussen VMS en fysieke winkelvoorraad.</p>
+              </div>
+              <button 
+                onClick={handleAutoSync}
+                disabled={autoSyncStatus === 'syncing' || autoSyncStatus === 'success'}
+                className={`px-6 py-3 font-bold rounded-xl flex items-center gap-2 transition-all shadow-md ${
+                  autoSyncStatus === 'success' ? 'bg-green-100 text-green-800 cursor-default' :
+                  autoSyncStatus === 'syncing' ? 'bg-blue-100 text-blue-800 cursor-wait' :
+                  'bg-[#1D6F42] hover:bg-green-800 text-white'
+                }`}
+              >
+                {autoSyncStatus === 'success' ? <><CheckCircle size={18} /> VMS Gesynchroniseerd!</> :
+                 autoSyncStatus === 'syncing' ? <><RefreshCw size={18} className="animate-spin" /> Bezig met Syncen...</> :
+                 <><RefreshCw size={18} /> Automatiseer VMS Correctie</>}
+              </button>
+            </div>
+
+            <div className="overflow-x-auto rounded-xl border border-gray-200">
+              <table className="w-full text-left text-sm">
+                <thead className="bg-gray-50 border-b border-gray-200">
+                  <tr>
+                    <th className="p-4 font-bold text-gray-700">Model</th>
+                    <th className="p-4 font-bold text-gray-700 text-center">VMS Voorraad</th>
+                    <th className="p-4 font-bold text-gray-700 text-center">Fysieke Voorraad</th>
+                    <th className="p-4 font-bold text-gray-700 text-center">Vrije Voorraad</th>
+                    <th className="p-4 font-bold text-gray-700 text-center">Status</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {bredaStock.map((item, idx) => {
+                    const hasDifference = item.vms !== item.phys;
+                    const isNegative = item.vms < 0;
+                    const isSynced = autoSyncStatus === 'success';
+                    return (
+                      <tr key={idx} className={`border-b border-gray-100 ${hasDifference && !isSynced ? 'bg-red-50' : 'hover:bg-gray-50'}`}>
+                        <td className="p-4 font-bold text-gray-900">{item.model}</td>
+                        <td className={`p-4 text-center font-mono ${isNegative ? 'text-red-600 font-bold' : ''}`}>
+                          {isSynced && hasDifference ? item.phys : item.vms}
+                        </td>
+                        <td className="p-4 text-center font-mono font-bold text-gray-900">{item.phys}</td>
+                        <td className="p-4 text-center text-gray-600">{item.free}</td>
+                        <td className="p-4 text-center">
+                          {isSynced ? (
+                            <span className="px-2 py-1 bg-green-100 text-green-700 rounded text-xs font-bold flex items-center justify-center gap-1">
+                              <CheckCircle size={12} /> Correct
+                            </span>
+                          ) : hasDifference ? (
+                            <span className="px-2 py-1 bg-red-100 text-red-700 rounded text-xs font-bold flex items-center justify-center gap-1">
+                              <AlertTriangle size={12} /> Verschil: {item.phys - item.vms > 0 ? '+' : ''}{item.phys - item.vms}
+                            </span>
+                          ) : (
+                            <span className="px-2 py-1 bg-gray-100 text-gray-700 rounded text-xs font-bold flex items-center justify-center gap-1">
+                              <CheckCircle size={12} className="text-gray-400" /> Klopt
+                            </span>
+                          )}
+                        </td>
+                      </tr>
+                    );
+                  })}
+                </tbody>
+              </table>
             </div>
           </div>
         )}
