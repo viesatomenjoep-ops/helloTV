@@ -6,8 +6,9 @@ import { mockInventory } from '../../utils/mockInventory';
 export function Inventory() {
   const [activeTab, setActiveTab] = useState<'voorraad' | 'inkoop' | 'voorraad_per_filiaal' | 'vloercheck' | 'odm'>('voorraad');
   const [autoSyncStatus, setAutoSyncStatus] = useState<'idle' | 'syncing' | 'success'>('idle');
+  const [vloercheckLocation, setVloercheckLocation] = useState('Breda');
 
-  const bredaStock = [
+  const [vloercheckStock, setVloercheckStock] = useState([
     { model: '55LS03F', vms: 6, phys: 6, free: 6 },
     { model: '55QN93F', vms: 3, phys: 5, free: 3 },
     { model: '55S90F', vms: 0, phys: 0, free: 0 },
@@ -40,11 +41,22 @@ export function Inventory() {
     { model: 'HW-Q930F', vms: 9, phys: 9, free: 8 },
     { model: 'HW-Q990F', vms: 12, phys: 13, free: 11 },
     { model: 'Arc ultra zwart', vms: 7, phys: 6, free: 6 }
-  ];
+  ]);
+
+  const handlePhysicalStockChange = (idx: number, newValue: number) => {
+    const updated = [...vloercheckStock];
+    updated[idx].phys = newValue;
+    setVloercheckStock(updated);
+    setAutoSyncStatus('idle'); // Reset auto sync since values changed manually
+  };
 
   const handleAutoSync = () => {
     setAutoSyncStatus('syncing');
-    setTimeout(() => setAutoSyncStatus('success'), 2000);
+    setTimeout(() => {
+      // Automate VMS Correction: set VMS = Phys
+      setVloercheckStock(prev => prev.map(item => ({ ...item, vms: item.phys })));
+      setAutoSyncStatus('success');
+    }, 2000);
   };
   const [items, setItems] = useState<any[]>(mockInventory);
 
@@ -204,7 +216,7 @@ export function Inventory() {
               activeTab === 'vloercheck' ? 'bg-[#1D6F42] text-white' : 'bg-white text-gray-500 hover:bg-gray-100'
             }`}
           >
-            <ClipboardCheck size={18} /> Vloercheck Breda
+            <ClipboardCheck size={18} /> Vloercheck
           </button>
           <button
             onClick={() => setActiveTab('odm')}
@@ -836,30 +848,53 @@ export function Inventory() {
           </div>
         )}
 
-        {/* Tab 4: Vloercheck Breda */}
+        {/* Tab 4: Vloercheck */}
         {activeTab === 'vloercheck' && (
           <div className="bg-white rounded-2xl shadow-sm border border-gray-100 p-8">
-            <div className="flex justify-between items-center mb-6">
+            <div className="flex flex-col md:flex-row justify-between items-start md:items-center mb-6 gap-4">
               <div>
                 <h2 className="text-2xl font-bold text-gray-800 flex items-center gap-2">
                   <ClipboardCheck className="text-[#1D6F42]" /> 
-                  Voorraadverschillen (Vloercheck Breda)
+                  Voorraadverschillen (Vloercheck {vloercheckLocation})
                 </h2>
                 <p className="text-gray-500">Controleer en automatiseer correcties tussen VMS en fysieke winkelvoorraad.</p>
               </div>
-              <button 
-                onClick={handleAutoSync}
-                disabled={autoSyncStatus === 'syncing' || autoSyncStatus === 'success'}
-                className={`px-6 py-3 font-bold rounded-xl flex items-center gap-2 transition-all shadow-md ${
-                  autoSyncStatus === 'success' ? 'bg-green-100 text-green-800 cursor-default' :
-                  autoSyncStatus === 'syncing' ? 'bg-blue-100 text-blue-800 cursor-wait' :
-                  'bg-[#1D6F42] hover:bg-green-800 text-white'
-                }`}
-              >
-                {autoSyncStatus === 'success' ? <><CheckCircle size={18} /> VMS Gesynchroniseerd!</> :
-                 autoSyncStatus === 'syncing' ? <><RefreshCw size={18} className="animate-spin" /> Bezig met Syncen...</> :
-                 <><RefreshCw size={18} /> Automatiseer VMS Correctie</>}
-              </button>
+              
+              <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-3 w-full md:w-auto">
+                <select 
+                  value={vloercheckLocation}
+                  onChange={(e) => {
+                    setVloercheckLocation(e.target.value);
+                    setAutoSyncStatus('idle'); // Reset sync status when changing location
+                  }}
+                  className="px-4 py-3 bg-gray-50 border border-gray-200 rounded-xl font-bold text-gray-700 outline-none focus:ring-2 focus:ring-[#1D6F42]"
+                >
+                  <optgroup label="Filialen">
+                    {LOCATIONS.filter(loc => !loc.includes('DC')).map(loc => (
+                      <option key={loc} value={loc}>{loc}</option>
+                    ))}
+                  </optgroup>
+                  <optgroup label="Logistieke Centra">
+                    {LOCATIONS.filter(loc => loc.includes('DC')).map(loc => (
+                      <option key={loc} value={loc}>{loc}</option>
+                    ))}
+                  </optgroup>
+                </select>
+
+                <button 
+                  onClick={handleAutoSync}
+                  disabled={autoSyncStatus === 'syncing' || autoSyncStatus === 'success'}
+                  className={`px-6 py-3 font-bold rounded-xl flex items-center justify-center gap-2 transition-all shadow-md ${
+                    autoSyncStatus === 'success' ? 'bg-green-100 text-green-800 cursor-default' :
+                    autoSyncStatus === 'syncing' ? 'bg-blue-100 text-blue-800 cursor-wait' :
+                    'bg-[#1D6F42] hover:bg-green-800 text-white'
+                  }`}
+                >
+                  {autoSyncStatus === 'success' ? <><CheckCircle size={18} /> VMS Gesynchroniseerd!</> :
+                   autoSyncStatus === 'syncing' ? <><RefreshCw size={18} className="animate-spin" /> Bezig met Syncen...</> :
+                   <><RefreshCw size={18} /> Automatiseer VMS Correctie</>}
+                </button>
+              </div>
             </div>
 
             <div className="overflow-x-auto rounded-xl border border-gray-200">
@@ -874,7 +909,7 @@ export function Inventory() {
                   </tr>
                 </thead>
                 <tbody>
-                  {bredaStock.map((item, idx) => {
+                  {vloercheckStock.map((item, idx) => {
                     const hasDifference = item.vms !== item.phys;
                     const isNegative = item.vms < 0;
                     const isSynced = autoSyncStatus === 'success';
@@ -884,7 +919,14 @@ export function Inventory() {
                         <td className={`p-4 text-center font-mono ${isNegative ? 'text-red-600 font-bold' : ''}`}>
                           {isSynced && hasDifference ? item.phys : item.vms}
                         </td>
-                        <td className="p-4 text-center font-mono font-bold text-gray-900">{item.phys}</td>
+                        <td className="p-4 text-center">
+                          <input 
+                            type="number" 
+                            className="w-20 px-2 py-1 border border-gray-300 rounded font-mono font-bold text-center outline-none focus:ring-2 focus:ring-[#1D6F42] bg-white shadow-sm"
+                            value={item.phys}
+                            onChange={(e) => handlePhysicalStockChange(idx, Number(e.target.value))}
+                          />
+                        </td>
                         <td className="p-4 text-center text-gray-600">{item.free}</td>
                         <td className="p-4 text-center">
                           {isSynced ? (
