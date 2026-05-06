@@ -4,7 +4,7 @@ import { api } from '../../utils/api';
 import { mockInventory } from '../../utils/mockInventory';
 
 export function Inventory() {
-  const [activeTab, setActiveTab] = useState<'voorraad' | 'inkoop' | 'voorraad_per_filiaal' | 'vloercheck'>('voorraad');
+  const [activeTab, setActiveTab] = useState<'voorraad' | 'inkoop' | 'voorraad_per_filiaal' | 'vloercheck' | 'odm'>('voorraad');
   const [autoSyncStatus, setAutoSyncStatus] = useState<'idle' | 'syncing' | 'success'>('idle');
 
   const bredaStock = [
@@ -47,6 +47,29 @@ export function Inventory() {
     setTimeout(() => setAutoSyncStatus('success'), 2000);
   };
   const [items, setItems] = useState<any[]>(mockInventory);
+
+  // ODM State
+  const [odmStock, setOdmStock] = useState([
+    { id: 1, model: 'Samsung QE65S95C', condition: 'Accessoire mist', quantity: 2, location: 'Rotterdam', discount: 15 },
+    { id: 2, model: 'LG OLED55G3', condition: 'Schade', quantity: 1, location: 'Breda', discount: 25 },
+    { id: 3, model: 'Sony XR-65A95L', condition: 'Reparaties', quantity: 1, location: 'DC Duiven', discount: 30 },
+    { id: 4, model: 'Philips 55OLED808', condition: 'Als Nieuw', quantity: 3, location: 'Amsterdam', discount: 10 },
+  ]);
+
+  const [odmForm, setOdmForm] = useState({
+    model: '',
+    condition: 'Als Nieuw',
+    quantity: 1,
+    location: 'DC Duiven',
+    discount: 10
+  });
+
+  const handleAddOdm = (e: React.FormEvent) => {
+    e.preventDefault();
+    setOdmStock([...odmStock, { ...odmForm, id: Date.now() }]);
+    setOdmForm({ model: '', condition: 'Als Nieuw', quantity: 1, location: 'DC Duiven', discount: 10 });
+    alert('Open Doos Model succesvol toegevoegd aan de voorraad!');
+  };
   
   // Voorraad State
   const [showForm, setShowForm] = useState(false);
@@ -182,6 +205,14 @@ export function Inventory() {
             }`}
           >
             <ClipboardCheck size={18} /> Vloercheck Breda
+          </button>
+          <button
+            onClick={() => setActiveTab('odm')}
+            className={`px-6 py-3 font-bold rounded-t-xl transition-colors flex items-center gap-2 ${
+              activeTab === 'odm' ? 'bg-[#ff6b6b] text-white' : 'bg-white text-gray-500 hover:bg-gray-100'
+            }`}
+          >
+            <Package size={18} /> Open Doos (ODM)
           </button>
         </div>
 
@@ -875,6 +906,125 @@ export function Inventory() {
                   })}
                 </tbody>
               </table>
+            </div>
+          </div>
+        )}
+
+        {/* Tab 5: Open Doos Modellen (ODM) */}
+        {activeTab === 'odm' && (
+          <div className="bg-white rounded-2xl shadow-sm border border-gray-100 p-8">
+            <h2 className="text-2xl font-bold text-gray-800 mb-2">Open Doos Modellen (ODM) Beheer</h2>
+            <p className="text-gray-500 mb-6">Registreer en beheer geretourneerde producten, reparaties en producten met lichte schade of ontbrekende accessoires.</p>
+
+            <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+              <div className="lg:col-span-1 bg-gray-50 rounded-xl border border-gray-200 p-6">
+                <h3 className="text-lg font-bold text-gray-900 mb-4">Nieuwe ODM Registreren</h3>
+                <form onSubmit={handleAddOdm} className="space-y-4">
+                  <div>
+                    <label className="block text-sm font-semibold text-gray-700 mb-1">Model / Product</label>
+                    <input 
+                      type="text" 
+                      required 
+                      value={odmForm.model}
+                      onChange={(e) => setOdmForm({...odmForm, model: e.target.value})}
+                      placeholder="Bijv. Samsung 65QN90C"
+                      className="w-full px-4 py-2 border border-gray-300 rounded-lg outline-none focus:ring-2 focus:ring-[#ff6b6b]"
+                    />
+                  </div>
+                  <div>
+                    <label className="block text-sm font-semibold text-gray-700 mb-1">Status / Conditie</label>
+                    <select 
+                      value={odmForm.condition}
+                      onChange={(e) => setOdmForm({...odmForm, condition: e.target.value})}
+                      className="w-full px-4 py-2 border border-gray-300 rounded-lg outline-none focus:ring-2 focus:ring-[#ff6b6b]"
+                    >
+                      <option value="Als Nieuw">Als Nieuw</option>
+                      <option value="Accessoire mist">Accessoire mist</option>
+                      <option value="Schade">Schade (bijv. krasjes)</option>
+                      <option value="Reparaties">Reparaties</option>
+                    </select>
+                  </div>
+                  <div className="grid grid-cols-2 gap-4">
+                    <div>
+                      <label className="block text-sm font-semibold text-gray-700 mb-1">Aantal</label>
+                      <input 
+                        type="number" 
+                        min="1"
+                        required 
+                        value={odmForm.quantity}
+                        onChange={(e) => setOdmForm({...odmForm, quantity: Number(e.target.value)})}
+                        className="w-full px-4 py-2 border border-gray-300 rounded-lg outline-none focus:ring-2 focus:ring-[#ff6b6b]"
+                      />
+                    </div>
+                    <div>
+                      <label className="block text-sm font-semibold text-gray-700 mb-1">Korting (%)</label>
+                      <input 
+                        type="number" 
+                        min="0"
+                        max="100"
+                        required 
+                        value={odmForm.discount}
+                        onChange={(e) => setOdmForm({...odmForm, discount: Number(e.target.value)})}
+                        className="w-full px-4 py-2 border border-gray-300 rounded-lg outline-none focus:ring-2 focus:ring-[#ff6b6b]"
+                      />
+                    </div>
+                  </div>
+                  <div>
+                    <label className="block text-sm font-semibold text-gray-700 mb-1">Locatie (Voorraad)</label>
+                    <select 
+                      value={odmForm.location}
+                      onChange={(e) => setOdmForm({...odmForm, location: e.target.value})}
+                      className="w-full px-4 py-2 border border-gray-300 rounded-lg outline-none focus:ring-2 focus:ring-[#ff6b6b]"
+                    >
+                      {LOCATIONS.map(loc => <option key={loc} value={loc}>{loc}</option>)}
+                    </select>
+                  </div>
+                  <button type="submit" className="w-full py-3 bg-[#ff6b6b] text-white font-bold rounded-xl hover:bg-red-600 transition-colors shadow-sm">
+                    Voeg ODM Toe
+                  </button>
+                </form>
+              </div>
+
+              <div className="lg:col-span-2">
+                <div className="overflow-x-auto rounded-xl border border-gray-200">
+                  <table className="w-full text-left text-sm">
+                    <thead className="bg-gray-50 border-b border-gray-200">
+                      <tr>
+                        <th className="p-4 font-bold text-gray-700">Product Model</th>
+                        <th className="p-4 font-bold text-gray-700">Conditie</th>
+                        <th className="p-4 font-bold text-gray-700">Locatie</th>
+                        <th className="p-4 font-bold text-gray-700 text-center">Voorraad</th>
+                        <th className="p-4 font-bold text-gray-700 text-center">Actie Korting</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {odmStock.map((item) => (
+                        <tr key={item.id} className="border-b border-gray-100 hover:bg-gray-50">
+                          <td className="p-4 font-bold text-gray-900">{item.model}</td>
+                          <td className="p-4">
+                            <span className={`px-2 py-1 rounded text-xs font-bold ${
+                              item.condition === 'Als Nieuw' ? 'bg-green-100 text-green-700' :
+                              item.condition === 'Accessoire mist' ? 'bg-orange-100 text-orange-700' :
+                              item.condition === 'Schade' ? 'bg-red-100 text-red-700' :
+                              'bg-gray-200 text-gray-800'
+                            }`}>
+                              {item.condition}
+                            </span>
+                          </td>
+                          <td className="p-4 text-gray-600">{item.location}</td>
+                          <td className="p-4 text-center font-bold">{item.quantity}</td>
+                          <td className="p-4 text-center text-red-600 font-bold">-{item.discount}%</td>
+                        </tr>
+                      ))}
+                      {odmStock.length === 0 && (
+                        <tr>
+                          <td colSpan={5} className="p-8 text-center text-gray-500">Geen Open Doos Modellen gevonden.</td>
+                        </tr>
+                      )}
+                    </tbody>
+                  </table>
+                </div>
+              </div>
             </div>
           </div>
         )}
