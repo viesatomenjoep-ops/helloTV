@@ -23,7 +23,8 @@ import {
   Building2,
   ShieldAlert,
   LogOut,
-  Store
+  Store,
+  MessageSquare
 } from 'lucide-react';
 import { Dashboard } from './components/Dashboard';
 import { CRM } from './components/CRM';
@@ -45,9 +46,10 @@ import { Reparatie } from './components/Reparatie';
 import { MagicLinks } from './components/MagicLinks';
 import { HelloTVLogo } from './components/ui/HelloTVLogo';
 import { MaickPortal } from './components/MaickPortal';
+import { LiveChatPortal } from './components/LiveChatPortal';
 import { initDemoData } from '../utils/initDemoData';
 
-type View = 'dashboard' | 'maick' | 'crm' | 'sales' | 'inventory' | 'quotes' | 'orders' | 'showcase' | 'hr' | 'shiftbase' | 'trainers' | 'transport' | 'media' | 'vendit' | 'reviews' | 'website' | 'reparatie' | 'magiclinks' | 'storeportal';
+type View = 'dashboard' | 'maick' | 'crm' | 'sales' | 'inventory' | 'quotes' | 'orders' | 'showcase' | 'hr' | 'shiftbase' | 'trainers' | 'transport' | 'media' | 'vendit' | 'reviews' | 'website' | 'reparatie' | 'magiclinks' | 'storeportal' | 'livechat';
 
 export default function App() {
   const [isAuthenticated, setIsAuthenticated] = useState(true);
@@ -66,6 +68,7 @@ export default function App() {
     { id: 'storeportal', label: '18 Filialen (Winkels)', icon: Store },
     { id: 'crm', label: 'CRM', icon: Users },
     { id: 'sales', label: 'Sales Tracker', icon: TrendingUp },
+    { id: 'livechat', label: 'LiveChat & Sales', icon: MessageSquare },
     { id: 'trainers', label: 'Sales Trainers', icon: GraduationCap },
     { id: 'orders', label: 'Orders & Upsell', icon: ShoppingCart },
     { id: 'quotes', label: 'Offertes', icon: FileSignature },
@@ -195,7 +198,8 @@ export default function App() {
         {currentView === 'reparatie' && <Reparatie />}
         {currentView === 'magiclinks' && <MagicLinks />}
         {currentView === 'media' && <MediaPortal />}
-        { currentView === 'vendit' && <Vendit /> }
+        {currentView === 'livechat' && <LiveChatPortal />}
+        {currentView === 'vendit' && <Vendit />}
       </div>
     </div>
   );
