@@ -69,7 +69,6 @@ export function Orders({ onNavigate }: { onNavigate?: (view: string) => void }) 
   // Orders State
   const [selectedOrderId, setSelectedOrderId] = useState<string | null>(null);
   const [editingOrder, setEditingOrder] = useState<any | null>(null);
-  const [editingOrder, setEditingOrder] = useState<any | null>(null);
   const [searchTerm, setSearchTerm] = useState('');
   const [statusFilter, setStatusFilter] = useState('Alle');
   const [storeFilter, setStoreFilter] = useState('Alle Filialen');
@@ -153,6 +152,7 @@ export function Orders({ onNavigate }: { onNavigate?: (view: string) => void }) 
   };
 
   const saveEditedOrder = () => {
+    if (!editingOrder) return;
     setOrdersList(prev => prev.map(o => o.id === editingOrder.id ? editingOrder : o));
     setEditingOrder(null);
   };
