@@ -120,7 +120,7 @@ export function ProductDashboard() {
               <TrendingUp size={24} />
             </div>
             <div>
-              <p className="text-sm font-bold text-gray-500 uppercase">Gezonde Modellen (>35%)</p>
+              <p className="text-sm font-bold text-gray-500 uppercase">Gezonde Modellen (&gt;35%)</p>
               <p className="text-2xl font-black text-gray-900">
                 {filteredProducts.filter(p => p.margePct > 35).length}
               </p>
