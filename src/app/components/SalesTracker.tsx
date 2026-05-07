@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useMemo } from 'react';
 import { TrendingUp, Award, Target, Euro, Trophy, Tv, Zap, Store, Filter, Download, ChevronDown, ChevronUp, Calendar, Mail, CheckCircle, RefreshCw, Maximize2, Minimize2, Smartphone, Users, Star } from 'lucide-react';
 import { api } from '../../utils/api';
+import { SqlTerminal } from './SqlTerminal';
 import { MOCK_TOP_SELLERS } from '../../utils/mockSellers';
 
 const STORES = [
@@ -168,10 +169,15 @@ const [whatsappSuccessId, setWhatsappSuccessId] = useState<string | null>(null);
     return data.sort((a, b) => b.totalRevenue - a.totalRevenue);
   };
 
+  const [showSql, setShowSql] = useState(true);
+
   useEffect(() => {
-    setPerformance(MOCK_TOP_SELLERS);
-    setLoading(false);
-  }, []);
+    // Wait for SQL to finish before showing data
+    if (!showSql) {
+      setPerformance(enrichWithDetailedData(MOCK_TOP_SELLERS));
+      setLoading(false);
+    }
+  }, [showSql]);
 
   const filteredPerformance = useMemo(() => {
     if (selectedStore === 'Alle Filialen') return performance;
@@ -281,6 +287,13 @@ const [whatsappSuccessId, setWhatsappSuccessId] = useState<string | null>(null);
   const totalTvMargin = filteredPerformance.reduce((sum, p) => sum + (p.tvMargin || 0), 0);
   const totalAccMargin = filteredPerformance.reduce((sum, p) => sum + (p.accessoriesMargin || 0), 0);
 
+
+      {showSql && (
+        <SqlTerminal 
+          query={`SELECT s.id, s.name, s.store, SUM(o.revenue) as total_revenue, COUNT(o.id) as sales_count FROM sellers s JOIN orders o ON s.id = o.seller_id WHERE o.date >= CURRENT_DATE - INTERVAL '30 days' GROUP BY s.id ORDER BY total_revenue DESC LIMIT 80;`}
+          onComplete={() => setShowSql(false)} 
+        />
+      )}
   return (
     <div className={`bg-gradient-to-br from-gray-50 to-gray-100 p-8 overflow-y-auto transition-all ${
       tvMode ? 'fixed inset-0 z-50 min-h-screen' : 'min-h-screen'
