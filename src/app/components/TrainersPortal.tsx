@@ -500,7 +500,7 @@ export function TrainersPortal() {
                   <tr>
                     <td className="py-3 font-bold text-white">Den Bosch</td>
                     <td className="py-3 text-orange-400">Cleaners (37.76%)</td>
-                    <td className="py-3">"Onderhoud = Levensduur" (HaloTec Pitch)</td>
+                    <td className="py-3">"Onderhoud = Levensduur" (helloTV pitch)</td>
                     <td className="py-3"><button className="text-blue-400 text-xs font-bold border border-blue-400 px-2 py-1 rounded">Stuur Trainingsmateriaal</button></td>
                   </tr>
                   <tr>

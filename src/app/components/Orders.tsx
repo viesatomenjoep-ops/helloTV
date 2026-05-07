@@ -55,7 +55,7 @@ const MOCK_PRODUCTS = [
 ];
 
 export function Orders({ onNavigate }: { onNavigate?: (view: string) => void }) {
-  const [activeTab, setActiveTab] = useState<'overzicht' | 'upsell'>('overzicht');
+  const [activeTab, setActiveTab] = useState<'overzicht' | 'upsell' | 'nieuw'>('overzicht');
   
   const [ordersList, setOrdersList] = useState(mockOrders);
   
@@ -239,7 +239,7 @@ export function Orders({ onNavigate }: { onNavigate?: (view: string) => void }) 
             
             {activeTab === 'overzicht' && (
               <div className="flex gap-3">
-                <button className="flex items-center gap-2 px-4 py-2 bg-[#FDCB2C] text-black rounded-lg font-bold shadow-sm hover:shadow-md transition-all">
+                <button onClick={() => setActiveTab('nieuw')} className="flex items-center gap-2 px-4 py-2 bg-[#FDCB2C] text-black rounded-lg font-bold shadow-sm hover:shadow-md transition-all">
                   <Plus size={18} /> Nieuwe Order
                 </button>
                 <button 
@@ -272,6 +272,13 @@ export function Orders({ onNavigate }: { onNavigate?: (view: string) => void }) 
             <TrendingUp size={18} /> Directe Upsell Order
           </button>
         </div>
+
+        {/* Nieuwe Order Tab */}
+        {activeTab === 'nieuw' && (
+          <div className="animate-in fade-in slide-in-from-bottom-4 duration-500">
+            <NewOrderWidget />
+          </div>
+        )}
 
         {/* Order Overzicht Tab */}
         {activeTab === 'overzicht' && (

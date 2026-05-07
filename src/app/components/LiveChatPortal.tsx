@@ -17,6 +17,7 @@ const MOCK_VISITORS = [
 export function LiveChatPortal() {
   const [activeChatId, setActiveChatId] = useState<string | null>('8912');
   const [isFullscreen, setIsFullscreen] = useState(false);
+  const [isSmartWidgetExpanded, setIsSmartWidgetExpanded] = useState(false);
   const [addressExtracted, setAddressExtracted] = useState(false);
   const [pdfState, setPdfState] = useState<'idle' | 'generating_offerte' | 'sent_offerte' | 'generating_order' | 'sent_order'>('idle');
 
@@ -248,11 +249,26 @@ export function LiveChatPortal() {
 
       {/* HelloTV Custom LiveChat Widget */}
       {activeChatId && !isFullscreen && (
-        <div className="w-96 bg-gray-50 border-l border-gray-200 flex flex-col shrink-0 overflow-y-auto">
-          <div className="p-6">
-            <h2 className="text-xl font-black text-gray-900 mb-6 flex items-center gap-2">
-              <Store className="text-blue-600" /> HelloTV Smart Widget
-            </h2>
+        <div className={`${isSmartWidgetExpanded ? 'fixed inset-0 z-[9999] w-full p-8' : 'w-96'} bg-gray-50 border-l border-gray-200 flex flex-col shrink-0 overflow-y-auto transition-all duration-300`}>
+          {isSmartWidgetExpanded && (
+            <div className="absolute top-4 right-4">
+               <button onClick={() => setIsSmartWidgetExpanded(false)} className="p-2 bg-white shadow-md rounded-lg text-gray-500 hover:bg-gray-100"><X size={24}/></button>
+            </div>
+          )}
+
+          <div className={`p-6 ${isSmartWidgetExpanded ? "max-w-6xl mx-auto w-full grid grid-cols-2 gap-8" : ""}`}>
+            <div className="flex justify-between items-center mb-6">
+              <h2 className="text-xl font-black text-gray-900 flex items-center gap-2">
+                <Store className="text-blue-600" /> Smart Menu
+              </h2>
+              <button 
+                onClick={() => setIsSmartWidgetExpanded(!isSmartWidgetExpanded)}
+                className="p-2 bg-gray-100 hover:bg-gray-200 rounded-lg transition-colors"
+                title={isSmartWidgetExpanded ? "Verklein" : "Vergroot"}
+              >
+                {isSmartWidgetExpanded ? <Minimize2 size={16} /> : <Maximize2 size={16} />}
+              </button>
+            </div>
 
             {/* CRM Profile */}
             <div className="bg-white border border-gray-200 rounded-xl p-5 shadow-sm mb-6">

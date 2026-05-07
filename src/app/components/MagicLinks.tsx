@@ -62,7 +62,7 @@ export function MagicLinks() {
               activeTab === 'hessey_api' ? 'bg-white text-blue-600 border-t-2 border-l-2 border-r-2 border-gray-100 shadow-sm' : 'bg-transparent text-gray-500 hover:bg-gray-100'
             }`}
           >
-            <Database size={18} /> Hessey Systeemintegratie
+            <Database size={18} /> helloTV Bakwagen Systeemintegratie
           </button>
         </div>
 
@@ -253,7 +253,7 @@ export function MagicLinks() {
                   <Database className="text-gray-900" size={24} />
                 </div>
                 <div>
-                  <h2 className="text-2xl font-bold">Hessey Systeemintegratie (Transport)</h2>
+                  <h2 className="text-2xl font-bold">helloTV Bakwagen Systeemintegratie (Transport)</h2>
                   <p className="text-gray-400 text-sm">Directe API koppeling met Transport ERP & AI-modules</p>
                 </div>
               </div>
@@ -271,7 +271,7 @@ export function MagicLinks() {
                 <div className="space-y-4">
                   <h3 className="font-bold text-gray-900 text-lg">Huidige API Gegevens</h3>
                   <div className="bg-gray-50 p-4 rounded-xl border border-gray-200">
-                    <p className="text-xs text-gray-500 font-bold uppercase mb-1">Hessey Endpoint URL (Transport)</p>
+                    <p className="text-xs text-gray-500 font-bold uppercase mb-1">helloTV Bakwagen Endpoint URL (Transport)</p>
                     <p className="font-mono text-sm text-blue-600 bg-white p-2 rounded border border-gray-100">https://api.hellotv.nl/v1/hessey-transport/graphql</p>
                   </div>
                   <div className="bg-gray-50 p-4 rounded-xl border border-gray-200">
@@ -321,7 +321,7 @@ export function MagicLinks() {
                         <Terminal size={18} className="text-orange-500" />
                         <div>
                           <p className="font-bold text-sm text-gray-900">AI Agents Knowledge Base</p>
-                          <p className="text-xs text-gray-500">Gekoppeld aan Hessey Transport Docs</p>
+                          <p className="text-xs text-gray-500">Gekoppeld aan helloTV Bakwagen Docs</p>
                         </div>
                       </div>
                       <CheckCircle size={18} className="text-green-500" />

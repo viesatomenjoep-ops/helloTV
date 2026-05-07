@@ -78,10 +78,6 @@ export function Transport() {
 
   const handlePrintPaklijst = () => {
     setIsPrintingPaklijst(true);
-    setTimeout(() => {
-      window.print();
-      setIsPrintingPaklijst(false);
-    }, 100);
   };
 
   const getStatusColor = (status: string) => {
@@ -141,7 +137,7 @@ export function Transport() {
           <div>
             <h1 className="text-4xl font-black mb-2 flex items-center gap-3">
               <Truck size={36} className="text-gray-900" />
-              Hessey Transport & Logistiek
+              helloTV Transport & Logistiek
             </h1>
             <p className="text-gray-800 font-medium">Beheer filialen, live tracking en installateurs check-out</p>
           </div>
@@ -583,7 +579,20 @@ export function Transport() {
 
       {/* Print Only Layout (Real PDF Look) */}
       {isPrintingPaklijst && (
-        <div className="hidden print:block fixed inset-0 bg-white z-[9999] p-12 text-black text-left">
+        <div className="fixed inset-0 bg-white z-[9999] p-12 text-black text-left overflow-auto">
+          <div className="print:hidden flex justify-between items-center mb-8 bg-gray-100 p-4 rounded-xl border border-gray-200 shadow-sm">
+            <div>
+              <h2 className="font-bold text-gray-800">Paklijst Preview & Bewerken</h2>
+              <p className="text-sm text-gray-500">Controleer de paklijst voordat je print.</p>
+            </div>
+            <div className="flex gap-3">
+              <button onClick={() => setIsPrintingPaklijst(false)} className="px-6 py-2 bg-gray-300 hover:bg-gray-400 text-gray-800 font-bold rounded-lg">Terug naar Dashboard</button>
+              <button onClick={() => window.print()} className="px-6 py-2 bg-blue-600 hover:bg-blue-700 text-white font-bold rounded-lg flex items-center gap-2">
+                Definitief Printen
+              </button>
+            </div>
+          </div>
+          
           <div className="flex justify-between items-start border-b-4 border-[#FDCB2C] pb-6 mb-8">
             <div>
               <img src="/HelloTV.png" alt="HelloTV Logo" className="h-16 mb-4 filter brightness-0" />
@@ -600,7 +609,7 @@ export function Transport() {
             <h2 className="text-lg font-bold bg-gray-100 px-4 py-2 uppercase tracking-widest mb-4">Verzendgegevens</h2>
             <div className="px-4 text-sm font-medium space-y-1">
               <p>Van: Filiaal Breda</p>
-              <p>Transport via Hessey Logistics</p>
+              <p>transport via helloTV bakwagen</p>
               <p>Bestemming: Logistiek Centrum Duiven (DC)</p>
             </div>
           </div>
@@ -645,7 +654,7 @@ export function Transport() {
           <div className="mt-24 flex justify-between border-t-2 border-gray-200 pt-8">
             <div className="text-center w-64">
               <div className="border-b-2 border-gray-400 h-12 mb-2"></div>
-              <p className="text-sm font-bold text-gray-500">Handtekening Chauffeur (Hessey)</p>
+              <p className="text-sm font-bold text-gray-500">Handtekening Chauffeur (helloTV bakwagen)</p>
             </div>
             <div className="text-center w-64">
               <div className="border-b-2 border-gray-400 h-12 mb-2"></div>

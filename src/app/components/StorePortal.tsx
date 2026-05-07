@@ -118,7 +118,7 @@ export function StorePortal() {
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
           <div className="bg-white rounded-2xl shadow-sm border border-gray-100 p-6">
             <h2 className="text-xl font-bold text-gray-800 flex items-center gap-2 mb-6">
-              <Truck className="text-[#1D6F42]" /> Transport Reserveringen (Hessey)
+              <Truck className="text-[#1D6F42]" /> Transport Reserveringen (helloTV Bakwagen)
             </h2>
             <div className="space-y-4">
               {[1, 2, 3].map((item) => (
@@ -209,7 +209,7 @@ export function StorePortal() {
             <h2 className="text-lg font-bold bg-gray-100 px-4 py-2 uppercase tracking-widest mb-4">Verzendgegevens</h2>
             <div className="px-4 text-sm font-medium space-y-1" contentEditable suppressContentEditableWarning>
               <p>HelloTV Logistiek Centrum</p>
-              <p>Transport via Hessey Logistics</p>
+              <p>transport via helloTV bakwagen</p>
               <p>Bestemming: Magazijn {selectedStore}</p>
             </div>
           </div>
@@ -238,7 +238,7 @@ export function StorePortal() {
           <div className="mt-24 flex justify-between border-t-2 border-gray-200 pt-8">
             <div className="text-center w-64">
               <div className="border-b-2 border-gray-400 h-12 mb-2"></div>
-              <p className="text-sm font-bold text-gray-500">Handtekening Chauffeur (Hessey)</p>
+              <p className="text-sm font-bold text-gray-500">Handtekening Chauffeur (helloTV bakwagen)</p>
             </div>
             <div className="text-center w-64">
               <div className="border-b-2 border-gray-400 h-12 mb-2"></div>
