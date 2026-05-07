@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Eye, Search, Filter, Download, Plus, ShoppingCart, List, Tv, TrendingUp, AlertTriangle, ArrowRightCircle, CreditCard, RefreshCw, CheckCircle, Users } from 'lucide-react';
 import { mockOrders } from '../../utils/mockOrders';
 import { getMedewerkerByCode } from '../../utils/employees';
@@ -58,6 +58,12 @@ export function Orders({ onNavigate }: { onNavigate?: (view: string) => void }) 
   const [activeTab, setActiveTab] = useState<'overzicht' | 'upsell' | 'nieuw'>('overzicht');
   
   const [ordersList, setOrdersList] = useState(mockOrders);
+  useEffect(() => {
+    if (activeTab === 'overzicht') {
+      setOrdersList([...mockOrders]);
+    }
+  }, [activeTab]);
+
   
   // Orders State
   const [selectedOrderId, setSelectedOrderId] = useState<string | null>(null);
@@ -276,7 +282,7 @@ export function Orders({ onNavigate }: { onNavigate?: (view: string) => void }) 
         {/* Nieuwe Order Tab */}
         {activeTab === 'nieuw' && (
           <div className="animate-in fade-in slide-in-from-bottom-4 duration-500">
-            <NewOrderWidget />
+            <NewOrderWidget onOrderCreated={() => { setOrdersList([...mockOrders]); setActiveTab('overzicht'); }} />
           </div>
         )}
 

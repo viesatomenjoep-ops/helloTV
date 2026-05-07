@@ -523,14 +523,14 @@ export function TrainersPortal() {
             </div>
 
             <div className="grid grid-cols-1 md:grid-cols-4 gap-4 mb-8">
-              {['Joep Morsink', 'Massi Amin', 'Danny', 'Michael Duits'].map((trainer) => (
+              {['Joep Morsink', 'Masi Amin', 'Danny', 'Michael Duits'].map((trainer) => (
                 <div key={trainer} className="bg-[#2D2D2D] rounded-xl p-4 border border-blue-500/30 hover:border-blue-500 cursor-pointer transition-all shadow-md">
                   <div className="flex justify-between items-start mb-2">
                     <Users size={20} className="text-blue-400" />
                     <span className="text-xs bg-blue-900/50 text-blue-300 px-2 py-0.5 rounded font-bold">Winkeltrainer</span>
                   </div>
                   <h3 className="font-bold text-white text-lg">{trainer}</h3>
-                  <p className="text-xs text-gray-400 mt-1">Regio: {trainer === 'Joep Morsink' ? 'Noord/Oost' : trainer === 'Massi Amin' ? 'Zuid' : trainer === 'Danny' ? 'Randstad' : 'Midden'}</p>
+                  <p className="text-xs text-gray-400 mt-1">Regio: {trainer === 'Joep Morsink' ? 'Noord/Oost' : trainer === 'Masi Amin' ? 'Zuid' : trainer === 'Danny' ? 'Randstad' : 'Midden'}</p>
                 </div>
               ))}
             </div>
@@ -557,7 +557,7 @@ export function TrainersPortal() {
                       <select className="bg-[#1A1A1A] border border-gray-600 rounded px-3 py-1.5 text-white focus:border-[#FDCB2C] outline-none text-sm font-bold">
                         <option>Kies Trainer...</option>
                         <option value="Joep Morsink">Joep Morsink</option>
-                        <option value="Massi Amin">Massi Amin</option>
+                        <option value="Masi Amin">Masi Amin</option>
                         <option value="Danny">Danny</option>
                         <option value="Michael Duits">Michael Duits</option>
                       </select>
@@ -572,7 +572,7 @@ export function TrainersPortal() {
                       <select className="bg-[#1A1A1A] border border-gray-600 rounded px-3 py-1.5 text-white focus:border-[#FDCB2C] outline-none text-sm font-bold">
                         <option>Kies Trainer...</option>
                         <option value="Joep Morsink">Joep Morsink</option>
-                        <option value="Massi Amin">Massi Amin</option>
+                        <option value="Masi Amin">Masi Amin</option>
                         <option value="Danny">Danny</option>
                         <option value="Michael Duits">Michael Duits</option>
                       </select>
@@ -587,7 +587,7 @@ export function TrainersPortal() {
                       <select className="bg-[#1A1A1A] border border-gray-600 rounded px-3 py-1.5 text-white focus:border-[#FDCB2C] outline-none text-sm font-bold">
                         <option>Kies Trainer...</option>
                         <option value="Joep Morsink">Joep Morsink</option>
-                        <option value="Massi Amin">Massi Amin</option>
+                        <option value="Masi Amin">Masi Amin</option>
                         <option value="Danny">Danny</option>
                         <option value="Michael Duits">Michael Duits</option>
                       </select>

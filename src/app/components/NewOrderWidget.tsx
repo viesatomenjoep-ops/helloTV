@@ -4,7 +4,7 @@ import { mockCustomers } from '../../utils/mockCustomers';
 import { mockOrders } from '../../utils/mockOrders';
 import { Customer } from '../../types/database';
 
-export function NewOrderWidget() {
+export function NewOrderWidget({ onOrderCreated }: { onOrderCreated?: () => void }) {
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedCustomer, setSelectedCustomer] = useState<Customer | null>(null);
   const [orderCreated, setOrderCreated] = useState(false);
@@ -71,6 +71,9 @@ export function NewOrderWidget() {
     mockOrders.unshift(newOrder);
     
     setOrderCreated(true);
+    if (onOrderCreated) {
+      setTimeout(() => onOrderCreated(), 1500);
+    }
     setTimeout(() => {
       setOrderCreated(false);
       setSelectedCustomer(null);
