@@ -214,29 +214,36 @@ export function MagicLinks() {
                   </div>
 
                   <h3 className="font-bold text-gray-900 mb-4">Gespreksinstructies (Prompt)</h3>
-                  <div className="bg-gray-900 text-green-400 p-4 rounded-xl font-mono text-sm h-48 overflow-y-auto mb-6">
-                    <p>SYSTEM PROMPT:</p>
-                    <p className="mt-2 text-gray-300">"Je bent Lisa, de telefonische assistent van HelloTV Filiaal Breda.</p>
-                    <p className="text-gray-300">Begroet klanten vriendelijk met: 'Welkom bij HelloTV Breda, u spreekt met Lisa. Wat kan ik voor u doen?'</p>
-                    <p className="text-gray-300">Als klanten vragen naar voorraad: controleer de SQL database.</p>
-                    <p className="text-gray-300">Als klanten een reparatie willen melden, verwijs ze door naar het online reparatieformulier of verbind ze door met Chaima.</p>
-                    <p className="text-gray-300">Sluit af met de groet: 'Tot ziens in Breda!'"</p>
-                  </div>
+                  {isEditingPrompt ? (
+                    <div className="mb-6">
+                      <textarea 
+                        value={lisaPrompt}
+                        onChange={(e) => setLisaPrompt(e.target.value)}
+                        className="w-full h-48 bg-gray-900 text-green-400 p-4 rounded-xl font-mono text-sm border border-gray-700 outline-none focus:border-green-500"
+                      />
+                      <div className="flex justify-end mt-2">
+                        <button onClick={() => setIsEditingPrompt(false)} className="px-4 py-2 bg-[#FDCB2C] text-black font-bold rounded-lg hover:bg-yellow-500">Opslaan</button>
+                      </div>
+                    </div>
+                  ) : (
+                    <div className="bg-gray-900 text-green-400 p-4 rounded-xl font-mono text-sm h-48 overflow-y-auto mb-6 whitespace-pre-wrap">
+                      <p>SYSTEM PROMPT:</p>
+                      <p className="mt-2 text-gray-300">{lisaPrompt}</p>
+                    </div>
+                  )}
 
                   <div className="flex gap-4">
                     <button 
-                      onClick={() => {
-                        alert("Bellen met +31 76 123 4567...");
-                        setTimeout(() => {
-                          alert("Lisa: 'Welkom bij HelloTV Breda, u spreekt met Lisa. Wat kan ik voor u doen?'");
-                        }, 1000);
-                      }}
-                      className="flex-1 py-3 bg-[#1D6F42] text-white rounded-xl font-bold hover:bg-green-800 flex justify-center items-center gap-2"
+                      onClick={handleStartCall}
+                      className="flex-1 py-3 bg-[#1D6F42] text-white rounded-xl font-bold hover:bg-green-800 flex justify-center items-center gap-2 shadow-md transition-colors"
                     >
-                      <PhoneCall size={18} /> Test Bellen
+                      <PhoneCall size={18} /> Test Bellen (Simulatie)
                     </button>
-                    <button className="flex-1 py-3 bg-white text-gray-700 border border-gray-300 rounded-xl font-bold hover:bg-gray-50 flex justify-center items-center gap-2">
-                      Instellingen
+                    <button 
+                      onClick={() => setIsEditingPrompt(true)}
+                      className="flex-1 py-3 bg-white text-gray-700 border border-gray-300 rounded-xl font-bold hover:bg-gray-50 flex justify-center items-center gap-2 transition-colors"
+                    >
+                      <Settings size={18} /> Prompt Aanpassen
                     </button>
                   </div>
                 </div>
@@ -342,6 +349,78 @@ export function MagicLinks() {
           </div>
         )}
       </div>
+
+      {/* Call Simulator Overlay */}
+      {isCalling && (
+        <div className="fixed inset-0 z-[9999] bg-black/80 backdrop-blur-md flex items-center justify-center p-4">
+          <div className="w-full max-w-sm bg-[#1A1A1A] rounded-[40px] border-[8px] border-gray-900 shadow-2xl overflow-hidden relative" style={{ height: '700px' }}>
+            {/* Phone Notch */}
+            <div className="absolute top-0 left-1/2 -translate-x-1/2 w-32 h-6 bg-gray-900 rounded-b-2xl z-10"></div>
+            
+            <div className="h-full flex flex-col justify-between pt-16 pb-8 px-6 relative">
+              {/* Caller Info */}
+              <div className="text-center">
+                <div className="w-24 h-24 bg-gray-800 rounded-full mx-auto mb-4 flex items-center justify-center relative">
+                  <Bot size={48} className="text-[#FDCB2C]" />
+                  {callState === 'connected' && (
+                    <div className="absolute inset-0 rounded-full border-2 border-[#FDCB2C] animate-ping opacity-20"></div>
+                  )}
+                </div>
+                <h2 className="text-white text-2xl font-light mb-1">Lisa - HelloTV Breda</h2>
+                <p className="text-gray-400 text-sm">
+                  {callState === 'dialing' ? 'Bellen...' : '00:00 - Verbonden'}
+                </p>
+              </div>
+
+              {/* Transcript */}
+              {callState === 'connected' && (
+                <div className="flex-1 mt-8 overflow-y-auto space-y-4 px-2">
+                  {callTranscript.map((msg, i) => (
+                    <div key={i} className={`flex flex-col ${msg.speaker === 'Lisa' ? 'items-start' : 'items-end'}`}>
+                      <span className="text-[10px] text-gray-500 font-bold mb-1 ml-1">{msg.speaker}</span>
+                      <div className={`p-3 rounded-2xl text-sm ${msg.speaker === 'Lisa' ? 'bg-gray-800 text-gray-100 rounded-tl-none' : 'bg-blue-600 text-white rounded-tr-none'}`}>
+                        {msg.text}
+                      </div>
+                    </div>
+                  ))}
+                  
+                  <div className="flex gap-2 justify-center mt-4 pt-4 border-t border-gray-800">
+                    <button 
+                      onClick={() => setCallTranscript([...callTranscript, { speaker: 'Jij', text: 'Hallo, ik heb een vraag over een bestelling.' }])}
+                      className="px-3 py-1.5 bg-gray-800 hover:bg-gray-700 text-white text-xs rounded-full transition-colors"
+                    >
+                      "Ik heb een vraag..."
+                    </button>
+                    <button 
+                      onClick={() => setCallTranscript([...callTranscript, { speaker: 'Jij', text: 'Mijn TV is kapot.' }])}
+                      className="px-3 py-1.5 bg-gray-800 hover:bg-gray-700 text-white text-xs rounded-full transition-colors"
+                    >
+                      "TV kapot"
+                    </button>
+                  </div>
+                </div>
+              )}
+
+              {/* Call Controls */}
+              <div className="mt-8 flex justify-center gap-6">
+                <button className="w-16 h-16 rounded-full bg-gray-800 flex items-center justify-center text-white hover:bg-gray-700 transition-colors">
+                  <Mic size={24} />
+                </button>
+                <button 
+                  onClick={handleEndCall}
+                  className="w-16 h-16 rounded-full bg-red-500 flex items-center justify-center text-white hover:bg-red-600 transition-colors shadow-lg shadow-red-500/20"
+                >
+                  <PhoneOff size={24} />
+                </button>
+                <button className="w-16 h-16 rounded-full bg-gray-800 flex items-center justify-center text-white hover:bg-gray-700 transition-colors">
+                  <Speaker size={24} />
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
+
     </div>
   );
 }
