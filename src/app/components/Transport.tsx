@@ -95,8 +95,14 @@ export function Transport() {
   };
 
   const handleSendPaymentLink = (order: any, method: string) => {
-    if (window.confirm(`Weet je zeker dat je een ${method} betaallink wilt sturen naar ${order.customer}?`)) {
-      alert(`Betaallink (${method}) verzonden naar ${order.customer} (Order: ${order.id}) via SMS/WhatsApp.`);
+    const fakeLink = `https://betalen.hellotv.nl/${method.toLowerCase()}/${order.id.replace('#', '')}`;
+    if (window.confirm(`Wil je de ${method} betaallink voor ${order.customer} eerst kopiëren naar je klembord voordat je hem doorstuurt?`)) {
+      navigator.clipboard.writeText(fakeLink);
+      alert(`Link gekopieerd: ${fakeLink}\n\nDe betaling wordt nu gecodeerd en klaargezet in het systeem.`);
+    } else {
+      if (window.confirm(`Weet je zeker dat je de ${method} betaallink direct wilt coderen en doorsturen naar ${order.customer}?`)) {
+        alert(`Betaallink (${method}) gecodeerd en verzonden naar ${order.customer} (Order: ${order.id}) via SMS/WhatsApp.`);
+      }
     }
   };
 
