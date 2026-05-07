@@ -648,6 +648,13 @@ export function Shiftbase() {
     );
   }
 
+
+      {showSql && (
+        <SqlTerminal 
+          query={`SELECT e.id, e.name, e.role, s.clock_in, s.status FROM employees e LEFT JOIN shifts s ON e.id = s.emp_id WHERE s.date = CURRENT_DATE;`}
+          onComplete={() => setShowSql(false)} 
+        />
+      )}
   return (
     <div className={`flex flex-col items-center bg-gray-100 ${isFullscreen ? 'fixed inset-0 z-50 overflow-auto pt-12 pb-12' : 'min-h-[100dvh] pt-8 pb-24 overflow-x-auto w-full'}`}>
       <div className="flex items-center gap-4 mb-6 w-full max-w-4xl px-4 justify-between">
