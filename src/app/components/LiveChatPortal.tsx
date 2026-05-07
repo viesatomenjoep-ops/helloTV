@@ -145,7 +145,7 @@ export function LiveChatPortal() {
     <div className={`flex bg-gray-50 overflow-hidden ${isFullscreen ? 'fixed inset-0 z-50' : 'h-screen'}`}>
       {/* Sidebar LiveChat Chats */}
       {!isFullscreen && (
-        <div className="w-80 bg-white border-r border-gray-200 flex flex-col hidden lg:flex shrink-0">
+        <div className={`w-full lg:w-80 bg-white border-r border-gray-200 flex-col shrink-0 ${activeChatId ? "hidden lg:flex" : "flex"}`}>
           <div className="p-4 border-b border-gray-200 bg-gray-50">
             <h2 className="font-bold text-gray-800 text-lg flex items-center gap-2">
               <MessageSquare size={20} className="text-[#FDCB2C]" /> LiveChat
@@ -174,7 +174,7 @@ export function LiveChatPortal() {
       )}
 
       {/* Main Chat Area */}
-      <div className="flex-1 flex flex-col bg-white">
+      <div className={`flex-1 flex-col bg-white ${!activeChatId ? "hidden lg:flex" : "flex"}`}>
         {activeChatId ? (
           <>
             <div className="px-6 py-4 border-b border-gray-200 bg-white flex justify-between items-center shadow-sm z-10">
@@ -196,7 +196,7 @@ export function LiveChatPortal() {
                   {isFullscreen ? 'Klein Scherm' : 'Groot Scherm'}
                 </button>
                 <button onClick={closeChat} className="px-3 py-1.5 bg-gray-100 text-gray-700 font-bold text-sm rounded-lg hover:bg-gray-200 transition-colors flex items-center gap-1">
-                  <X size={16} /> Chat Sluiten
+                  <X size={16} /> Terug / Sluiten
                 </button>
               </div>
             </div>
@@ -249,7 +249,7 @@ export function LiveChatPortal() {
 
       {/* HelloTV Custom LiveChat Widget */}
       {activeChatId && !isFullscreen && (
-        <div className={`${isSmartWidgetExpanded ? 'fixed inset-0 z-[9999] w-full p-8' : 'w-96'} bg-gray-50 border-l border-gray-200 flex flex-col shrink-0 overflow-y-auto transition-all duration-300`}>
+        <div className={`${isSmartWidgetExpanded ? 'fixed inset-0 z-[9999] w-full p-8' : 'w-96'} bg-gray-50 border-l border-gray-200 flex-col shrink-0 overflow-y-auto transition-all duration-300 hidden xl:flex`}>
           {isSmartWidgetExpanded && (
             <div className="absolute top-4 right-4">
                <button onClick={() => setIsSmartWidgetExpanded(false)} className="p-2 bg-white shadow-md rounded-lg text-gray-500 hover:bg-gray-100"><X size={24}/></button>
