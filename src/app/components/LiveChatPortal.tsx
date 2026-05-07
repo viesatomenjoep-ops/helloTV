@@ -200,6 +200,7 @@ export function LiveChatPortal() {
                 </button>
               </div>
             </div>
+          </div>
 
             <div className="flex-1 overflow-y-auto p-6 space-y-6 bg-[#f8f9fa]">
               {activeMessages.map((msg) => (
@@ -256,7 +257,7 @@ export function LiveChatPortal() {
             </div>
           )}
 
-          <div className={`p-6 ${isSmartWidgetExpanded ? "max-w-6xl mx-auto w-full grid grid-cols-2 gap-8" : ""}`}>
+          <div className={`p-6 ${isSmartWidgetExpanded ? "max-w-6xl mx-auto w-full" : ""}`}>
             <div className="flex justify-between items-center mb-6">
               <h2 className="text-xl font-black text-gray-900 flex items-center gap-2">
                 <Store className="text-blue-600" /> Smart Menu
@@ -270,6 +271,7 @@ export function LiveChatPortal() {
               </button>
             </div>
 
+            <div className={isSmartWidgetExpanded ? "grid grid-cols-2 gap-6 items-start" : "flex flex-col gap-0"}>
             {/* CRM Profile */}
             <div className="bg-white border border-gray-200 rounded-xl p-5 shadow-sm mb-6">
               <h3 className="font-bold text-gray-800 text-sm uppercase tracking-wider mb-4 flex items-center gap-2">
@@ -375,6 +377,7 @@ export function LiveChatPortal() {
                 </button>
               </div>
             </div>
+          </div>
             
           </div>
         </div>
