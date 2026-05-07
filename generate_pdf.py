@@ -1,71 +1,71 @@
 from fpdf import FPDF
+from datetime import datetime
+import os
 
 class PDF(FPDF):
     def header(self):
-        # Logo
-        try:
-            self.image('public/HelloTV.png', 10, 8, 33)
-        except:
-            pass
-        # Arial bold 15
-        self.set_font('Arial', 'B', 15)
-        # Move to the right
-        self.cell(80)
-        # Title
-        self.cell(30, 10, 'HelloTV Systeem Samenvatting', 0, 0, 'C')
-        # Line break
-        self.ln(20)
+        # HelloTV Logo Simulation (Yellow rectangle with black text)
+        self.set_fill_color(253, 203, 44) # FDCB2C
+        self.rect(10, 10, 50, 15, 'F')
+        self.set_font('helvetica', 'B', 16)
+        self.set_text_color(0, 0, 0)
+        self.set_xy(12, 12)
+        self.cell(46, 11, 'HELLO TV', 0, 0, 'C')
+        
+        # Header Title
+        self.set_font('helvetica', 'B', 15)
+        self.set_text_color(100, 100, 100)
+        self.cell(130, 15, 'Overzicht Vernieuwde Systemen', 0, 0, 'R')
+        self.ln(25)
 
     def footer(self):
-        # Position at 1.5 cm from bottom
         self.set_y(-15)
-        # Arial italic 8
-        self.set_font('Arial', 'I', 8)
-        # Page number
-        self.cell(0, 10, 'Pagina ' + str(self.page_no()) + '/{nb}', 0, 0, 'C')
-
-    def chapter_title(self, num, title):
-        # Arial 12
-        self.set_font('Arial', 'B', 12)
-        # Background color
-        self.set_fill_color(253, 203, 44) # HelloTV Yellow
-        # Title
-        self.cell(0, 10, 'Hoofdstuk %d : %s' % (num, title), 0, 1, 'L', 1)
-        self.ln(4)
-
-    def chapter_body(self, body):
-        # Times 12
-        self.set_font('Arial', '', 11)
-        # Output justified text
-        self.multi_cell(0, 6, body.encode('latin-1', 'replace').decode('latin-1'))
-        # Line break
-        self.ln()
+        self.set_font('helvetica', 'I', 8)
+        self.set_text_color(128)
+        self.cell(0, 10, f'Gegenereerd op {datetime.now().strftime("%d-%m-%Y %H:%M")} - Pagina {self.page_no()}', 0, 0, 'C')
 
 pdf = PDF()
-pdf.alias_nb_pages()
 pdf.add_page()
 
-content = [
-    ("LiveChat & Automatische Orders", "Met dit systeem praten we online met klanten op de website. Een slimme robot (AI) herkent direct de naam en het adres van de klant in de chat. Met een simpele druk op de knop maken we een order of betaallink. De klant ontvangt direct in de chat een mooie PDF-offerte of PDF-order."),
-    ("Hoofddashboard & Cijfers", "Het centrale scherm voor de organisatie. Hier zien we live de omzet, het aantal orders en de drukte oplopen, precies alsof het een hele drukke zaterdag is. Dit scherm geeft het management in een oogopslag de hartslag van de organisatie weer."),
-    ("Sales Leaderboard & Verkopers", "Een strak dashboard waarop verkopers kunnen zien wat ze gepresteerd hebben. Het toont verkochte TV's, accessoires en de brutowinst. Omdat het realtime is, tikken de bedragen en bonussen voor hun neus omhoog! Alles is netjes in 1 scherm gepropt zodat we niet hoeven te scrollen."),
-    ("Personeel & Planning (HelloBase)", "Ons eigen systeem om roosters en uren bij te houden. Medewerkers vragen vakantie aan (waar de roostermaker via WhatsApp een seintje van krijgt) en we zien per dag precies wie er werkt in een filiaal (zoals Breda of Amsterdam). Met handige ronde fotootjes zie je precies wie er op de winkelvloer staat."),
-    ("Producten & Marges", "Dit is de nieuwe goudmijn voor verkopers. Een overzicht van alle TV's (Samsung, LG, Sony, etc.) met daarbij de inkoopprijs en de brutowinst. Een gekleurde balk (Rood = oppassen, Oranje = gemiddeld, Groen = super goed!) laat met een percentage direct zien op welke modellen we het meeste verdienen."),
-    ("LAUD Media (Digitale Schermen)", "De koppeling waarmee we acties en beelden direct de wereld insturen. Je uploadt simpelweg een video of foto in het portaal, schrijft een tekstje, en met 1 druk op de knop is de actie zichtbaar op de website én op alle digitale schermen in onze 18 winkels."),
-    ("Google Reviews & Klanttevredenheid", "We verzamelen live de reviews van klanten. Om de bazen goed op de hoogte te houden, kan er met 1 knop een PDF-rapport worden uitgedraaid (inclusief mooie grafieken met kleuren) die direct virtueel naar de WhatsApp-groepsapp van het management gestuurd kan worden.")
-]
+# Title
+pdf.set_font('helvetica', 'B', 24)
+pdf.set_text_color(0, 0, 0)
+pdf.cell(0, 20, 'Samenvatting voor de Directie (A tot Z)', 0, 1, 'L')
+pdf.ln(5)
 
-pdf.set_font('Arial', '', 11)
-intro = "Beste Directie / Management,\n\nIn de afgelopen periode is het HelloTV Master Manager systeem volledig opgebouwd, ingericht en klaargemaakt voor de presentatie. In dit document vinden jullie een makkelijk leesbare samenvatting (in Jip-en-Janneke taal) van alle modules en wat deze voor ons bedrijf betekenen.\n\nAlle systemen praten nu met elkaar: een chat leidt tot een order, een order zorgt voor een live omzetstijging op het dashboard en verhoogt de bonus van de medewerker, terwijl de roosters bepalen wie er in de winkel staat. Dit alles in de strakke geel-zwarte huisstijl van HelloTV."
-pdf.multi_cell(0, 6, intro.encode('latin-1', 'replace').decode('latin-1'))
+# Introduction
+pdf.set_font('helvetica', '', 12)
+pdf.multi_cell(0, 7, "Hieronder vindt u in simpele 'Jip-en-Janneke-taal' een compleet overzicht van alle nieuwe functionaliteiten die we in het HelloTV Dashboard hebben gebouwd. Dit platform verbindt verkopers, de webshop, en de winkels aan elkaar om sneller, makkelijker en met meer winst te kunnen werken.")
 pdf.ln(10)
 
-for idx, (title, body) in enumerate(content, 1):
-    pdf.chapter_title(idx, title)
-    pdf.chapter_body(body)
+features = [
+    ("1. Slimme LiveChat (Met AI Klant-herkenning)", 
+     "Klanten kunnen direct met verkopers chatten. Als een klant in de chat zegt: 'Ik ben Tom uit Breda', herkent het systeem dit automatisch. De adresgegevens worden met 1 klik direct klaargezet voor de aankoop. Geen handmatig overtypen meer!"),
+    ("2. Direct PDF Offertes & Orders Versturen", 
+     "Wanneer een klant akkoord gaat in de chat, hoeft de verkoper niet naar een ander systeem. Met één druk op de knop 'Stuur PDF Order' wordt de bestelling klaargezet en krijgt de klant direct de factuur en een betaallink in beeld."),
+    ("3. Producten & Winstmarges Dashboard", 
+     "We hebben een nieuw overzicht gemaakt waar verkopers precies kunnen zien welke TV's we verkopen. We hebben kleurtjes toegevoegd: Groen betekent veel winst (gezonde marge), Rood betekent oppassen. Zo weet de verkoper altijd welke TV hij of zij het beste kan adviseren voor de klant én voor HelloTV."),
+    ("4. Media & Content Portaal (Winkel Schermen)", 
+     "Onze marketingafdeling kan nu makkelijk nieuwe actie-video's (zoals 'Zomer Sale') uploaden. Door een koppeling met de LAUD-systemen in de winkels, worden deze video's met 1 druk op de knop direct afgespeeld op alle TV's in onze 18 fysieke winkels. Sneller kan niet."),
+    ("5. Live Verkoop & Bonussen (Sales Tracker)", 
+     "Verkopers kunnen live zien hoeveel zij en hun collega's verkopen. Ze zien direct wat hun bonus gaat worden als ze bijvoorbeeld veel kabels of schoonmaakmiddelen verkopen. Het systeem heeft een live 'teller' (zoals op tv) die meeloopt met de actuele omzet van vandaag."),
+    ("6. Google Reviews Integratie", 
+     "We halen direct klantervaringen en Google Reviews op en tonen deze in het systeem. Zo zien verkopers meteen wat goed gaat en wat beter kan op de winkelvloer."),
+    ("7. Centrale Controle (Alles-in-één)", 
+     "Waar verkopers vroeger moesten wisselen tussen Shiftbase (roosters), Vendit (kassa) en hun e-mail, zit nu alles in één makkelijk overzicht. Dit bespaart uren aan zoekwerk per maand.")
+]
 
-# Save to Desktop
-output_path = '/Users/tomvanbiene/Desktop/HelloTV_Systeem_Samenvatting.pdf'
-pdf.output(output_path, 'F')
-print("PDF saved successfully to", output_path)
+for title, desc in features:
+    pdf.set_font('helvetica', 'B', 14)
+    pdf.set_text_color(0, 0, 0)
+    pdf.cell(0, 10, title, 0, 1, 'L')
+    
+    pdf.set_font('helvetica', '', 11)
+    pdf.set_text_color(60, 60, 60)
+    pdf.multi_cell(0, 6, desc)
+    pdf.ln(5)
 
+# Save PDF to Desktop
+desktop_path = os.path.expanduser("~/Desktop/HelloTV_Directie_Samenvatting.pdf")
+pdf.output(desktop_path)
+print("PDF gegenereerd op bureaublad!")

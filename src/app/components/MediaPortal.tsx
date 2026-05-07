@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Upload, Youtube, Instagram, Video, Image as ImageIcon, Link as LinkIcon, Plus, Save, Cloud, Server, Database, MonitorPlay, Activity } from 'lucide-react';
+import { Upload, Youtube, Instagram, Video, Image as ImageIcon, Link as LinkIcon, Plus, Save, Cloud, Server, MonitorPlay, Activity } from 'lucide-react';
 
 export function MediaPortal() {
   const [activeTab, setActiveTab] = useState<'upload' | 'bibliotheek' | 'loud_media'>('upload');

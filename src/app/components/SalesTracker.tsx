@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useMemo } from 'react';
-import { TrendingUp, Award, Target, Euro, Trophy, Tv, Cable, Store, Filter, Download, ChevronDown, ChevronUp, Calendar, Mail, CheckCircle, RefreshCw, Maximize2, Minimize2, Smartphone, Users, Star } from 'lucide-react';
+import { TrendingUp, Award, Target, Euro, Trophy, Tv, Zap, Store, Filter, Download, ChevronDown, ChevronUp, Calendar, Mail, CheckCircle, RefreshCw, Maximize2, Minimize2, Smartphone, Users, Star } from 'lucide-react';
 import { api } from '../../utils/api';
 import { MOCK_TOP_SELLERS } from '../../utils/mockSellers';
 
@@ -395,7 +395,7 @@ const [whatsappSuccessId, setWhatsappSuccessId] = useState<string | null>(null);
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
           <div className="bg-white rounded-2xl shadow-sm border border-gray-100 p-6 flex items-center gap-4">
             <div className="w-16 h-16 bg-blue-100 text-blue-600 rounded-full flex items-center justify-center shrink-0">
-              <Cable size={32} />
+              <Zap size={32} />
             </div>
             <div>
               <p className="text-xs font-bold text-gray-400 uppercase">#1 Kabel Verkoper</p>
@@ -462,7 +462,7 @@ const [whatsappSuccessId, setWhatsappSuccessId] = useState<string | null>(null);
           <div className="bg-gradient-to-br from-orange-500 to-orange-600 text-white rounded-2xl shadow-lg p-6 relative overflow-hidden">
             <div className="absolute top-2 right-2 bg-red-500 text-white text-[9px] font-black px-1.5 py-0.5 rounded-full animate-pulse">LIVE</div>
             <div className="flex items-center gap-3 mb-3">
-              <Cable size={24} />
+              <Zap size={24} />
               <span className="text-sm opacity-90">Accessoires</span>
             </div>
             <div className="text-3xl font-bold">{selectedStore === 'Alle Filialen' ? liveTotals.totalAccessories : totalAccessories}</div>

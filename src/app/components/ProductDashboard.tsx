@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Tv, Filter, Search, TrendingUp, AlertTriangle, CheckCircle, Percent } from 'lucide-react';
+import { Tv, Filter, Search, TrendingUp, AlertTriangle, CheckCircle, Activity } from 'lucide-react';
 
 const MOCK_PRODUCTS = [
   { id: 1, merk: 'Samsung', model: 'Neo QLED 8K QN900D (65")', prijs: 4999, inkoop: 3200 },
@@ -108,7 +108,7 @@ export function ProductDashboard() {
           </div>
           <div className="bg-white rounded-2xl shadow-sm border border-gray-100 p-6 flex items-center gap-4">
             <div className="w-14 h-14 bg-green-100 text-green-600 rounded-full flex items-center justify-center shrink-0">
-              <Percent size={24} />
+              <Activity size={24} />
             </div>
             <div>
               <p className="text-sm font-bold text-gray-500 uppercase">Gemiddelde Marge</p>

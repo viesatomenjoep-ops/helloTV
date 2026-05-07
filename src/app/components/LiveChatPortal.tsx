@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { MessageSquare, Send, Search, CheckCircle, Store, Box, CreditCard, ChevronRight, UserCircle, Bell, X, FileText, ShoppingCart, Maximize2, Minimize2, Database } from 'lucide-react';
+import { MessageSquare, Send, Search, CheckCircle, Store, Box, CreditCard, ChevronRight, UserCircle, Bell, X, FileText, ShoppingCart, Maximize2, Minimize2, Server } from 'lucide-react';
 
 const MOCK_VISITORS = [
   { id: '8912', name: 'Bezoeker #8912', time: '10:16', preview: 'Zeker OLED, we kijken veel films...', status: 'Online (Kijkt naar LG OLED55C3)', context: 'LG OLED55C3', duration: '4 min', url: '/tv/lg-oled55c3' },
@@ -307,7 +307,7 @@ export function LiveChatPortal() {
                 onClick={extractAddress}
                 className={`w-full py-2 mb-4 border font-bold rounded-xl shadow-sm transition-colors text-sm flex items-center justify-center gap-2 ${addressExtracted ? 'bg-green-50 border-green-300 text-green-700' : 'bg-gray-50 border-gray-300 text-gray-700 hover:bg-gray-100'}`}
               >
-                <Database size={16} /> 
+                <Server size={16} /> 
                 {addressExtracted ? 'Klantgegevens Gekoppeld' : 'Klantgegevens & Adres Ophalen'}
               </button>
 

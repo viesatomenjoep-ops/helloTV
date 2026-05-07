@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Star, MapPin, TrendingUp, Download, MessageCircle, ShoppingCart, ShoppingBag, Search, Database } from 'lucide-react';
+import { Star, MapPin, TrendingUp, Download, MessageCircle, ShoppingCart, ShoppingBag, Search, Server } from 'lucide-react';
 import {
   BarChart,
   Bar,
@@ -370,7 +370,7 @@ const handleExportTable = () => {
           <div className="bg-white rounded-2xl p-6 shadow-sm border border-gray-100">
             <div className="flex justify-between items-start mb-4">
               <div className="p-3 bg-green-100 text-green-600 rounded-xl">
-                <Database size={24} />
+                <Server size={24} />
               </div>
               <span className="text-green-500 font-bold text-sm">Live Sync</span>
             </div>
@@ -527,7 +527,7 @@ const handleExportTable = () => {
         <div className="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden">
           <div className="p-6 border-b border-gray-100 bg-gray-50 flex justify-between items-center">
             <h2 className="text-xl font-bold text-gray-800 flex items-center gap-2">
-              <Database className="text-gray-500" /> Transactie Splitsing per Kanaal
+              <Server className="text-gray-500" /> Transactie Splitsing per Kanaal
             </h2>
             <div className="flex gap-4 items-center">
               <div className="relative">
