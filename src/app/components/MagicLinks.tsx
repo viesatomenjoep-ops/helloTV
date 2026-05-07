@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Link, MessageSquare, PhoneCall, Bot, Copy, ExternalLink, CheckCircle, Table as TableIcon, Database, Terminal, RefreshCw } from 'lucide-react';
+import { Link, MessageSquare, PhoneCall, Bot, Copy, ExternalLink, CheckCircle, Table as TableIcon, Database, Terminal, RefreshCw , Mic, PhoneOff, Speaker } from 'lucide-react';
 import { HelloTVLogo } from './ui/HelloTVLogo';
 
 export function MagicLinks() {
