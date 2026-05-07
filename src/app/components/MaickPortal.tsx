@@ -71,7 +71,7 @@ export function MaickPortal() {
               <span className="text-xs font-bold text-green-700 bg-green-100 px-2 py-1 rounded">SALES</span>
             </div>
             <p className="text-gray-500 text-sm font-bold uppercase tracking-wide">Totale Omzet Vandaag</p>
-            <h3 className="text-3xl font-black text-gray-900 mt-1">€ 42.850</h3>
+            <h3 className="text-3xl font-black text-gray-900 mt-1">€ 22.211</h3>
             <p className="text-sm text-green-600 mt-2 font-bold flex items-center gap-1">Top verkoper: Tom (Breda)</p>
           </div>
 

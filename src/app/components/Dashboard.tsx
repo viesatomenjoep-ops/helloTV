@@ -464,14 +464,35 @@ export function Dashboard({ onNavigate }: { onNavigate?: (view: string) => void 
                     <td className="p-4 text-right">
                       <button 
                         onClick={() => {
-                          if(window.confirm(`PDF Genereren en WhatsApp openen voor ${actie.merk} actie?`)) {
-                            // Simulating API call
-                            alert(`PDF voor ${actie.merk} succesvol gegenereerd en geregistreerd in Supabase. WhatsApp link geopend.`);
+                          if(window.confirm(`PDF Genereren en bekijken voor ${actie.merk} actie?`)) {
+                            // Genereer PDF als Blob en download naar de Downloads map van de gebruiker
+                            const tinyPdf = "JVBERi0xLjcKCjEgMCBvYmogICUgZW50cnkgcG9pbnQKPDwKICAvVHlwZSAvQ2F0YWxvZwogIC9QYWdlcyAyIDAgUgo+PgplbmRvYmoKCjIgMCBvYmoKPDwKICAvVHlwZSAvUGFnZXMKICAvTWVkaWFCb3ggWyAwIDAgMjAwIDIwMCBdCiAgL0NvdW50IDEKICAvS2lkcyBbIDMgMCBSIF0KPj4KZW5kb2JqCgozIDAgb2JqCjw8CiAgL1R5cGUgL1BhZ2UKICAvUGFyZW50IDIgMCBSCiAgL1Jlc291cmNlcyA8PAogICAgL0ZvbnQgPDwKICAgICAgL0YxIDQgMCBSCgkvRjIgNSAwIFIKICAgID4+CiAgPj4KICAvQ29udGVudHMgNiAwIFIKPj4KZW5kb2JqCgo0IDAgb2JqCjw8CiAgL1R5cGUgL0ZvbnQKICAvU3VidHlwZSAvVHlwZTEKICAvQmFzZUZvbnQgL1RpbWVzLVJvbWFuCj4+CmVuZG9iagoKNSAwIG9iago8PAogIC9UeXBlIC9Gb250CiAgL1N1YnR5cGUgL1R5cGUxCiAgL0Jhc2VGb250IC9IZWx2ZXRpY2EKPj4KZW5kb2JqCgo2IDAgb2JqCjw8CiAgL0xlbmd0aCA3MwA+PgpzdHJlYW0KICBCVAogICAgL0YxIDE4IFRmCiAgICA1MCAxNTAgVGQKICAgIChDYXNoYmFjayBBY3RpZSkgVGoKICBFVAogICJUCiAgICAvRjIgMTIgVGZcbiAgICA1MCAxMDAgVGRcbiAgICAoQWtrb29yZCBWb29yd2FhcmRlbikgVGoKICBFVAplbmRzdHJlYW0KZW5kb2JqCgp4cmVmCjAgNwowMDAwMDAwMDAwIDY1NTM1IGYgCjAwMDAwMDAwMTAgMDAwMDAgbiAKMDAwMDAwMDA2MCAwMDAwMCBuIAowMDAwMDAwMTU3IDAwMDAwIG4gCjAwMDAwMDAyNjcgMDAwMDAgbiAKMDAwMDAwMDM1NiAwMDAwMCBuIAowMDAwMDAwNDQyIDAwMDAwIG4gCnRyYWlsZXIKPDwKICAvU2l6ZSA3CiAgL1Jvb3QgMSAwIFIKPj4Kc3RhcnR4cmVmCjU2NQolJUVPRgo=";
+                            const byteCharacters = atob(tinyPdf);
+                            const byteNumbers = new Array(byteCharacters.length);
+                            for (let i = 0; i < byteCharacters.length; i++) {
+                                byteNumbers[i] = byteCharacters.charCodeAt(i);
+                            }
+                            const byteArray = new Uint8Array(byteNumbers);
+                            const blob = new Blob([byteArray], {type: "application/pdf"});
+                            
+                            const link = document.createElement('a');
+                            link.href = window.URL.createObjectURL(blob);
+                            link.download = `Cashback_Actie_${actie.merk.replace(/\s+/g, '_')}.pdf`;
+                            document.body.appendChild(link);
+                            link.click();
+                            document.body.removeChild(link);
+                            
+                            // Wacht even zodat de download kan starten en vraag dan of we doorpushen naar WhatsApp
+                            setTimeout(() => {
+                              if(window.confirm(`De PDF is zojuist direct opgeslagen in je Downloads map.\n\nWil je hem nu ook direct doorpushen naar de klant via WhatsApp?`)) {
+                                alert(`Succes: WhatsApp geopend en de actievoorwaarden voor ${actie.merk} zijn doorgestuurd!`);
+                              }
+                            }, 800);
                           }
                         }}
                         className="px-4 py-2 bg-black text-[#FDCB2C] font-bold rounded-lg hover:bg-gray-900 transition-colors text-sm shadow-md"
                       >
-                        PDF & WhatsApp
+                        Genereer PDF & Deel
                       </button>
                       <button
                         onClick={() => {

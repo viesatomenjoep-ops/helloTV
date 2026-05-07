@@ -182,28 +182,40 @@ export default function App() {
       </div>
 
       {/* Main Content Area */}
-      <div className="flex-1 overflow-auto bg-white rounded-tl-2xl shadow-xl border-t border-l border-gray-200">
-        {currentView === 'dashboard' && <Dashboard onNavigate={setCurrentView} />}
-        {currentView === 'maick' && <MaickPortal />}
-        {currentView === 'website' && <HelloTVWebsite />}
-        {currentView === 'reviews' && <GoogleReviews />}
-        {currentView === 'orders' && <Orders onNavigate={setCurrentView} />}
-        {currentView === 'showcase' && <Showcase />}
-        {currentView === 'crm' && <CRM />}
-        {currentView === 'quotes' && <Quotes />}
-        {currentView === 'sales' && <SalesTracker />}
-        {currentView === 'trainers' && <TrainersPortal />}
-        { currentView === 'inventory' && <Inventory /> }
-        { currentView === 'shiftbase' && <Shiftbase /> }
-        {currentView === 'hr' && <HR />}
-        {currentView === 'transport' && <Transport />}
-        {currentView === 'storeportal' && <StorePortal />}
-        {currentView === 'reparatie' && <Reparatie />}
-        {currentView === 'magiclinks' && <MagicLinks />}
-        {currentView === 'media' && <MediaPortal />}
-        {currentView === 'livechat' && <LiveChatPortal />}
-      {currentView === 'producten' && <ProductDashboard />}
-        {currentView === 'vendit' && <Vendit />}
+      <div className="flex-1 flex flex-col overflow-hidden bg-white rounded-tl-2xl shadow-xl border-t border-l border-gray-200">
+        {currentView !== 'dashboard' && (
+          <div className="bg-white/90 backdrop-blur-sm border-b border-gray-100 p-4 shrink-0 flex items-center z-10">
+            <button 
+              onClick={() => setCurrentView('dashboard')}
+              className="text-gray-700 hover:text-black font-bold text-sm bg-white border border-gray-200 px-4 py-2 rounded-xl shadow-sm flex items-center gap-2 transition-all hover:bg-gray-50"
+            >
+              ← Terug naar Dashboard
+            </button>
+          </div>
+        )}
+        <div className="flex-1 overflow-auto">
+          {currentView === 'dashboard' && <Dashboard onNavigate={setCurrentView} />}
+          {currentView === 'maick' && <MaickPortal />}
+          {currentView === 'website' && <HelloTVWebsite />}
+          {currentView === 'reviews' && <GoogleReviews />}
+          {currentView === 'orders' && <Orders onNavigate={setCurrentView} />}
+          {currentView === 'showcase' && <Showcase />}
+          {currentView === 'crm' && <CRM />}
+          {currentView === 'quotes' && <Quotes />}
+          {currentView === 'sales' && <SalesTracker />}
+          {currentView === 'trainers' && <TrainersPortal />}
+          { currentView === 'inventory' && <Inventory /> }
+          { currentView === 'shiftbase' && <Shiftbase /> }
+          {currentView === 'hr' && <HR />}
+          {currentView === 'transport' && <Transport />}
+          {currentView === 'storeportal' && <StorePortal />}
+          {currentView === 'reparatie' && <Reparatie />}
+          {currentView === 'magiclinks' && <MagicLinks />}
+          {currentView === 'media' && <MediaPortal />}
+          {currentView === 'livechat' && <LiveChatPortal />}
+          {currentView === 'producten' && <ProductDashboard />}
+          {currentView === 'vendit' && <Vendit />}
+        </div>
       </div>
     </div>
   );
