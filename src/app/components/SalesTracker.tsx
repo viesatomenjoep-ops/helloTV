@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useMemo } from 'react';
-import { TrendingUp, Award, Target, Euro, Trophy, Tv, Zap, Store, Filter, Download, ChevronDown, ChevronUp, Calendar, Mail, CheckCircle, RefreshCw, Maximize2, Minimize2, Smartphone, Users, Star } from 'lucide-react';
+import { TrendingUp, Award, Target, Euro, Trophy, Tv, Zap, Store, Filter, Download, ChevronDown, ChevronUp, Calendar, Mail, CheckCircle, RefreshCw, Maximize2, Minimize2, Smartphone, Users, Star, Search } from 'lucide-react';
 import { api } from '../../utils/api';
 import { SqlTerminal } from './SqlTerminal';
 import { MOCK_TOP_SELLERS } from '../../utils/mockSellers';

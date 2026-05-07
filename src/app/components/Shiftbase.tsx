@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { SqlTerminal } from './SqlTerminal';
-import { Clock, Play, Square, Coffee, Calendar, Search, CheckCircle, Home, FileText, User as UserIcon, Plus, Bell, Key, Briefcase, Users, Mail, MessageCircle } from 'lucide-react';
+import { Clock, Play, Square, Coffee, Calendar, Search, Maximize2, Minimize2, Smartphone, CheckCircle, Home, FileText, User as UserIcon, Plus, Bell, Key, Briefcase, Users, Mail, MessageCircle } from 'lucide-react';
 import { HelloTVLogo } from './ui/HelloTVLogo';
 
 import { getMedewerkerByCode } from '../../utils/employees';
