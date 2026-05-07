@@ -4,6 +4,7 @@ import { mockOrders } from '../../utils/mockOrders';
 import { getMedewerkerByCode } from '../../utils/employees';
 import { OrderDetailView } from './OrderDetail';
 import { SqlTerminal } from './SqlTerminal';
+import { NewOrderWidget } from './NewOrderWidget';
 
 const MOCK_PRODUCTS = [
   // LG 2025
