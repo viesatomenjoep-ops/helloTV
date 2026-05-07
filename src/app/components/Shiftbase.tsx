@@ -19,7 +19,7 @@ const MOCK_OPEN_DIENSTEN = [
   { date: 'Zondag 15 Mei', time: '12:00 - 17:00', role: 'Klantenservice', location: 'Amsterdam' },
 ];
 
-export function Shiftbase() {
+function ShiftbaseApp({ isTablet = false }: { isTablet?: boolean }) {
   const [medewerkerCode, setMedewerkerCode] = useState('');
   const [botWarning, setBotWarning] = useState(false);
   const [selectedEmployee, setSelectedEmployee] = useState<string>('Niet geselecteerd');
@@ -101,9 +101,9 @@ Roostermaker heeft zojuist een notificatie ontvangen via WhatsApp & E-mail.`);
   };
 
   return (
-    <div className="flex justify-center md:bg-gray-100 min-h-[100dvh] md:pt-8 md:pb-24 bg-gray-50">
-      {/* Mobile App Container Simulation */}
-      <div className="w-full md:max-w-[400px] bg-gray-50 h-[100dvh] md:h-[800px] md:shadow-2xl md:rounded-[3rem] md:border-[8px] md:border-gray-900 relative overflow-hidden flex flex-col">
+    <>
+      {/* App Container Simulation */}
+      <div className={`w-full bg-gray-50 h-[100dvh] md:h-[800px] md:shadow-2xl md:rounded-[3rem] md:border-[8px] md:border-gray-900 relative overflow-hidden flex flex-col shrink-0 ${isTablet ? 'md:w-[800px]' : 'md:w-[400px]'}`}>
         
         {/* Status Bar Mock */}
         <div className="hidden md:flex h-7 w-full bg-[#111111] justify-between items-center px-6 text-white text-[10px] font-bold z-20 shrink-0">
@@ -610,6 +610,21 @@ Roostermaker heeft zojuist een notificatie ontvangen via WhatsApp & E-mail.`);
           </div>
         </div>
 
+      </div>
+    </>
+  );
+}
+
+export function Shiftbase() {
+  return (
+    <div className="flex flex-col xl:flex-row items-center xl:items-start justify-center gap-12 bg-gray-100 min-h-[100dvh] pt-8 pb-24 overflow-x-auto w-full">
+      <div>
+        <h3 className="text-center font-bold text-gray-500 mb-4">MOBIEL WEERGAVE</h3>
+        <ShiftbaseApp isTablet={false} />
+      </div>
+      <div className="hidden md:block">
+        <h3 className="text-center font-bold text-gray-500 mb-4">TABLET WEERGAVE (ZAAK)</h3>
+        <ShiftbaseApp isTablet={true} />
       </div>
     </div>
   );

@@ -173,11 +173,7 @@ export function Showcase() {
               </p>
             </div>
             
-            <div className="mt-20">
-              <div className="inline-block px-12 py-6 rounded-full border border-[#FDCB2C]/30 bg-[#FDCB2C]/10 text-[#FDCB2C] font-bold tracking-widest text-lg">
-                Premium Quality
-              </div>
-            </div>
+
           </div>
         </div>
       </section>

@@ -16,19 +16,22 @@ import {
 const REVIEW_DATA = [
   { filiaal: 'Alkmaar', week: 32, maand: 130, jaar: 1600, rating: 4.8, trustpilotRating: 4.5, trustpilotJaar: 600, transacties: 650, online: 180, winkel: 370, tickets: 100 },
   { filiaal: 'Amsterdam', week: 45, maand: 180, jaar: 2150, rating: 4.8, trustpilotRating: 4.6, trustpilotJaar: 850, transacties: 890, online: 300, winkel: 450, tickets: 140 },
+  { filiaal: 'Apeldoorn', week: 34, maand: 135, jaar: 1620, rating: 4.7, trustpilotRating: 4.6, trustpilotJaar: 610, transacties: 670, online: 190, winkel: 380, tickets: 100 },
+  { filiaal: 'Arnhem', week: 39, maand: 155, jaar: 1850, rating: 4.8, trustpilotRating: 4.7, trustpilotJaar: 720, transacties: 780, online: 210, winkel: 460, tickets: 110 },
   { filiaal: 'Breda', week: 38, maand: 145, jaar: 1820, rating: 4.7, trustpilotRating: 4.5, trustpilotJaar: 620, transacties: 750, online: 200, winkel: 450, tickets: 100 },
   { filiaal: 'Cruquius', week: 28, maand: 110, jaar: 1350, rating: 4.6, trustpilotRating: 4.4, trustpilotJaar: 510, transacties: 550, online: 150, winkel: 320, tickets: 80 },
   { filiaal: 'Den Bosch', week: 42, maand: 165, jaar: 1980, rating: 4.8, trustpilotRating: 4.7, trustpilotJaar: 780, transacties: 810, online: 220, winkel: 480, tickets: 110 },
-  { filiaal: 'Doetinchem', week: 35, maand: 140, jaar: 1700, rating: 4.9, trustpilotRating: 4.8, trustpilotJaar: 690, transacties: 720, online: 190, winkel: 430, tickets: 100 },
-  { filiaal: 'Duiven', week: 41, maand: 160, jaar: 1950, rating: 4.6, trustpilotRating: 4.4, trustpilotJaar: 780, transacties: 820, online: 250, winkel: 470, tickets: 100 },
+  { filiaal: 'Den Haag', week: 46, maand: 185, jaar: 2200, rating: 4.7, trustpilotRating: 4.6, trustpilotJaar: 880, transacties: 920, online: 310, winkel: 480, tickets: 130 },
   { filiaal: 'Eindhoven', week: 52, maand: 210, jaar: 2400, rating: 4.9, trustpilotRating: 4.8, trustpilotJaar: 1100, transacties: 1100, online: 400, winkel: 600, tickets: 100 },
   { filiaal: 'Groningen', week: 39, maand: 155, jaar: 1850, rating: 4.7, trustpilotRating: 4.6, trustpilotJaar: 720, transacties: 780, online: 210, winkel: 460, tickets: 110 },
-  { filiaal: 'Naarden', week: 30, maand: 120, jaar: 1450, rating: 4.8, trustpilotRating: 4.5, trustpilotJaar: 550, transacties: 600, online: 170, winkel: 350, tickets: 80 },
+  { filiaal: 'Heerlen', week: 25, maand: 100, jaar: 1200, rating: 4.8, trustpilotRating: 4.5, trustpilotJaar: 450, transacties: 500, online: 140, winkel: 280, tickets: 80 },
+  { filiaal: 'Leeuwarden', week: 22, maand: 90, jaar: 1100, rating: 4.7, trustpilotRating: 4.6, trustpilotJaar: 410, transacties: 460, online: 130, winkel: 260, tickets: 70 },
   { filiaal: 'Nijmegen', week: 40, maand: 158, jaar: 1900, rating: 4.6, trustpilotRating: 4.5, trustpilotJaar: 740, transacties: 790, online: 230, winkel: 450, tickets: 110 },
   { filiaal: 'Rotterdam', week: 48, maand: 195, jaar: 2300, rating: 4.8, trustpilotRating: 4.7, trustpilotJaar: 950, transacties: 980, online: 350, winkel: 500, tickets: 130 },
   { filiaal: 'Tilburg', week: 37, maand: 148, jaar: 1780, rating: 4.7, trustpilotRating: 4.6, trustpilotJaar: 680, transacties: 740, online: 190, winkel: 440, tickets: 110 },
   { filiaal: 'Utrecht', week: 44, maand: 175, jaar: 2100, rating: 4.7, trustpilotRating: 4.6, trustpilotJaar: 890, transacties: 880, online: 280, winkel: 500, tickets: 100 },
   { filiaal: 'Zoeterwoude', week: 33, maand: 135, jaar: 1650, rating: 4.8, trustpilotRating: 4.7, trustpilotJaar: 640, transacties: 690, online: 180, winkel: 410, tickets: 100 },
+  { filiaal: 'Zwolle', week: 36, maand: 142, jaar: 1700, rating: 4.7, trustpilotRating: 4.6, trustpilotJaar: 660, transacties: 710, online: 190, winkel: 420, tickets: 100 },
 ];
 
 const TREND_DATA = [

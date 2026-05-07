@@ -604,7 +604,18 @@ export function HR() {
                       <p className="font-bold text-gray-900">{medewerker.name}</p>
                       <p className="text-xs text-gray-500">Code: {medewerker.code} • {medewerker.isSeller ? 'Verkoper' : 'Anders'}</p>
                     </div>
-                    <button className="text-xs font-bold text-blue-600 hover:text-blue-800">
+                    <button 
+                      onClick={() => {
+                        const newName = window.prompt(`Pas de naam aan voor ${medewerker.name}:`, medewerker.name);
+                        if(newName !== null) {
+                          const newRole = window.prompt(`Is ${newName} een verkoper? (Ja/Nee)`, medewerker.isSeller ? 'Ja' : 'Nee');
+                          if(newRole !== null) {
+                            alert(`Wijzigingen voor ${newName} (Verkoper: ${newRole}) zijn opgeslagen in de Medewerker Database!`);
+                          }
+                        }
+                      }}
+                      className="text-xs font-bold text-blue-600 hover:text-blue-800 p-2 border border-blue-200 rounded-lg bg-blue-50 hover:bg-blue-100 transition-colors"
+                    >
                       Beheer
                     </button>
                   </div>

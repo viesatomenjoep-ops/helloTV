@@ -224,7 +224,15 @@ export function MagicLinks() {
                   </div>
 
                   <div className="flex gap-4">
-                    <button className="flex-1 py-3 bg-[#1D6F42] text-white rounded-xl font-bold hover:bg-green-800 flex justify-center items-center gap-2">
+                    <button 
+                      onClick={() => {
+                        alert("Bellen met +31 76 123 4567...");
+                        setTimeout(() => {
+                          alert("Lisa: 'Welkom bij HelloTV Breda, u spreekt met Lisa. Wat kan ik voor u doen?'");
+                        }, 1000);
+                      }}
+                      className="flex-1 py-3 bg-[#1D6F42] text-white rounded-xl font-bold hover:bg-green-800 flex justify-center items-center gap-2"
+                    >
                       <PhoneCall size={18} /> Test Bellen
                     </button>
                     <button className="flex-1 py-3 bg-white text-gray-700 border border-gray-300 rounded-xl font-bold hover:bg-gray-50 flex justify-center items-center gap-2">
