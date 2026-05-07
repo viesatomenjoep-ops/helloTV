@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Link, MessageSquare, PhoneCall, Bot, Copy, ExternalLink, CheckCircle, Table as TableIcon, Database, Terminal, RefreshCw , Mic, PhoneOff, Speaker } from 'lucide-react';
 import { HelloTVLogo } from './ui/HelloTVLogo';
 
@@ -22,6 +22,22 @@ export function MagicLinks() {
     }, 2000);
   };
   
+
+  useEffect(() => {
+    if (callTranscript.length > 0 && callTranscript[callTranscript.length - 1].speaker === 'Jij') {
+      const userText = callTranscript[callTranscript.length - 1].text;
+      setTimeout(() => {
+        let response = "Ik begrijp het. Laten we dat voor u uitzoeken.";
+        if (userText.includes("TV is kapot") || userText.includes("TV kapot")) {
+          response = "Wat vervelend! Voor reparaties kunt u het beste direct ons online reparatieformulier invullen, of zal ik u doorverbinden met Chaima van de service afdeling?";
+        } else if (userText.includes("bestelling")) {
+          response = "Natuurlijk. Mag ik uw ordernummer of postcode om uw bestelling op te zoeken in ons systeem?";
+        }
+        setCallTranscript(prev => [...prev, { speaker: 'Lisa', text: response }]);
+      }, 1500);
+    }
+  }, [callTranscript]);
+
   const handleEndCall = () => {
     setIsCalling(false);
     setCallState('dialing');

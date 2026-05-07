@@ -97,6 +97,7 @@ export function Transport() {
   const [orders, setOrders] = useState(MOCK_ORDERS);
   const [installateurDriver, setInstallateurDriver] = useState('Sander (BUS-1)');
   const [isPrintingPaklijst, setIsPrintingPaklijst] = useState(false);
+  const [mapZoom, setMapZoom] = useState(1);
 
   const handlePrintPaklijst = () => {
     setIsPrintingPaklijst(true);
