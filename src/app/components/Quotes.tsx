@@ -1,13 +1,19 @@
 import { useState } from 'react';
-import { Eye, Search, Filter, FileText, CheckCircle, Plus } from 'lucide-react';
+import { Eye, Search, Filter, FileText, CheckCircle, Plus, ShoppingCart, UserPlus, Package } from 'lucide-react';
 import { mockQuotes } from '../../utils/mockQuotes';
 import { mockOrders } from '../../utils/mockOrders';
 import { QuoteDetailView } from './QuoteDetail';
 import { OrderDetail } from '../../types/database';
 import { getMedewerkerByCode } from '../../utils/employees';
+import { SqlTerminal } from './SqlTerminal';
 
 export function Quotes() {
   const [quotes, setQuotes] = useState(mockQuotes);
+  const [showNewQuote, setShowNewQuote] = useState(false);
+  const [newQuoteStep, setNewQuoteStep] = useState<'idle' | 'pdf_saved' | 'sent'>('idle');
+  const [quoteCustomer, setQuoteCustomer] = useState('Dhr. de Vries');
+  const [quoteProduct, setQuoteProduct] = useState('LG OLED65G4');
+  const [quotePrice, setQuotePrice] = useState(2499.00);
   const [selectedQuoteId, setSelectedQuoteId] = useState<string | null>(null);
   const [searchTerm, setSearchTerm] = useState('');
   const [showSuccessMsg, setShowSuccessMsg] = useState('');
@@ -127,7 +133,7 @@ export function Quotes() {
         <div className="flex flex-col sm:flex-row gap-4 items-start sm:items-center w-full md:w-auto">
           <button 
             className="flex items-center justify-center gap-2 px-6 py-3 bg-[#FDCB2C] hover:bg-yellow-500 text-black font-bold rounded-xl shadow-sm transition-all"
-            onClick={() => alert('Nieuwe Offerte maken is momenteel in ontwikkeling.')}
+            onClick={() => setShowNewQuote(true)}
           >
             <Plus size={20} />
             Maak Offerte
@@ -155,6 +161,86 @@ export function Quotes() {
           </div>
         </div>
       </div>
+
+
+      {showNewQuote && (
+        <div className="fixed inset-0 z-50 bg-black/50 backdrop-blur-sm flex items-center justify-center p-4">
+          <div className="bg-white rounded-2xl w-full max-w-2xl p-8 shadow-2xl relative">
+            <button onClick={() => {setShowNewQuote(false); setNewQuoteStep('idle');}} className="absolute top-4 right-4 text-gray-400 hover:text-gray-800 font-bold">SLUITEN (X)</button>
+            <h2 className="text-2xl font-bold mb-6 flex items-center gap-2"><FileText className="text-blue-600" /> Nieuwe Offerte Aanmaken</h2>
+            
+            {newQuoteStep === 'idle' && (
+              <div className="space-y-4">
+                <div>
+                  <label className="block text-sm font-bold text-gray-700 mb-1">Klantnaam</label>
+                  <div className="relative">
+                    <UserPlus className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" size={18} />
+                    <input type="text" value={quoteCustomer} onChange={e => setQuoteCustomer(e.target.value)} className="w-full pl-10 pr-4 py-3 bg-gray-50 border border-gray-200 rounded-xl focus:ring-2 focus:ring-blue-500" />
+                  </div>
+                </div>
+                <div>
+                  <label className="block text-sm font-bold text-gray-700 mb-1">Product (TV Model)</label>
+                  <div className="relative">
+                    <Package className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" size={18} />
+                    <input type="text" value={quoteProduct} onChange={e => setQuoteProduct(e.target.value)} className="w-full pl-10 pr-4 py-3 bg-gray-50 border border-gray-200 rounded-xl focus:ring-2 focus:ring-blue-500" />
+                  </div>
+                </div>
+                <div>
+                  <label className="block text-sm font-bold text-gray-700 mb-1">Offerte Prijs (€)</label>
+                  <input type="number" value={quotePrice} onChange={e => setQuotePrice(Number(e.target.value))} className="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-xl focus:ring-2 focus:ring-blue-500 font-bold text-lg" />
+                </div>
+                
+                <button 
+                  onClick={() => setNewQuoteStep('pdf_saved')}
+                  className="w-full py-4 bg-white border border-gray-300 rounded-xl font-bold flex justify-center items-center gap-2 hover:bg-gray-50 mt-4"
+                >
+                  Genereer Offerte PDF
+                </button>
+              </div>
+            )}
+
+            {newQuoteStep === 'pdf_saved' && (
+              <div className="space-y-4 text-center">
+                <CheckCircle className="text-green-500 w-16 h-16 mx-auto mb-4" />
+                <h3 className="text-xl font-bold text-gray-900">Offerte PDF Succesvol Gegenereerd</h3>
+                <p className="text-gray-500">Klaar om in te schieten in de database.</p>
+                <button 
+                  onClick={() => setNewQuoteStep('sent')}
+                  className="w-full py-4 mt-6 bg-[#FDCB2C] hover:bg-yellow-500 text-black rounded-xl font-black shadow-lg flex items-center justify-center gap-2 transition-all"
+                >
+                  <ShoppingCart size={20} /> Bevestig & Push naar Backend
+                </button>
+              </div>
+            )}
+            
+            {newQuoteStep === 'sent' && (
+              <SqlTerminal 
+                query={`INSERT INTO quotes (id, klant_naam, bedrag, status) VALUES ('OFF-${Math.floor(Math.random() * 10000)}', '${quoteCustomer}', ${quotePrice}, 'Concept');`}
+                onComplete={() => {
+                  setQuotes([{
+                    id: `OFF-9${Math.floor(Math.random() * 1000)}`,
+                    klant_id: 'CUST-NIEUW',
+                    klant_naam: quoteCustomer,
+                    klant_email: 'klant@mail.nl',
+                    order_totaal: quotePrice,
+                    status: 'Concept',
+                    aanschaf_datum: new Date(),
+                    geldig_tot: new Date(Date.now() + 14*24*60*60*1000),
+                    filiaal: storeFilter !== 'Alle Filialen' ? storeFilter : 'Amsterdam',
+                    kanaal: 'Winkel',
+                    verkoper_id: medewerkerCode || 'Onbekend',
+                    producten: [{ naam: quoteProduct, prijs: quotePrice, aantal: 1 }]
+                  } as any, ...quotes]);
+                  setShowSuccessMsg(`Offerte voor ${quoteCustomer} succesvol aangemaakt!`);
+                  setShowNewQuote(false);
+                  setNewQuoteStep('idle');
+                  setTimeout(() => setShowSuccessMsg(''), 5000);
+                }} 
+              />
+            )}
+          </div>
+        </div>
+      )}
 
       {showSuccessMsg && (
         <div className="mb-6 p-4 bg-green-50 border border-green-200 rounded-xl flex items-center gap-3 text-green-800 animate-in fade-in slide-in-from-top-4">

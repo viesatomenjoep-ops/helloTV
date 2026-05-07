@@ -23,6 +23,7 @@ const MOCK_OPEN_DIENSTEN = [
 function ShiftbaseApp({ isTablet = false }: { isTablet?: boolean }) {
   const [medewerkerCode, setMedewerkerCode] = useState('');
   const [botWarning, setBotWarning] = useState(false);
+  const [showSql, setShowSql] = useState(true);
   const [selectedEmployee, setSelectedEmployee] = useState<string>('Niet geselecteerd');
   const [shiftState, setShiftState] = useState<ShiftState>('UITGEKLOKT');
   const [clockInTime, setClockInTime] = useState<Date | null>(null);

@@ -54,7 +54,7 @@ export function NewOrderWidget({ onOrderCreated }: { onOrderCreated?: () => void
       verzending: 'bezorgen',
       betaalmethode: 'IDEAL',
       bezorg_datum: null,
-      status: 'Nieuwe Order (Processing)',
+      status: 'Afgehandeld - Nieuwe order',
       sco_status: null,
       online_order: false,
       shipping_pdf_url: null,
@@ -86,7 +86,7 @@ export function NewOrderWidget({ onOrderCreated }: { onOrderCreated?: () => void
       }
     };
     
-    mockOrders.unshift(newOrder);
+    mockOrders.unshift(newOrder as any);
     
     setOrderStep('sent');
     // The SqlTerminal will now handle the timeout via its onComplete prop!

@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Eye, Search, Filter, Download, Plus, ShoppingCart, List, Tv, TrendingUp, AlertTriangle, ArrowRightCircle, CreditCard, RefreshCw, CheckCircle, Users , ExternalLink } from 'lucide-react';
+import { Eye, Search, Trash2, Edit2, Filter, Download, Plus, ShoppingCart, List, Tv, TrendingUp, AlertTriangle, ArrowRightCircle, CreditCard, RefreshCw, CheckCircle, Users , ExternalLink } from 'lucide-react';
 import { mockOrders } from '../../utils/mockOrders';
 import { getMedewerkerByCode } from '../../utils/employees';
 import { OrderDetailView } from './OrderDetail';
@@ -68,6 +68,8 @@ export function Orders({ onNavigate }: { onNavigate?: (view: string) => void }) 
   
   // Orders State
   const [selectedOrderId, setSelectedOrderId] = useState<string | null>(null);
+  const [editingOrder, setEditingOrder] = useState<any | null>(null);
+  const [editingOrder, setEditingOrder] = useState<any | null>(null);
   const [searchTerm, setSearchTerm] = useState('');
   const [statusFilter, setStatusFilter] = useState('Alle');
   const [storeFilter, setStoreFilter] = useState('Alle Filialen');
@@ -135,6 +137,24 @@ export function Orders({ onNavigate }: { onNavigate?: (view: string) => void }) 
     if (marge >= 24) return 'bg-green-100 text-green-800 border-green-200';
     if (marge >= 15) return 'bg-orange-100 text-orange-800 border-orange-200';
     return 'bg-red-100 text-red-800 border-red-200';
+  };
+
+
+  const handleDeleteOrder = (id: string, e: React.MouseEvent) => {
+    e.stopPropagation();
+    if(window.confirm('Weet je zeker dat je deze order wilt verwijderen?')) {
+      setOrdersList(prev => prev.filter(o => o.id !== id));
+    }
+  };
+
+  const handleEditOrder = (order: any, e: React.MouseEvent) => {
+    e.stopPropagation();
+    setEditingOrder(order);
+  };
+
+  const saveEditedOrder = () => {
+    setOrdersList(prev => prev.map(o => o.id === editingOrder.id ? editingOrder : o));
+    setEditingOrder(null);
   };
 
   const handleCreateUpsell = (e: React.FormEvent) => {
@@ -372,7 +392,21 @@ export function Orders({ onNavigate }: { onNavigate?: (view: string) => void }) 
                           </span>
                         </td>
                         <td className="px-6 py-4">{order.verzending}</td>
-                        <td className="px-6 py-4">
+                        <td className="px-6 py-4 flex gap-2">
+                          <button
+                            onClick={(e) => handleEditOrder(order, e)}
+                            className="p-2 text-gray-400 hover:text-green-600 hover:bg-green-50 rounded-lg transition-colors"
+                            title="Bewerk Order"
+                          >
+                            <Edit2 size={18} />
+                          </button>
+                          <button
+                            onClick={(e) => handleDeleteOrder(order.id, e)}
+                            className="p-2 text-gray-400 hover:text-red-600 hover:bg-red-50 rounded-lg transition-colors"
+                            title="Verwijder Order"
+                          >
+                            <Trash2 size={18} />
+                          </button>
                           <button
                             onClick={() => setSelectedOrderId(order.id)}
                             className="p-2 text-gray-400 hover:text-blue-600 hover:bg-blue-50 rounded-lg transition-colors"
@@ -624,6 +658,45 @@ export function Orders({ onNavigate }: { onNavigate?: (view: string) => void }) 
           />
         )}
       </div>
+
+        {/* Edit Order Overlay */}
+        {editingOrder && (
+          <div className="fixed inset-0 z-[999] bg-black/60 flex items-center justify-center p-4">
+            <div className="bg-white rounded-2xl w-full max-w-lg p-6 shadow-2xl">
+              <h2 className="text-xl font-bold mb-4">Order #{editingOrder.id} Bewerken</h2>
+              
+              <div className="space-y-4">
+                <div>
+                  <label className="block text-sm font-bold text-gray-700 mb-1">Status</label>
+                  <select 
+                    value={editingOrder.status}
+                    onChange={e => setEditingOrder({...editingOrder, status: e.target.value})}
+                    className="w-full border p-2 rounded"
+                  >
+                    <option value="Afgehandeld - Nieuwe order">Afgehandeld - Nieuwe order</option>
+                    <option value="Logistiek - Betaling Akkoord">Logistiek - Betaling Akkoord</option>
+                    <option value="Klaar voor logistiek - Verzenden">Klaar voor logistiek - Verzenden</option>
+                    <option value="Vervallen">Vervallen</option>
+                  </select>
+                </div>
+                <div>
+                  <label className="block text-sm font-bold text-gray-700 mb-1">Totaal Bedrag (€)</label>
+                  <input 
+                    type="number" 
+                    value={editingOrder.order_totaal}
+                    onChange={e => setEditingOrder({...editingOrder, order_totaal: Number(e.target.value)})}
+                    className="w-full border p-2 rounded"
+                  />
+                </div>
+              </div>
+
+              <div className="mt-6 flex justify-end gap-3">
+                <button onClick={() => setEditingOrder(null)} className="px-4 py-2 text-gray-600 font-bold hover:bg-gray-100 rounded">Annuleren</button>
+                <button onClick={saveEditedOrder} className="px-4 py-2 bg-blue-600 text-white font-bold rounded hover:bg-blue-700">Opslaan</button>
+              </div>
+            </div>
+          </div>
+        )}
     </div>
   );
 }
