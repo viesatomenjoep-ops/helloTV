@@ -206,7 +206,6 @@ export function LiveChatPortal() {
                 </button>
               </div>
             </div>
-          </div>
 
             <div className="flex-1 overflow-y-auto p-6 space-y-6 bg-[#f8f9fa]">
               {activeMessages.map((msg) => (
