@@ -3,37 +3,13 @@ import re
 with open('src/app/components/Shiftbase.tsx', 'r') as f:
     content = f.read()
 
-# 1. Rename export function Shiftbase() to function ShiftbaseApp({ isTablet = false }: { isTablet?: boolean })
-content = content.replace("export function Shiftbase() {", "function ShiftbaseApp({ isTablet = false }: { isTablet?: boolean }) {")
+# Add Maximize2/Minimize2 to imports if not there
+if "Maximize2" not in content:
+    content = content.replace("import { Home, Calendar, Clock, User, ChevronRight, CheckCircle, Smartphone, AlertTriangle } from 'lucide-react';", 
+                              "import { Home, Calendar, Clock, User, ChevronRight, CheckCircle, Smartphone, AlertTriangle, Maximize2, Minimize2 } from 'lucide-react';")
 
-# 2. Modify the container to use isTablet
-# from: <div className="flex justify-center md:bg-gray-100 min-h-[100dvh] md:pt-8 md:pb-24 bg-gray-50">
-#       {/* Mobile App Container Simulation */}
-#       <div className="w-full md:max-w-[400px] bg-gray-50 h-[100dvh] md:h-[800px] md:shadow-2xl md:rounded-[3rem] md:border-[8px] md:border-gray-900 relative overflow-hidden flex flex-col">
-old_container = """  return (
-    <div className="flex justify-center md:bg-gray-100 min-h-[100dvh] md:pt-8 md:pb-24 bg-gray-50">
-      {/* Mobile App Container Simulation */}
-      <div className="w-full md:max-w-[400px] bg-gray-50 h-[100dvh] md:h-[800px] md:shadow-2xl md:rounded-[3rem] md:border-[8px] md:border-gray-900 relative overflow-hidden flex flex-col">"""
-
-new_container = """  return (
-    <>
-      {/* App Container Simulation */}
-      <div className={`w-full bg-gray-50 h-[100dvh] md:h-[800px] md:shadow-2xl md:rounded-[3rem] md:border-[8px] md:border-gray-900 relative overflow-hidden flex flex-col shrink-0 ${isTablet ? 'md:w-[800px]' : 'md:w-[400px]'}`}>"""
-
-content = content.replace(old_container, new_container)
-
-# 3. Modify the closing divs
-old_closing = """      </div>
-    </div>
-  );
-}"""
-
-new_closing = """      </div>
-    </>
-  );
-}
-
-export function Shiftbase() {
+# Replace Shiftbase function
+old_func = """export function Shiftbase() {
   return (
     <div className="flex flex-col xl:flex-row items-center xl:items-start justify-center gap-12 bg-gray-100 min-h-[100dvh] pt-8 pb-24 overflow-x-auto w-full">
       <div>
@@ -48,69 +24,71 @@ export function Shiftbase() {
   );
 }"""
 
-content = content.replace(old_closing, new_closing)
+new_func = """export function Shiftbase() {
+  const [selectedDevice, setSelectedDevice] = useState<'iphone' | 'ipad' | null>(null);
+  const [isFullscreen, setIsFullscreen] = useState(false);
 
-# 4. Modify 'overflow-y-auto' to ensure the rooster list is scrollable
-# Looking at "flex-1 overflow-y-auto bg-gray-50 pb-20 relative z-0"
-# It's already there! But the user said "Dus dat rooster in de app van HelloBase uren, daar moet je nog wel naar beneden en naar boven te scrollen."
-# Maybe they want the rooster items to have a specific height, or maybe they just didn't see the scrollbar.
-# Let's add multiple fake days so it scrolls visibly!
+  if (!selectedDevice) {
+    return (
+      <div className="flex flex-col items-center justify-center min-h-[80vh] bg-gray-50">
+        <h2 className="text-2xl font-black text-gray-900 mb-8">Kies je weergave voor HelloBase Uren</h2>
+        <div className="flex gap-6">
+          <button 
+            onClick={() => setSelectedDevice('iphone')}
+            className="flex flex-col items-center p-8 bg-white border-2 border-gray-200 rounded-2xl shadow-sm hover:border-blue-500 hover:shadow-md transition-all group"
+          >
+            <Smartphone size={48} className="text-gray-400 group-hover:text-blue-500 mb-4" />
+            <span className="font-bold text-lg text-gray-800">iPhone 17 Pro</span>
+            <span className="text-sm text-gray-500">Persoonlijk Rooster</span>
+          </button>
+          
+          <button 
+            onClick={() => setSelectedDevice('ipad')}
+            className="flex flex-col items-center p-8 bg-white border-2 border-gray-200 rounded-2xl shadow-sm hover:border-[#FDCB2C] hover:shadow-md transition-all group"
+          >
+            <div className="w-16 h-12 border-4 border-gray-400 group-hover:border-[#FDCB2C] rounded-lg mb-4 flex items-center justify-center relative">
+               <div className="w-1 h-1 bg-gray-400 group-hover:bg-[#FDCB2C] rounded-full absolute left-1"></div>
+            </div>
+            <span className="font-bold text-lg text-gray-800">iPad Pro M5</span>
+            <span className="text-sm text-gray-500">Filiaal Kiosk</span>
+          </button>
+        </div>
+      </div>
+    );
+  }
 
-rooster_days = """
-              {/* Additional Mock Days for Scrolling */}
-              <div className="mb-4">
-                <h3 className="font-bold text-gray-800 border-b border-gray-200 pb-2 mb-3">Wo 13 Mei</h3>
-                <div className="bg-white rounded-xl p-4 shadow-sm border border-gray-100 opacity-50">
-                  <div className="flex justify-between items-center">
-                    <div>
-                      <p className="font-bold text-gray-900">Vrij / Afwezig</p>
-                    </div>
-                  </div>
-                </div>
-              </div>
+  return (
+    <div className={`flex flex-col items-center bg-gray-100 ${isFullscreen ? 'fixed inset-0 z-50 overflow-auto pt-12 pb-12' : 'min-h-[100dvh] pt-8 pb-24 overflow-x-auto w-full'}`}>
+      <div className="flex items-center gap-4 mb-6 w-full max-w-4xl px-4 justify-between">
+        <button 
+          onClick={() => { setSelectedDevice(null); setIsFullscreen(false); }}
+          className="px-4 py-2 bg-white text-gray-700 font-bold rounded-lg shadow-sm border border-gray-200 hover:bg-gray-50 transition-colors"
+        >
+          ← Terug naar selectie
+        </button>
+        
+        <div className="flex items-center gap-4">
+          <h3 className="font-bold text-gray-500 hidden sm:block">
+            {selectedDevice === 'ipad' ? 'TABLET WEERGAVE (ZAAK)' : 'MOBIEL WEERGAVE'}
+          </h3>
+          <button 
+            onClick={() => setIsFullscreen(!isFullscreen)}
+            className="p-2 bg-white text-blue-600 rounded-lg shadow-sm border border-blue-200 hover:bg-blue-50 transition-colors"
+            title={isFullscreen ? "Verklein" : "Vergroot"}
+          >
+            {isFullscreen ? <Minimize2 size={20} /> : <Maximize2 size={20} />}
+          </button>
+        </div>
+      </div>
+      
+      <div className={`transition-all duration-300 ${isFullscreen ? 'scale-110 origin-top' : ''}`}>
+        <ShiftbaseApp isTablet={selectedDevice === 'ipad'} />
+      </div>
+    </div>
+  );
+}"""
 
-              <div className="mb-4">
-                <h3 className="font-bold text-gray-800 border-b border-gray-200 pb-2 mb-3">Do 14 Mei</h3>
-                <div className="bg-white rounded-xl p-4 shadow-sm border border-gray-100 border-l-4 border-l-[#FDCB2C]">
-                  <div className="flex justify-between items-center mb-2">
-                    <p className="font-bold text-gray-900">Filiaal Breda</p>
-                    <span className="text-xs font-bold text-gray-500">10:00 - 18:00</span>
-                  </div>
-                  <p className="text-sm text-gray-600">Verkoop (8u)</p>
-                </div>
-              </div>
-
-              <div className="mb-4">
-                <h3 className="font-bold text-gray-800 border-b border-gray-200 pb-2 mb-3">Vr 15 Mei</h3>
-                <div className="bg-white rounded-xl p-4 shadow-sm border border-gray-100 border-l-4 border-l-[#FDCB2C]">
-                  <div className="flex justify-between items-center mb-2">
-                    <p className="font-bold text-gray-900">Filiaal Breda</p>
-                    <span className="text-xs font-bold text-gray-500">10:00 - 18:00</span>
-                  </div>
-                  <p className="text-sm text-gray-600">Verkoop (8u)</p>
-                </div>
-              </div>
-
-              <div className="mb-4">
-                <h3 className="font-bold text-gray-800 border-b border-gray-200 pb-2 mb-3">Za 16 Mei</h3>
-                <div className="bg-white rounded-xl p-4 shadow-sm border border-gray-100 border-l-4 border-l-[#FDCB2C]">
-                  <div className="flex justify-between items-center mb-2">
-                    <p className="font-bold text-gray-900">Filiaal Breda</p>
-                    <span className="text-xs font-bold text-gray-500">10:00 - 18:00</span>
-                  </div>
-                  <p className="text-sm text-gray-600">Weekend (8u)</p>
-                </div>
-              </div>
-"""
-
-# Insert these days into the rooster view.
-# Looking for 'Di 12 Mei' block to insert after it.
-di_12_mei = """<p className="text-sm text-gray-600">Klantenservice (8.5u)</p>
-                </div>
-              </div>"""
-
-if di_12_mei in content:
-    content = content.replace(di_12_mei, di_12_mei + rooster_days)
+content = content.replace(old_func, new_func)
 
 with open('src/app/components/Shiftbase.tsx', 'w') as f:
     f.write(content)
