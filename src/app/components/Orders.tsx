@@ -3,6 +3,7 @@ import { Eye, Search, Filter, Download, Plus, ShoppingCart, List, Tv, TrendingUp
 import { mockOrders } from '../../utils/mockOrders';
 import { getMedewerkerByCode } from '../../utils/employees';
 import { OrderDetailView } from './OrderDetail';
+import { SqlTerminal } from './SqlTerminal';
 
 const MOCK_PRODUCTS = [
   // LG 2025
@@ -84,7 +85,7 @@ export function Orders({ onNavigate }: { onNavigate?: (view: string) => void }) 
   const [bijbetaling, setBijbetaling] = useState(50);
   const [idealLink, setIdealLink] = useState('');
   const [isProcessing, setIsProcessing] = useState(false);
-  const [upsellStep, setUpsellStep] = useState<'idle' | 'pdf_saved' | 'sent'>('idle');
+  const [upsellStep, setUpsellStep] = useState<'idle' | 'pdf_saved' | 'sent' | 'ideal_ready'>('idle');
 
   const STORES = [
     'Alle Filialen',
@@ -548,7 +549,7 @@ export function Orders({ onNavigate }: { onNavigate?: (view: string) => void }) 
                         >
                           {isProcessing && upsellStep === 'pdf_saved' ? (
                             <><RefreshCw className="animate-spin" size={20} /> Order & Link genereren...</>
-                          ) : upsellStep === 'sent' ? (
+                          ) : (upsellStep === 'sent' || upsellStep === 'ideal_ready') ? (
                             <><CheckCircle size={20} /> Order & iDEAL Link Verstuurd</>
                           ) : (
                             <><ShoppingCart size={20} /> Verstuur Order & iDEAL Link</>
@@ -558,7 +559,7 @@ export function Orders({ onNavigate }: { onNavigate?: (view: string) => void }) 
                     )}
                   </div>
 
-                  {idealLink && (
+                  {upsellStep === 'ideal_ready' && idealLink && (
                     <div className="p-4 bg-green-50 border border-green-200 rounded-xl animate-in fade-in slide-in-from-top-2">
                       <div className="flex items-center gap-2 text-green-800 font-bold mb-2">
                         <CheckCircle size={18} /> iDEAL Link Klaar!
@@ -594,6 +595,17 @@ export function Orders({ onNavigate }: { onNavigate?: (view: string) => void }) 
           </div>
         )}
 
+
+        {upsellStep === 'sent' && (
+          <SqlTerminal 
+            query={`INSERT INTO upsell_orders (order_id, product, brand, price_inc) VALUES ('${upsellOrderId}', '${selectedProduct?.model}', '${selectedProduct?.merk}', ${bijbetaling});`}
+            onComplete={() => {
+              setIdealLink(`https://pay.mollie.com/v1/checkout/${Math.random().toString(36).substring(7)}`);
+              setIsProcessing(false);
+              setUpsellStep('ideal_ready');
+            }} 
+          />
+        )}
       </div>
     </div>
   );

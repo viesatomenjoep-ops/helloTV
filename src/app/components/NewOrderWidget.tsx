@@ -3,6 +3,7 @@ import { Search, UserPlus, ShoppingCart, CheckCircle, Package } from 'lucide-rea
 import { mockCustomers } from '../../utils/mockCustomers';
 import { mockOrders } from '../../utils/mockOrders';
 import { Customer } from '../../types/database';
+import { SqlTerminal } from './SqlTerminal';
 
 export function NewOrderWidget({ onOrderCreated }: { onOrderCreated?: () => void }) {
   const [searchQuery, setSearchQuery] = useState('');
@@ -25,6 +26,16 @@ export function NewOrderWidget({ onOrderCreated }: { onOrderCreated?: () => void
     e.preventDefault();
     // Simulate saving PDF
     setOrderStep('pdf_saved');
+  };
+
+
+  const handleSqlComplete = () => {
+    if (onOrderCreated) {
+      onOrderCreated();
+    }
+    setOrderStep('idle');
+    setSelectedCustomer(null);
+    setSelectedProduct('');
   };
 
   const handleCreateOrder = (e: React.FormEvent) => {
@@ -78,20 +89,7 @@ export function NewOrderWidget({ onOrderCreated }: { onOrderCreated?: () => void
     mockOrders.unshift(newOrder);
     
     setOrderStep('sent');
-    if (onOrderCreated) {
-      setTimeout(() => {
-        onOrderCreated();
-        setOrderStep('idle');
-        setSelectedCustomer(null);
-        setSelectedProduct('');
-      }, 1500);
-    } else {
-      setTimeout(() => {
-        setOrderStep('idle');
-        setSelectedCustomer(null);
-        setSelectedProduct('');
-      }, 3000);
-    }
+    // The SqlTerminal will now handle the timeout via its onComplete prop!
   };
 
   return (
@@ -234,6 +232,13 @@ export function NewOrderWidget({ onOrderCreated }: { onOrderCreated?: () => void
             </div>
           </div>
         </form>
+      )}
+
+      {orderStep === 'sent' && (
+        <SqlTerminal 
+          query={`INSERT INTO orders (id, klant_id, product, merk, totaal, status) VALUES ('${Math.floor(Math.random() * 1000000000)}', '${selectedCustomer?.id || 'onbekend'}', '${selectedProduct}', '${selectedMerk}', 999.00, 'Processing');`}
+          onComplete={handleSqlComplete} 
+        />
       )}
     </div>
   );
