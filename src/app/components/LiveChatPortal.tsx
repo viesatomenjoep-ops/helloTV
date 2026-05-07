@@ -189,8 +189,14 @@ export function LiveChatPortal() {
               </div>
               <div className="flex gap-2">
                 <button 
+                  onClick={() => setIsSmartWidgetExpanded(true)} 
+                  className="xl:hidden px-3 py-1.5 bg-[#FDCB2C] text-black font-bold text-sm rounded-lg shadow-sm transition-colors flex items-center gap-1"
+                >
+                  <Store size={16} /> <span className="hidden sm:inline">Smart Menu</span>
+                </button>
+                <button 
                   onClick={() => setIsFullscreen(!isFullscreen)} 
-                  className="px-3 py-1.5 bg-blue-50 text-blue-700 font-bold text-sm rounded-lg hover:bg-blue-100 transition-colors flex items-center gap-1"
+                  className="hidden sm:flex px-3 py-1.5 bg-blue-50 text-blue-700 font-bold text-sm rounded-lg hover:bg-blue-100 transition-colors items-center gap-1"
                 >
                   {isFullscreen ? <Minimize2 size={16} /> : <Maximize2 size={16} />}
                   {isFullscreen ? 'Klein Scherm' : 'Groot Scherm'}
@@ -250,7 +256,7 @@ export function LiveChatPortal() {
 
       {/* HelloTV Custom LiveChat Widget */}
       {activeChatId && !isFullscreen && (
-        <div className={`${isSmartWidgetExpanded ? 'fixed inset-0 z-[9999] w-full p-8' : 'w-96'} bg-gray-50 border-l border-gray-200 flex-col shrink-0 overflow-y-auto transition-all duration-300 hidden xl:flex`}>
+        <div className={`${isSmartWidgetExpanded ? 'fixed inset-0 z-[9999] w-full p-4 md:p-8 flex' : 'w-96 hidden xl:flex'} bg-gray-50 border-l border-gray-200 flex-col shrink-0 overflow-y-auto transition-all duration-300`}>
           {isSmartWidgetExpanded && (
             <div className="absolute top-4 right-4">
                <button onClick={() => setIsSmartWidgetExpanded(false)} className="p-2 bg-white shadow-md rounded-lg text-gray-500 hover:bg-gray-100"><X size={24}/></button>
@@ -284,7 +290,7 @@ export function LiveChatPortal() {
                 </div>
                 <div className="flex justify-between">
                   <span className="text-gray-500">Huidige Pagina:</span>
-                  <span className="font-bold text-blue-600 truncate max-w-[150px]">{activeChat?.url}</span>
+                  <span className="font-bold text-blue-600 break-all max-w-[60%] text-right text-xs leading-tight">{activeChat?.url}</span>
                 </div>
                 <div className="flex justify-between">
                   <span className="text-gray-500">Sessie Duur:</span>
